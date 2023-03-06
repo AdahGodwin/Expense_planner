@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 class ExpenseFormScreen extends StatefulWidget {
-  const ExpenseFormScreen({super.key});
-
+  const ExpenseFormScreen(this.isDrawerOpen, {super.key});
+  final bool? isDrawerOpen;
   @override
   State<ExpenseFormScreen> createState() => _ExpenseFormScreenState();
 }
@@ -12,7 +12,7 @@ class _ExpenseFormScreenState extends State<ExpenseFormScreen> {
   Widget build(BuildContext context) {
     var mediaQuery = MediaQuery.of(context);
     return Container(
-      color: Theme.of(context).primaryColorDark,
+      color:widget.isDrawerOpen! ? Theme.of(context).primaryColorDark : Theme.of(context).primaryColor,
       child: SingleChildScrollView(
         child: Column(
           children: [

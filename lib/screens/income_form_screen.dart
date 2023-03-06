@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 class IncomeFormScreen extends StatefulWidget {
-  const IncomeFormScreen({super.key});
-
+  const IncomeFormScreen({this.isDrawerOpen, super.key});
+  final bool? isDrawerOpen;
   @override
   State<IncomeFormScreen> createState() => _IncomeFormScreenState();
 }
@@ -12,7 +12,7 @@ class _IncomeFormScreenState extends State<IncomeFormScreen> {
   Widget build(BuildContext context) {
     var mediaQuery = MediaQuery.of(context);
     return Container(
-      color: Theme.of(context).primaryColorDark,
+      color: widget.isDrawerOpen! ? Theme.of(context).primaryColorDark : Theme.of(context).primaryColor,
       child: SingleChildScrollView(
         child: Column(
           children: [

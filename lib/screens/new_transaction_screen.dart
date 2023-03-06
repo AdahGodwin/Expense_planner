@@ -1,8 +1,6 @@
 import 'package:expense_planner/screens/expense_form_screen.dart';
 import 'package:expense_planner/screens/income_form_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 
 class NewTransactionScreen extends StatefulWidget {
   final VoidCallback? openDrawer;
@@ -20,7 +18,7 @@ class _NewTransactionScreenState extends State<NewTransactionScreen> {
       length: 2,
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor: Theme.of(context).primaryColorDark,
+          backgroundColor: widget.isDrawerOpen! ? Theme.of(context).primaryColorDark : Theme.of(context).primaryColor,
           elevation: 0,
           leading: IconButton(
             icon: const Icon(Icons.menu),
@@ -28,6 +26,7 @@ class _NewTransactionScreenState extends State<NewTransactionScreen> {
             color: Colors.white,
           ),
           flexibleSpace: Column(
+            mainAxisAlignment: MainAxisAlignment.end,
             children: const [
               TabBar(
                   indicatorColor: Colors.white,
@@ -47,8 +46,8 @@ class _NewTransactionScreenState extends State<NewTransactionScreen> {
           ),
         ),
         body: TabBarView(children: [
-          ExpenseFormScreen(),
-          IncomeFormScreen(),
+          ExpenseFormScreen(widget.isDrawerOpen),
+          IncomeFormScreen(isDrawerOpen: widget.isDrawerOpen),
         ]),
       ),
     );

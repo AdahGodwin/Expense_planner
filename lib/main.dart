@@ -1,10 +1,13 @@
 import 'package:expense_planner/screens/drawer_screen.dart';
 import 'package:expense_planner/screens/home_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
+void main() {
+runApp(const MyApp());
+SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
 
-void main() => runApp(const MyApp());
-
+} 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 

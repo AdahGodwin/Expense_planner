@@ -1,7 +1,11 @@
 import "package:expense_planner/models/configurations.dart";
+import "package:expense_planner/screens/charts_screen.dart";
 import "package:expense_planner/screens/home_screen.dart";
+import "package:expense_planner/screens/income_details_screen.dart";
 import "package:expense_planner/screens/new_transaction_screen.dart";
 import "package:flutter/material.dart";
+
+import "expense_details_screen.dart";
 
 class DrawerScreen extends StatefulWidget {
   const DrawerScreen({super.key});
@@ -48,7 +52,7 @@ class _DrawerScreenState extends State<DrawerScreen> {
       child: Stack(children: [
         Container(
           padding: const EdgeInsets.only(top: 30, left: 25),
-          color: primaryGreen,
+          color: Theme.of(context).primaryColor,
           child: Column(
             children: <Widget>[
               Row(
@@ -91,7 +95,7 @@ class _DrawerScreenState extends State<DrawerScreen> {
                     .toList(),
               ),
               SizedBox(
-                height: MediaQuery.of(context).size.height * 0.1,
+                height: MediaQuery.of(context).size.height * 0.15,
               ),
               Row(
                 children: const <Widget>[
@@ -165,6 +169,12 @@ class _DrawerScreenState extends State<DrawerScreen> {
 
   Widget getDrawerPage() {
     switch (item) {
+      case DrawerItems.charts:
+        return ChartScreen(openDrawer: openDrawer, isDrawerOpen: isDrawerOpen,);
+      case DrawerItems.expenseDetails:
+        return ExpenseDetailsScreen(openDrawer: openDrawer,isDrawerOpen: isDrawerOpen,);
+      case DrawerItems.incomeDetails :
+        return IncomeDetailsScreen(openDrawer: openDrawer,isDrawerOpen: isDrawerOpen,); 
       case DrawerItems.addTx:
         return NewTransactionScreen(
           openDrawer: openDrawer,

@@ -24,7 +24,6 @@ class TransactionList extends StatelessWidget {
                   height: 20,
                 ),
                 Container(
-                    height: 200,
                     child:const Text("No Transactions yet"),
                     // Image.asset(
                     //   'assets/images/waiting.png',

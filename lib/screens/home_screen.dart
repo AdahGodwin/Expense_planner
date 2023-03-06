@@ -77,7 +77,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     var mediaQuery = MediaQuery.of(context);
     return Scaffold(
-      backgroundColor: Theme.of(context).primaryColorDark,
+      backgroundColor: widget.isDrawerOpen! ? Theme.of(context).primaryColorDark : Theme.of(context).primaryColor,
       
       body: SingleChildScrollView(
         child: Column(
@@ -85,8 +85,7 @@ class _HomeScreenState extends State<HomeScreen> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             SizedBox(
-              height: (mediaQuery.size.height -
-                      mediaQuery.padding.top) *
+              height: (mediaQuery.size.height - mediaQuery.padding.top ) *
                   0.3,
               child: Summary(openDrawer: widget.openDrawer,isDrawerOpen: widget.isDrawerOpen),
             ),
@@ -95,8 +94,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       mediaQuery.padding.top) *
                   0.7,
               child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(25),
+                  decoration: const BoxDecoration(
+                    borderRadius: BorderRadius.only(topLeft: Radius.circular(25), topRight: Radius.circular(25)),
                     color: Colors.white,
                   ),
                   child:
@@ -111,12 +110,11 @@ class _HomeScreenState extends State<HomeScreen> {
         child: const Icon(Icons.add, color: Colors.white,),
         onPressed: () {},
       ),
-      bottomNavigationBar: BottomAppBar(
-        shape: const CircularNotchedRectangle(),
-        color: Colors.white,
-        child: Container(
-          height: 50,
-        ),
+      bottomNavigationBar: const BottomAppBar(
+        height: 50.0,
+        shape: CircularNotchedRectangle(),
+        color: Colors.white70,
+        
       ),
     );
   }
