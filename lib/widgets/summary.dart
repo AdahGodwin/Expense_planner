@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
+
+import '../providers/expense_provider.dart';
+import '../providers/income_provider.dart';
 
 class Summary extends StatelessWidget {
   final VoidCallback? openDrawer;
@@ -7,8 +12,18 @@ class Summary extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double todaysTotalSpending =
+        Provider.of<Expenses>(context).todaysTotalSpending;
+    String formattedSpending = NumberFormat.compactSimpleCurrency(name: "NGN")
+        .format(todaysTotalSpending);
+
+    double todaysTotalIncome =
+        Provider.of<Income>(context).todaysTotalIncome;
+    String formattedIncome = NumberFormat.compactSimpleCurrency(name: "NGN")
+        .format(todaysTotalIncome);    
+
     return Container(
-      padding: const EdgeInsets.only(left: 16),
+      padding: const EdgeInsets.only(left: 16, top: 15),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
@@ -38,11 +53,11 @@ class Summary extends StatelessWidget {
               ),
             ],
           ),
-          const Text(
-            "0.00",
-            style: TextStyle(
+          Text(
+            formattedSpending,
+            style: const TextStyle(
               fontWeight: FontWeight.bold,
-              fontSize: 25,
+              fontSize: 28,
               color: Colors.white,
             ),
           ),
@@ -60,9 +75,9 @@ class Summary extends StatelessWidget {
               const SizedBox(
                 width: 8,
               ),
-              const Text(
-                "Todays Income: 0.00",
-                style: TextStyle(
+              Text(
+                "Todays Income: $formattedIncome",
+                style: const TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 20,
                   color: Colors.white,

@@ -1,71 +1,107 @@
+import 'package:expense_planner/providers/expense_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-import '../models/transaction.dart';
-
 class TransactionList extends StatelessWidget {
-  final List<Transaction> transactions;
-  final Function deleteTx;
+  final List<Expense> transactions;
 
-  const TransactionList(this.transactions, this.deleteTx, {super.key});
+  const TransactionList(this.transactions, {super.key});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      
       child: transactions.isEmpty
-          ? Column(
-              children: <Widget>[
-                Text(
-                  'No transactions added yet!',
-                  style: Theme.of(context).textTheme.headlineSmall,
-                ),
-               const SizedBox(
-                  height: 20,
-                ),
-                Container(
-                    child:const Text("No Transactions yet"),
-                    // Image.asset(
-                    //   'assets/images/waiting.png',
-                    //   fit: BoxFit.cover,
-                    // ),
+          ? LayoutBuilder(builder: (context, constraint) {
+              return Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  children: <Widget>[
+                    SizedBox(
+                      height: constraint.maxHeight * 0.15,
+                      child: const Text('No transactions added yet!',
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.bold)),
                     ),
-              ],
-            )
-          : ListView.builder(
-              itemBuilder: (ctx, index) {
-                return Card(
-                  elevation: 5,
-                  margin: const EdgeInsets.symmetric(
-                    vertical: 8,
-                    horizontal: 5,
-                  ),
-                  child: ListTile(
-                    leading: CircleAvatar(
-                      radius: 30,
-                      child: Padding(
-                        padding: EdgeInsets.all(6),
-                        child: FittedBox(
-                          child: Text('\$${transactions[index].amount}'),
-                        ),
+                    SizedBox(
+                      height: constraint.maxHeight * 0.7,
+                      child: Image.asset(
+                        'assets/images/emptysafe.jpg',
+                        fit: BoxFit.cover,
                       ),
                     ),
-                    title: Text(
-                      transactions[index].title,
-                      style: Theme.of(context).textTheme.titleSmall,
-                    ),
-                    subtitle: Text(
-                      DateFormat.yMMMd().format(transactions[index].date),
-                    ),
-                    trailing: IconButton(
-                      icon: const Icon(Icons.delete),
-                      color: Theme.of(context).colorScheme.error,
-                      onPressed: () => deleteTx(transactions[index].id),
+                  ],
+                ),
+              );
+            })
+          : Padding(
+              padding: const EdgeInsets.only(top: 8.0),
+              child: Column(
+                children: [
+                  const Text(
+                    "Overview",
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w500,
                     ),
                   ),
-                );
-              },
-              itemCount: transactions.length,
+                  Padding(
+                    padding: const EdgeInsets.all(18.0),
+                    child: Row(
+                      children: [
+                        Text(
+                          DateFormat.yMMMd().format(
+                            DateTime.now(),
+                          ),
+                          style: const TextStyle(
+                            fontSize: 16,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Expanded(
+                    child: ListView.builder(
+                      itemBuilder: (ctx, index) {
+                        return Card(
+                          elevation: 5,
+                          margin: const EdgeInsets.symmetric(
+                            vertical: 8,
+                            horizontal: 5,
+                          ),
+                          child: ListTile(
+                            leading: CircleAvatar(
+                              radius: 30,
+                              child: Padding(
+                                padding: const EdgeInsets.all(6),
+                                child: FittedBox(
+                                  child: Text(
+                                    NumberFormat.compactSimpleCurrency(
+                                      name: "NGN",
+                                    ).format(transactions[index].amount),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            title: Text(
+                              transactions[index].title,
+                              style: Theme.of(context).textTheme.titleSmall,
+                            ),
+                            subtitle: Text(
+                              DateFormat.yMMMd()
+                                  .format(transactions[index].date),
+                            ),
+                            trailing: IconButton(
+                                icon: const Icon(Icons.delete),
+                                color: Theme.of(context).colorScheme.error,
+                                onPressed: () {}),
+                          ),
+                        );
+                      },
+                      itemCount: transactions.length,
+                    ),
+                  ),
+                ],
+              ),
             ),
     );
   }

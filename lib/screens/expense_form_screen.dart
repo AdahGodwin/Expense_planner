@@ -1,18 +1,14 @@
+import 'package:expense_planner/widgets/forms/expense_form.dart';
 import 'package:flutter/material.dart';
 
-class ExpenseFormScreen extends StatefulWidget {
+class ExpenseFormScreen extends StatelessWidget {
   const ExpenseFormScreen(this.isDrawerOpen, {super.key});
   final bool? isDrawerOpen;
-  @override
-  State<ExpenseFormScreen> createState() => _ExpenseFormScreenState();
-}
-
-class _ExpenseFormScreenState extends State<ExpenseFormScreen> {
   @override
   Widget build(BuildContext context) {
     var mediaQuery = MediaQuery.of(context);
     return Container(
-      color:widget.isDrawerOpen! ? Theme.of(context).primaryColorDark : Theme.of(context).primaryColor,
+      color:isDrawerOpen! ? Theme.of(context).primaryColorDark : Theme.of(context).primaryColor,
       child: SingleChildScrollView(
         child: Column(
           children: [
@@ -35,16 +31,16 @@ class _ExpenseFormScreenState extends State<ExpenseFormScreen> {
             Container(
               decoration: const BoxDecoration(
                 color: Colors.white,
-                borderRadius: BorderRadius.horizontal(
-                  left: Radius.circular(25),
-                  right: Radius.circular(25),
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(25),
+                  topRight: Radius.circular(25),
                 ),
               ),
               height: (mediaQuery.size.height -
                       AppBar().preferredSize.height -
                       mediaQuery.padding.top) *
                   0.8,
-              child: Placeholder(),
+              child:const ExpenseForm(),
             ),
           ],
         ),

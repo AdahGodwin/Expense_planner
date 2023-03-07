@@ -1,18 +1,14 @@
+import 'package:expense_planner/widgets/forms/income_form.dart';
 import 'package:flutter/material.dart';
 
-class IncomeFormScreen extends StatefulWidget {
+class IncomeFormScreen extends StatelessWidget {
   const IncomeFormScreen({this.isDrawerOpen, super.key});
   final bool? isDrawerOpen;
-  @override
-  State<IncomeFormScreen> createState() => _IncomeFormScreenState();
-}
-
-class _IncomeFormScreenState extends State<IncomeFormScreen> {
-  @override
+ @override
   Widget build(BuildContext context) {
     var mediaQuery = MediaQuery.of(context);
     return Container(
-      color: widget.isDrawerOpen! ? Theme.of(context).primaryColorDark : Theme.of(context).primaryColor,
+      color: isDrawerOpen! ? Theme.of(context).primaryColorDark : Theme.of(context).primaryColor,
       child: SingleChildScrollView(
         child: Column(
           children: [
@@ -35,16 +31,16 @@ class _IncomeFormScreenState extends State<IncomeFormScreen> {
             Container(
               decoration: const BoxDecoration(
                 color: Colors.white,
-                borderRadius: BorderRadius.horizontal(
-                  left: Radius.circular(25),
-                  right: Radius.circular(25),
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(25),
+                  topRight: Radius.circular(25),
                 ),
               ),
               height: (mediaQuery.size.height -
                       AppBar().preferredSize.height -
                       mediaQuery.padding.top) *
                   0.8,
-              child: Placeholder(),
+              child: IncomeForm(),
             ),
           ],
         ),

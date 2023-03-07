@@ -1,7 +1,10 @@
+import 'package:expense_planner/providers/expense_provider.dart';
+import 'package:expense_planner/providers/income_provider.dart';
 import 'package:expense_planner/screens/drawer_screen.dart';
 import 'package:expense_planner/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 
 void main() {
 runApp(const MyApp());
@@ -13,17 +16,23 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Personal Expenses',
-      theme: ThemeData(
-          primarySwatch: Colors.green,
-          accentColor: Colors.amber,
-          // errorColor: Colors.red,
-          fontFamily: 'Quicksand',
-          
-          ),
-      home: const MyHomePage(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => Expenses(),),
+        ChangeNotifierProvider(create: (context) => Income(),)
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'Personal Expenses',
+        theme: ThemeData(
+            primarySwatch: Colors.green,
+            accentColor: Colors.amber,
+            // errorColor: Colors.red,
+            fontFamily: 'Quicksand',
+            
+            ),
+        home: const MyHomePage(),
+      ),
     );
   }
 }
