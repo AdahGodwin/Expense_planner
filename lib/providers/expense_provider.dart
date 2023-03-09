@@ -20,14 +20,14 @@ class Expense {
 }
 
 class Expenses with ChangeNotifier {
-  List<Expense> expenses = [];
+  List<Expense> _expenses = [];
 
   List<Expense> get allExpenses {
-    return [...expenses];
+    return [..._expenses];
   }
 
   List<Expense> get recentTransactions {
-    return expenses.where((tx) {
+    return _expenses.where((tx) {
       return tx.date.isAfter(
         DateTime.now().subtract(
           const Duration(days: 7),
@@ -37,7 +37,7 @@ class Expenses with ChangeNotifier {
   }
   List<Expense> get todaysExpenses {
     String key = DateFormat("dd/MM/yy").format(DateTime.now());
-    return expenses.where((expense) {
+    return _expenses.where((expense) {
       return expense.key.contains(key);
     }).toList();
   }
@@ -62,11 +62,11 @@ class Expenses with ChangeNotifier {
       key: key,
     );
 
-    expenses.add(newExpense);
+    _expenses.add(newExpense);
     notifyListeners();
   }
 
   void deleteTransaction(String id) {
-    expenses.removeWhere((tx) => tx.id == id);
+    _expenses.removeWhere((tx) => tx.id == id);
   }
 }

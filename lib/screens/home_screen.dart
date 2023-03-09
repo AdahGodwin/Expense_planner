@@ -1,14 +1,15 @@
 import 'package:expense_planner/widgets/summary.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import '../models/configurations.dart';
 import '../providers/expense_provider.dart';
 import '../widgets/transaction_list.dart';
 
 class HomeScreen extends StatefulWidget {
   final VoidCallback? openDrawer;
   final bool? isDrawerOpen;
-  const HomeScreen({this.openDrawer, this.isDrawerOpen, super.key});
+  final void Function(DrawerItem item) onSelectedItem;
+  const HomeScreen({this.openDrawer, this.isDrawerOpen, required this.onSelectedItem, super.key});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -58,7 +59,9 @@ class _HomeScreenState extends State<HomeScreen> {
           Icons.add,
           color: Colors.white,
         ),
-        onPressed: () {},
+        onPressed: () {
+          widget.onSelectedItem(DrawerItems.addTx);
+        },
       ),
       bottomNavigationBar: const BottomAppBar(
         height: 50.0,

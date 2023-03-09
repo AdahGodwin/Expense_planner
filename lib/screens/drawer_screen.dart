@@ -23,27 +23,29 @@ class _DrawerScreenState extends State<DrawerScreen> {
   void onSelectedItem(item) {
     setState(() {
       this.item = item;
-      // closeDrawer();
+      Future.delayed(
+        const Duration(milliseconds: 150),
+        () {
+          closeDrawer();
+        },
+      );
     });
   }
 
   void openDrawer() {
-    
-
     FocusScopeNode currentFocus = FocusScope.of(context);
 
     if (!currentFocus.hasPrimaryFocus) {
       currentFocus.unfocus();
       Future.delayed(const Duration(milliseconds: 180), () {
-      setState(() {
-        xOffset = 230;
-        yOffset = 120;
-        scaleFactor = 0.7;
-        isDrawerOpen = true;
+        setState(() {
+          xOffset = 230;
+          yOffset = 120;
+          scaleFactor = 0.7;
+          isDrawerOpen = true;
+        });
       });
-    });
-    }
-    else {
+    } else {
       setState(() {
         xOffset = 230;
         yOffset = 120;
@@ -213,6 +215,7 @@ class _DrawerScreenState extends State<DrawerScreen> {
         return HomeScreen(
           openDrawer: openDrawer,
           isDrawerOpen: isDrawerOpen,
+          onSelectedItem: onSelectedItem,
         );
     }
   }
