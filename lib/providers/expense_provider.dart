@@ -36,7 +36,7 @@ class Expenses with ChangeNotifier {
     }).toList();
   }
   List<Expense> get todaysExpenses {
-    String key = DateFormat("dd/MM/yy").format(DateTime.now());
+    String key = DateFormat("E dd/MM/yy").format(DateTime.now());
     return _expenses.where((expense) {
       return expense.key.contains(key);
     }).toList();
@@ -68,5 +68,6 @@ class Expenses with ChangeNotifier {
 
   void deleteTransaction(String id) {
     _expenses.removeWhere((tx) => tx.id == id);
+  notifyListeners();
   }
 }

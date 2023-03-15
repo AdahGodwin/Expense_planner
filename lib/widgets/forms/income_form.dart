@@ -127,7 +127,7 @@ class _IncomeFormState extends State<IncomeForm> with AutomaticKeepAliveClientMi
                 }
                 dateCtrl.text = DateFormat.yMMMd().format(selectedDate);
                 income["date"] = selectedDate;
-                income["key"] = DateFormat("dd/MM/yy").format(selectedDate);
+                income["key"] = DateFormat("E dd/MM/yy").format(selectedDate);
               },
               readOnly: true,
               decoration: const InputDecoration(

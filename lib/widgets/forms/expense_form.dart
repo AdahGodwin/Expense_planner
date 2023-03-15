@@ -40,6 +40,7 @@ class _ExpenseFormState extends State<ExpenseForm> with AutomaticKeepAliveClient
     );
     _formKey.currentState?.reset();
     dateCtrl.clear();
+    ScaffoldMessenger.of(context).clearSnackBars();
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
         content: Text(
@@ -125,8 +126,8 @@ class _ExpenseFormState extends State<ExpenseForm> with AutomaticKeepAliveClient
                 }
                 dateCtrl.text = DateFormat.yMMMd().format(selectedDate);
                 expense["date"] = selectedDate;
-                expense["key"] = DateFormat("dd/MM/yy").format(selectedDate);
-              },
+                expense["key"] = DateFormat("E dd/MM/yy").format(selectedDate);
+                },
               readOnly: true,
               decoration: const InputDecoration(
                 labelText: "Date",

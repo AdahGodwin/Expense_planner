@@ -28,7 +28,6 @@ class _HomeScreenState extends State<HomeScreen> {
           : Theme.of(context).primaryColor,
       body: SingleChildScrollView(
         child: Column(
-          // mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             SizedBox(
@@ -63,10 +62,11 @@ class _HomeScreenState extends State<HomeScreen> {
           widget.onSelectedItem(DrawerItems.addTx);
         },
       ),
-      bottomNavigationBar: const BottomAppBar(
+      bottomNavigationBar: BottomAppBar(
         height: 50.0,
-        shape: CircularNotchedRectangle(),
-        color: Colors.white70,
+        
+        shape: const CircularNotchedRectangle(),
+        color: Theme.of(context).primaryColorLight,
       ),
     );
   }

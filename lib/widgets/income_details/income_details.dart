@@ -1,35 +1,36 @@
 import 'package:collection/collection.dart';
-import 'package:expense_planner/providers/expense_provider.dart';
-import 'package:expense_planner/widgets/expense_details/expense_list.dart';
+import 'package:expense_planner/widgets/income_details/income_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_month_picker/flutter_month_picker.dart';
 import 'package:intl/intl.dart';
 
-class ExpenseDetails extends StatefulWidget {
-  final List<Expense> expenses;
-  const ExpenseDetails({
-    required this.expenses,
+import '../../providers/income_provider.dart';
+
+class IncomeDetails extends StatefulWidget {
+  final List<IncomeItem> income;
+  const IncomeDetails({
+    required this.income,
     super.key,
   });
 
   @override
-  State<ExpenseDetails> createState() => _ExpenseDetailsState();
+  State<IncomeDetails> createState() => _IncomeDetailsState();
 }
 
-class _ExpenseDetailsState extends State<ExpenseDetails> {
+class _IncomeDetailsState extends State<IncomeDetails> {
   DateTime? _selectedMonth;
-  List<Expense> get filteredTx {
+  List<IncomeItem> get filteredTx {
     String key = _selectedMonth == null
         ? ".."
         : DateFormat("MM/yy").format(_selectedMonth!);
-    return widget.expenses
+    return widget.income
         .where(
           (expense) => expense.key.contains(key),
         )
         .toList();
   }
 
-  Map<String, List<Expense>> get groupTx {
+  Map<String, List<IncomeItem>> get groupTx {
     var newMap = groupBy(filteredTx.sorted((a, b) => a.date.compareTo(b.date)), (obj) => obj.key);
     return newMap;
   }
@@ -48,7 +49,7 @@ class _ExpenseDetailsState extends State<ExpenseDetails> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               const Text(
-                "Expense Details",
+                "Income Details",
                 style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
@@ -86,7 +87,7 @@ class _ExpenseDetailsState extends State<ExpenseDetails> {
           height: (MediaQuery.of(context).size.height -
                   AppBar().preferredSize.height) *
               0.95,
-          child: ExpenseList(groupTx: groupTx, selectedMonth: _selectedMonth),
+          child: IncomeList(groupTx: groupTx, selectedMonth: _selectedMonth,),
         ),
       ]),
     );

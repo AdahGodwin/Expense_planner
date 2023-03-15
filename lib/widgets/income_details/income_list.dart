@@ -1,12 +1,11 @@
+import 'package:expense_planner/providers/income_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-import '../../providers/expense_provider.dart';
-
-class ExpenseList extends StatelessWidget {
-  final Map<String, List<Expense>> groupTx;
+class IncomeList extends StatelessWidget {
+  final Map<String, List<IncomeItem>> groupTx;
   final DateTime? selectedMonth;
-  const ExpenseList({required this.groupTx, this.selectedMonth, super.key});
+  const IncomeList({required this.groupTx, this.selectedMonth, super.key});
 
   Widget titleText(String text, double width) {
     return SizedBox(
@@ -81,7 +80,7 @@ class ExpenseList extends StatelessWidget {
                   groupTx.values.toList()[index].fold(0.0, (sum, item) {
                 return sum + item.amount;
               });
-              ;
+
               return Card(
                 color: Theme.of(context).primaryColorLight,
                 shape: RoundedRectangleBorder(
@@ -100,14 +99,15 @@ class ExpenseList extends StatelessWidget {
                           title: Text(
                             groupTx.keys.toList()[index],
                             style: const TextStyle(
-                                fontSize: 20, fontWeight: FontWeight.bold),
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                           children: [
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: [
                                 titleText("Title", 100),
-                                titleText("Payment Method", 125),
                                 titleText("Amount", 80),
                               ],
                             ),
@@ -115,7 +115,7 @@ class ExpenseList extends StatelessWidget {
                               height: 10,
                             ),
                             ...groupTx.values.toList()[index].map(
-                              (expense) {
+                              (income) {
                                 return Column(
                                   children: [
                                     Row(
@@ -123,23 +123,22 @@ class ExpenseList extends StatelessWidget {
                                           MainAxisAlignment.spaceAround,
                                       children: [
                                         listText(
-                                          expense.title,
+                                          income.title,
                                           100,
                                         ),
-                                        listText(expense.paymentMethod, 120),
                                         listText(
-                                          expense.amount < 100000.0
+                                          income.amount < 100000.0
                                               ? NumberFormat.simpleCurrency(
                                                       name: "NGN",
                                                       decimalDigits: 1)
                                                   .format(
-                                                  expense.amount,
+                                                  income.amount,
                                                 )
                                               : NumberFormat
                                                   .compactSimpleCurrency(
                                                   name: "NGN",
                                                 ).format(
-                                                  expense.amount,
+                                                  income.amount,
                                                 ),
                                           80,
                                         ),
@@ -166,8 +165,9 @@ class ExpenseList extends StatelessWidget {
                                 titleText(
                                     totalSpending < 100000.0
                                         ? NumberFormat.simpleCurrency(
-                                                name: "NGN", decimalDigits: 1)
-                                            .format(
+                                            name: "NGN",
+                                            decimalDigits: 1,
+                                          ).format(
                                             totalSpending,
                                           )
                                         : NumberFormat.compactSimpleCurrency(

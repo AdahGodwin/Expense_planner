@@ -35,7 +35,7 @@ class Income with ChangeNotifier {
   }
 
   List<IncomeItem> get todaysIncome {
-    String key = DateFormat("dd/MM/yy").format(DateTime.now());
+    String key = DateFormat("E dd/MM/yy").format(DateTime.now());
     return income.where((income) {
       return income.key.contains(key);
     }).toList();
