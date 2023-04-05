@@ -25,8 +25,8 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'Personal Expenses',
         theme: ThemeData(
-            primarySwatch: Colors.green,
-            accentColor: Colors.amber,
+            primarySwatch: Colors.teal,
+            accentColor: Colors.tealAccent,
             // errorColor: Colors.red,
             fontFamily: 'Quicksand',
             

@@ -65,7 +65,6 @@ class _HomeScreenState extends State<HomeScreen> {
       bottomNavigationBar: BottomAppBar(
         height: 50.0,
         
-        shape: const CircularNotchedRectangle(),
         color: Theme.of(context).primaryColorLight,
       ),
     );
