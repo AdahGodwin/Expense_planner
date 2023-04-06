@@ -42,7 +42,7 @@ class _SignUpFormState extends State<SignUpForm> {
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
         content: Text(
-          "Added Succesfully!",
+          "Succesful!",
         ),
         duration: Duration(
           milliseconds: 300,
