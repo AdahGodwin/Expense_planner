@@ -14,13 +14,12 @@ class SignUpForm extends StatefulWidget {
 
 class _SignUpFormState extends State<SignUpForm> {
   final _formKey = GlobalKey<FormState>();
-  @override
-  Map<String, dynamic> expense = {
-    "title": "",
-    "amount": 0.0,
-    "date": DateTime.now(),
-    "paymentMethod": "",
-    "key": ""
+  
+  Map<String, dynamic> authDetails = {
+    "firstname": "",
+    "lastname": "",
+    "email": "",
+    "gender": "",
   };
 
   TextEditingController dateCtrl = TextEditingController();
@@ -31,11 +30,11 @@ class _SignUpFormState extends State<SignUpForm> {
     }
     _formKey.currentState?.save();
     Provider.of<Expenses>(context, listen: false).addExpense(
-      expense["title"],
-      double.parse(expense["amount"].toString().replaceAll(",", "")),
-      expense["date"],
-      expense["paymentMethod"],
-      expense["key"],
+      authDetails["firstname"],
+      double.parse(authDetails["lastname"].toString().replaceAll(",", "")),
+      authDetails["email"],
+      authDetails["gender"],
+      authDetails["key"],
     );
     _formKey.currentState?.reset();
     dateCtrl.clear();
@@ -87,7 +86,7 @@ class _SignUpFormState extends State<SignUpForm> {
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(15),
                         ),
-                        labelText: "Title",
+                        labelText: "First Name",
                         labelStyle:
                             const TextStyle(fontSize: 20, color: Colors.black),
                       ),
@@ -98,7 +97,7 @@ class _SignUpFormState extends State<SignUpForm> {
                         return null;
                       },
                       onSaved: (newValue) {
-                        expense["title"] = newValue;
+                        authDetails["firstname"] = newValue;
                       },
                     ),
                   ),
@@ -110,7 +109,7 @@ class _SignUpFormState extends State<SignUpForm> {
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(15),
                         ),
-                        labelText: "Title",
+                        labelText: "Last Name",
                         labelStyle:
                             const TextStyle(fontSize: 20, color: Colors.black),
                       ),
@@ -121,7 +120,7 @@ class _SignUpFormState extends State<SignUpForm> {
                         return null;
                       },
                       onSaved: (newValue) {
-                        expense["title"] = newValue;
+                        authDetails["lastname"] = newValue;
                       },
                     ),
                   ),
@@ -133,7 +132,7 @@ class _SignUpFormState extends State<SignUpForm> {
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(15),
                         ),
-                        labelText: "Title",
+                        labelText: "Email",
                         labelStyle:
                             const TextStyle(fontSize: 20, color: Colors.black),
                       ),
@@ -144,7 +143,7 @@ class _SignUpFormState extends State<SignUpForm> {
                         return null;
                       },
                       onSaved: (newValue) {
-                        expense["title"] = newValue;
+                        authDetails["email"] = newValue;
                       },
                     ),
                   ),
@@ -156,7 +155,7 @@ class _SignUpFormState extends State<SignUpForm> {
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(15),
                         ),
-                        labelText: "Title",
+                        labelText: "Gender",
                         labelStyle:
                             const TextStyle(fontSize: 20, color: Colors.black),
                       ),
@@ -167,7 +166,7 @@ class _SignUpFormState extends State<SignUpForm> {
                         return null;
                       },
                       onSaved: (newValue) {
-                        expense["title"] = newValue;
+                        authDetails["gender"] = newValue;
                       },
                     ),
                   ),

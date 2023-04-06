@@ -64,7 +64,7 @@ class IncomeList extends StatelessWidget {
                     SizedBox(
                       height: constraint.maxHeight * 0.6,
                       child: Image.asset(
-                        'assets/images/images.jpg',
+                        'assets/images/nothing.png',
                         fit: BoxFit.cover,
                       ),
                     ),

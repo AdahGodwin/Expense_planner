@@ -36,8 +36,8 @@ class MyApp extends StatelessWidget {
           errorColor: Colors.red,
           fontFamily: 'Quicksand',
         ),
-        home: const MyHomePage(),
-        //home: const WelcomeScreen(),
+        //home: const MyHomePage(),
+        home: const WelcomeScreen(),
         routes: {
           SignUpScreen.routeName: (context) => const SignUpScreen(),
         },
@@ -49,8 +49,6 @@ class MyApp extends StatelessWidget {
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
 
-  // String titleInput;
-  // String amountInput;
   @override
   MyHomePageState createState() => MyHomePageState();
 }
