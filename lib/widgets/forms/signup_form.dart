@@ -1,9 +1,6 @@
-import 'package:currency_text_input_formatter/currency_text_input_formatter.dart';
+import 'package:expense_planner/providers/auth_provider.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-
-import '../../providers/expense_provider.dart';
 
 class SignUpForm extends StatefulWidget {
   const SignUpForm({super.key});
@@ -14,7 +11,7 @@ class SignUpForm extends StatefulWidget {
 
 class _SignUpFormState extends State<SignUpForm> {
   final _formKey = GlobalKey<FormState>();
-  
+
   Map<String, dynamic> authDetails = {
     "firstname": "",
     "lastname": "",
@@ -29,12 +26,11 @@ class _SignUpFormState extends State<SignUpForm> {
       return;
     }
     _formKey.currentState?.save();
-    Provider.of<Expenses>(context, listen: false).addExpense(
+    Provider.of<Auth>(context, listen: false).addUserDetails(
       authDetails["firstname"],
-      double.parse(authDetails["lastname"].toString().replaceAll(",", "")),
+      authDetails["lastname"],
       authDetails["email"],
-      authDetails["gender"],
-      authDetails["key"],
+      authDetails["password"],
     );
     _formKey.currentState?.reset();
     dateCtrl.clear();
@@ -47,6 +43,7 @@ class _SignUpFormState extends State<SignUpForm> {
         duration: Duration(
           milliseconds: 300,
         ),
+        behavior: SnackBarBehavior.floating,
       ),
     );
   }
@@ -76,101 +73,101 @@ class _SignUpFormState extends State<SignUpForm> {
               SizedBox(
                 height: constraints.maxHeight * 0.6,
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: <Widget>[
-                  SizedBox(
-                    height: 50,
-                    child: TextFormField(
-                      textInputAction: TextInputAction.next,
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(15),
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: <Widget>[
+                      SizedBox(
+                        height: 50,
+                        child: TextFormField(
+                          textInputAction: TextInputAction.next,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(15),
+                            ),
+                            labelText: "First Name",
+                            labelStyle: const TextStyle(
+                                fontSize: 20, color: Colors.black),
+                          ),
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return 'Field is required';
+                            }
+                            return null;
+                          },
+                          onSaved: (newValue) {
+                            authDetails["firstname"] = newValue;
+                          },
                         ),
-                        labelText: "First Name",
-                        labelStyle:
-                            const TextStyle(fontSize: 20, color: Colors.black),
                       ),
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          return 'Field is required';
-                        }
-                        return null;
-                      },
-                      onSaved: (newValue) {
-                        authDetails["firstname"] = newValue;
-                      },
-                    ),
-                  ),
-                  SizedBox(
-                    height: 50,
-                    child: TextFormField(
-                      textInputAction: TextInputAction.next,
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(15),
+                      SizedBox(
+                        height: 50,
+                        child: TextFormField(
+                          textInputAction: TextInputAction.next,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(15),
+                            ),
+                            labelText: "Last Name",
+                            labelStyle: const TextStyle(
+                                fontSize: 20, color: Colors.black),
+                          ),
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return 'Field is required';
+                            }
+                            return null;
+                          },
+                          onSaved: (newValue) {
+                            authDetails["lastname"] = newValue;
+                          },
                         ),
-                        labelText: "Last Name",
-                        labelStyle:
-                            const TextStyle(fontSize: 20, color: Colors.black),
                       ),
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          return 'Field is required';
-                        }
-                        return null;
-                      },
-                      onSaved: (newValue) {
-                        authDetails["lastname"] = newValue;
-                      },
-                    ),
-                  ),
-                  SizedBox(
-                    height: 50,
-                    child: TextFormField(
-                      textInputAction: TextInputAction.next,
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(15),
+                      SizedBox(
+                        height: 50,
+                        child: TextFormField(
+                          textInputAction: TextInputAction.next,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(15),
+                            ),
+                            labelText: "Email",
+                            labelStyle: const TextStyle(
+                                fontSize: 20, color: Colors.black),
+                          ),
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return 'Field is required';
+                            }
+                            return null;
+                          },
+                          onSaved: (newValue) {
+                            authDetails["email"] = newValue;
+                          },
                         ),
-                        labelText: "Email",
-                        labelStyle:
-                            const TextStyle(fontSize: 20, color: Colors.black),
                       ),
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          return 'Field is required';
-                        }
-                        return null;
-                      },
-                      onSaved: (newValue) {
-                        authDetails["email"] = newValue;
-                      },
-                    ),
-                  ),
-                  SizedBox(
-                    height: 50,
-                    child: TextFormField(
-                      textInputAction: TextInputAction.next,
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(15),
+                      SizedBox(
+                        height: 50,
+                        child: TextFormField(
+                          textInputAction: TextInputAction.next,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(15),
+                            ),
+                            labelText: "Password",
+                            labelStyle: const TextStyle(
+                                fontSize: 20, color: Colors.black),
+                          ),
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return 'Field is required';
+                            }
+                            return null;
+                          },
+                          onSaved: (newValue) {
+                            authDetails["password"] = newValue;
+                          },
                         ),
-                        labelText: "Gender",
-                        labelStyle:
-                            const TextStyle(fontSize: 20, color: Colors.black),
                       ),
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          return 'Field is required';
-                        }
-                        return null;
-                      },
-                      onSaved: (newValue) {
-                        authDetails["gender"] = newValue;
-                      },
-                    ),
-                  ),
-                ]),
+                    ]),
               ),
               SizedBox(
                 width: 250,

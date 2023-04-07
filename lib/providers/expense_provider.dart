@@ -41,10 +41,25 @@ class Expenses with ChangeNotifier {
       return expense.key.contains(key);
     }).toList();
   }
-  double get todaysTotalSpending {
-    return todaysExpenses.fold(0.0, (sum, item) {
+
+  String get totalMonthlySpending  {
+    String key = DateFormat("MM/yy").format(DateTime.now());
+    List<Expense> monthlyExpenses = _expenses.where((expense) {
+      return expense.key.contains(key);
+    }).toList();
+     double monthlySpendings = monthlyExpenses.fold(0.0, (sum, item) {
       return sum + item.amount;
     });
+    return NumberFormat.compactSimpleCurrency(name: "NGN")
+        .format(monthlySpendings);
+  }
+
+  String get todaysTotalSpending {
+     double todaysTotalSpending = todaysExpenses.fold(0.0, (sum, item) {
+      return sum + item.amount;
+    });
+    return NumberFormat.compactSimpleCurrency(name: "NGN")
+        .format(todaysTotalSpending);
   }
   void addExpense(
     String title,

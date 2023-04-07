@@ -40,10 +40,24 @@ class Income with ChangeNotifier {
       return income.key.contains(key);
     }).toList();
   }
-  double get todaysTotalIncome {
-    return todaysIncome.fold(0.0, (sum, item) {
+  String get totalMonthlyIncome {
+    String key = DateFormat("MM/yy").format(DateTime.now());
+    List<IncomeItem> monthlyEarnings = income.where((income) {
+      return income.key.contains(key);
+    }).toList();
+     
+     double monthlyIncome = monthlyEarnings.fold(0.0, (sum, item) {
       return sum + item.amount;
     });
+    return NumberFormat.compactSimpleCurrency(name: "NGN")
+        .format(monthlyIncome);
+  }
+  String get todaysTotalIncome {
+    double todaysTotal = todaysIncome.fold(0.0, (sum, item) {
+      return sum + item.amount;
+    });
+    return NumberFormat.compactSimpleCurrency(name: "NGN")
+        .format(todaysTotal);
   }
 
   void addIncome(

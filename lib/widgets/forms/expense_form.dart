@@ -49,6 +49,8 @@ class _ExpenseFormState extends State<ExpenseForm> with AutomaticKeepAliveClient
         duration: Duration(
           milliseconds: 300,
         ),
+        behavior: SnackBarBehavior.floating,
+
       ),
     );
   }

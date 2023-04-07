@@ -36,8 +36,7 @@ class MyApp extends StatelessWidget {
           errorColor: Colors.red,
           fontFamily: 'Quicksand',
         ),
-        //home: const MyHomePage(),
-        home: const WelcomeScreen(),
+        home: const DrawerScreen(),
         routes: {
           SignUpScreen.routeName: (context) => const SignUpScreen(),
         },

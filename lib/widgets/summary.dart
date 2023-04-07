@@ -23,14 +23,15 @@ class _SummaryState extends State<Summary> {
   String dropdownValue = list.first;
   @override
   Widget build(BuildContext context) {
-    double todaysTotalSpending =
+    String formattedSpending =
         Provider.of<Expenses>(context).todaysTotalSpending;
-    String formattedSpending = NumberFormat.compactSimpleCurrency(name: "NGN")
-        .format(todaysTotalSpending);
 
-    double todaysTotalIncome = Provider.of<Income>(context).todaysTotalIncome;
-    String formattedIncome = NumberFormat.compactSimpleCurrency(name: "NGN")
-        .format(todaysTotalIncome);
+    String monthlyEarnings = Provider.of<Income>(context).totalMonthlyIncome;
+
+    String formattedIncome = Provider.of<Income>(context).todaysTotalIncome;
+
+    String monthlySpendings =
+        Provider.of<Expenses>(context).totalMonthlySpending;
 
     return Container(
       padding: const EdgeInsets.only(left: 20, top: 15, right: 30),
@@ -50,18 +51,23 @@ class _SummaryState extends State<Summary> {
                 ),
               ),
               Container(
-                padding:const EdgeInsets.symmetric(horizontal: 8),
+                padding: const EdgeInsets.symmetric(horizontal: 8),
                 decoration: BoxDecoration(
-                    border: Border.all(
-                  color: Colors.white,
-                  width: 1,
-                ),),
+                  border: Border.all(
+                    color: Colors.white,
+                    width: 1,
+                  ),
+                ),
                 child: DropdownButton<String>(
                   underline: Container(
                     height: 0,
-                   ),
+                  ),
                   value: dropdownValue,
-                  icon: const Icon(Icons.arrow_drop_down, color: Colors.white,size: 40,),
+                  icon: const Icon(
+                    Icons.arrow_drop_down,
+                    color: Colors.white,
+                    size: 40,
+                  ),
                   dropdownColor: Theme.of(context).primaryColorDark,
                   style: const TextStyle(
                       color: Colors.white,
@@ -80,13 +86,13 @@ class _SummaryState extends State<Summary> {
                   }).toList(),
                 ),
               ),
-             const SizedBox(
+              const SizedBox(
                 width: 5,
               ),
             ],
           ),
           Text(
-            formattedSpending,
+            dropdownValue == list.first ? monthlySpendings : monthlyEarnings,
             style: const TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: 28,
@@ -114,49 +120,31 @@ class _SummaryState extends State<Summary> {
                     const SizedBox(
                       width: 15,
                     ),
-                    dropdownValue == list.first
-                        ? Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                formattedSpending,
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 25,
-                                  color: Colors.white,
-                                ),
-                              ),
-                              const Text(
-                                "Spent Today",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 15,
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ],
-                          )
-                        : Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                formattedIncome,
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 25,
-                                  color: Colors.white,
-                                ),
-                              ),
-                              const Text(
-                                "Earned Today",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 15,
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ],
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          dropdownValue == list.first
+                              ? formattedSpending
+                              : formattedIncome,
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 25,
+                            color: Colors.white,
                           ),
+                        ),
+                        Text(
+                          dropdownValue == list.first
+                              ? "Spent Today"
+                              : "Earned Today",
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 15,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ],
+                    ),
                   ],
                 ),
                 Row(
