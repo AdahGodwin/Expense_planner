@@ -3,24 +3,42 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../models/configurations.dart';
 import '../providers/expense_provider.dart';
+import '../providers/income_provider.dart';
 import '../widgets/transaction_list.dart';
+
+const List<String> list = <String>[
+  'SPENT THIS MONTH',
+  'EARNED THIS MONTH',
+];
 
 class HomeScreen extends StatefulWidget {
   final VoidCallback? openDrawer;
   final bool? isDrawerOpen;
   final void Function(DrawerItem item) onSelectedItem;
-  const HomeScreen({this.openDrawer, this.isDrawerOpen, required this.onSelectedItem, super.key});
+  const HomeScreen(
+      {this.openDrawer,
+      this.isDrawerOpen,
+      required this.onSelectedItem,
+      super.key});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  String? dropdownValue = list.first;
+
+  void changeValue(String? value) {
+    setState(() {
+      dropdownValue = value;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    
-  List<Expense> expenses = Provider.of<Expenses>(context).todaysExpenses;
-  
+    List<Expense> expenses = Provider.of<Expenses>(context).todaysExpenses;
+    List<IncomeItem> income = Provider.of<Income>(context).todaysIncome;
+
     var mediaQuery = MediaQuery.of(context);
     return Scaffold(
       backgroundColor: widget.isDrawerOpen!
@@ -33,30 +51,38 @@ class _HomeScreenState extends State<HomeScreen> {
             SizedBox(
               height: (mediaQuery.size.height - mediaQuery.padding.top) * 0.3,
               child: Summary(
-                  openDrawer: widget.openDrawer,
-                  isDrawerOpen: widget.isDrawerOpen),
+                openDrawer: widget.openDrawer,
+                isDrawerOpen: widget.isDrawerOpen,
+                list: list,
+                dropdownValue: dropdownValue,
+                changeValue: changeValue,
+              ),
             ),
             SizedBox(
               height: (mediaQuery.size.height - mediaQuery.padding.top) * 0.7,
               child: Container(
-                  decoration: const BoxDecoration(
-                    borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(25),
-                        topRight: Radius.circular(25)),
-                    color: Colors.white,
-                  ),
-                  child:
-                      TransactionList(expenses),),
+                decoration: const BoxDecoration(
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(25),
+                      topRight: Radius.circular(25)),
+                  color: Colors.white,
+                ),
+                child: TransactionList(dropdownValue == list.first ? expenses : income),
+              ),
             ),
           ],
         ),
       ),
+
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingActionButton(
-        backgroundColor: Theme.of(context).primaryColorDark,
-        child: const Icon(
-          Icons.add,
-          color: Colors.white,
+        backgroundColor: Colors.white70,
+        child: const CircleAvatar(
+          radius: 23,
+          child: Icon(
+            Icons.add,
+            color: Colors.white,
+          ),
         ),
         onPressed: () {
           widget.onSelectedItem(DrawerItems.addTx);
@@ -64,8 +90,9 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       bottomNavigationBar: BottomAppBar(
         height: 50.0,
-        
-        color: Theme.of(context).primaryColorLight,
+        color: widget.isDrawerOpen!
+          ? Theme.of(context).primaryColorDark
+          : Theme.of(context).primaryColor,
       ),
     );
   }

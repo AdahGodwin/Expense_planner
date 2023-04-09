@@ -97,6 +97,7 @@ class ExpenseList extends StatelessWidget {
                     child: Column(
                       children: [
                         ExpansionTile(
+
                           title: Text(
                             groupTx.keys.toList()[index],
                             style: const TextStyle(

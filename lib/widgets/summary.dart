@@ -1,26 +1,26 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/expense_provider.dart';
 import '../providers/income_provider.dart';
 
-const List<String> list = <String>[
-  'SPENT THIS MONTH',
-  'EARNED THIS MONTH',
-];
+
 
 class Summary extends StatefulWidget {
+  final String? dropdownValue;
+  final List<String> list;
   final VoidCallback? openDrawer;
   final bool? isDrawerOpen;
-  const Summary({super.key, this.openDrawer, this.isDrawerOpen});
+  final void Function(String? value) changeValue;
+
+  const Summary({super.key, this.dropdownValue, required this.changeValue, required this.list, this.openDrawer, this.isDrawerOpen});
 
   @override
   State<Summary> createState() => _SummaryState();
 }
 
 class _SummaryState extends State<Summary> {
-  String dropdownValue = list.first;
+  
   @override
   Widget build(BuildContext context) {
     String formattedSpending =
@@ -62,7 +62,7 @@ class _SummaryState extends State<Summary> {
                   underline: Container(
                     height: 0,
                   ),
-                  value: dropdownValue,
+                  value: widget.dropdownValue,
                   icon: const Icon(
                     Icons.arrow_drop_down,
                     color: Colors.white,
@@ -74,11 +74,9 @@ class _SummaryState extends State<Summary> {
                       fontSize: 20,
                       fontWeight: FontWeight.bold),
                   onChanged: (String? value) {
-                    setState(() {
-                      dropdownValue = value!;
-                    });
+                    widget.changeValue(value);
                   },
-                  items: list.map<DropdownMenuItem<String>>((String value) {
+                  items: widget.list.map<DropdownMenuItem<String>>((String value) {
                     return DropdownMenuItem<String>(
                       value: value,
                       child: Text(value),
@@ -92,7 +90,7 @@ class _SummaryState extends State<Summary> {
             ],
           ),
           Text(
-            dropdownValue == list.first ? monthlySpendings : monthlyEarnings,
+            widget.dropdownValue == widget.list.first ? monthlySpendings : monthlyEarnings,
             style: const TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: 28,
@@ -124,7 +122,7 @@ class _SummaryState extends State<Summary> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          dropdownValue == list.first
+                          widget.dropdownValue == widget.list.first
                               ? formattedSpending
                               : formattedIncome,
                           style: const TextStyle(
@@ -134,7 +132,7 @@ class _SummaryState extends State<Summary> {
                           ),
                         ),
                         Text(
-                          dropdownValue == list.first
+                          widget.dropdownValue == widget.list.first
                               ? "Spent Today"
                               : "Earned Today",
                           style: const TextStyle(

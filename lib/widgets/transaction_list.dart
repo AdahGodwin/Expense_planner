@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class TransactionList extends StatelessWidget {
-  final List<Expense> transactions;
+  final List<dynamic> transactions;
 
   const TransactionList(this.transactions, {super.key});
 
@@ -20,7 +20,7 @@ class TransactionList extends StatelessWidget {
                       height: constraint.maxHeight * 0.15,
                       child: const Text('No transactions added yet!',
                           style: TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.bold)),
+                              fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black),),
                     ),
                     SizedBox(
                       height: constraint.maxHeight * 0.7,
@@ -34,7 +34,7 @@ class TransactionList extends StatelessWidget {
               );
             })
           : Padding(
-              padding: const EdgeInsets.only(top: 8.0),
+              padding: const EdgeInsets.only(top: 8.0, left: 10, right: 10),
               child: Column(
                 children: [
                   const Text(
@@ -42,6 +42,7 @@ class TransactionList extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.w500,
+                      color: Colors.black,
                     ),
                   ),
                   Padding(
@@ -54,6 +55,7 @@ class TransactionList extends StatelessWidget {
                           ),
                           style: const TextStyle(
                             fontSize: 16,
+                            color: Colors.black,
                           ),
                         ),
                       ],
@@ -63,6 +65,7 @@ class TransactionList extends StatelessWidget {
                     child: ListView.builder(
                       itemBuilder: (ctx, index) {
                         return Card(
+                          shape: BeveledRectangleBorder(borderRadius: BorderRadius.circular(20 )),
                           elevation: 5,
                           margin: const EdgeInsets.symmetric(
                             vertical: 8,

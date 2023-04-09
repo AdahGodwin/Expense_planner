@@ -16,11 +16,10 @@ class _SignUpFormState extends State<SignUpForm> {
     "firstname": "",
     "lastname": "",
     "email": "",
-    "gender": "",
+    "password": "",
   };
 
-  TextEditingController dateCtrl = TextEditingController();
-
+  
   void _submit(BuildContext context) {
     if (!_formKey.currentState!.validate()) {
       return;
@@ -33,7 +32,6 @@ class _SignUpFormState extends State<SignUpForm> {
       authDetails["password"],
     );
     _formKey.currentState?.reset();
-    dateCtrl.clear();
     ScaffoldMessenger.of(context).clearSnackBars();
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(

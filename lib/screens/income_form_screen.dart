@@ -21,7 +21,6 @@ class IncomeFormScreen extends StatelessWidget {
                 child: Text(
                   "New Income",
                   style: TextStyle(
-                    color: Colors.white,
                     fontSize: 28,
                     fontWeight: FontWeight.bold,
                   ),
@@ -29,9 +28,9 @@ class IncomeFormScreen extends StatelessWidget {
               ),
             ),
             Container(
-              decoration: const BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.only(
+              decoration:  BoxDecoration(
+                color: Theme.of(context).scaffoldBackgroundColor,
+                borderRadius:const BorderRadius.only(
                   topLeft: Radius.circular(25),
                   topRight: Radius.circular(25),
                 ),

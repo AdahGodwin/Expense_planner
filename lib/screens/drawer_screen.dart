@@ -3,6 +3,7 @@ import "package:expense_planner/screens/charts_screen.dart";
 import "package:expense_planner/screens/home_screen.dart";
 import "package:expense_planner/screens/income_details_screen.dart";
 import "package:expense_planner/screens/new_transaction_screen.dart";
+import "package:expense_planner/screens/settings_screen.dart";
 import "package:flutter/material.dart";
 
 import "expense_details_screen.dart";
@@ -118,33 +119,36 @@ class _DrawerScreenState extends State<DrawerScreen> {
                   height: MediaQuery.of(context).size.height * 0.15,
                 ),
                 Row(
-                  children: const <Widget>[
-                    Icon(
+                  children: <Widget>[
+                   const Icon(
                       Icons.settings,
                       color: Colors.white,
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 10,
                     ),
-                    Text(
-                      "Settings",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18,
+                    GestureDetector(
+                      onTap: () => onSelectedItem(DrawerItems.settings),
+                      child: const Text(
+                        "Settings",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18,
+                        ),
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 15,
                     ),
-                    Icon(
+                    const Icon(
                       Icons.logout,
                       color: Colors.white,
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 8,
                     ),
-                    Text(
+                    const Text(
                       "Logout",
                       style: TextStyle(
                         color: Colors.white,
@@ -190,6 +194,11 @@ class _DrawerScreenState extends State<DrawerScreen> {
 
   Widget getDrawerPage() {
     switch (item) {
+      case DrawerItems.settings:
+        return SettingsScreen(
+          openDrawer: openDrawer,
+          isDrawerOpen: isDrawerOpen,
+        );
       case DrawerItems.charts:
         return ChartScreen(
           openDrawer: openDrawer,

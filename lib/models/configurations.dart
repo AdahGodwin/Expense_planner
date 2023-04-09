@@ -15,9 +15,8 @@ class DrawerItems {
   static const addTx = DrawerItem(icon: Icons.add, title: "Add Transaction");
   static const charts = DrawerItem(icon: Icons.bar_chart, title: "Charts");
   static const expenseDetails = DrawerItem(icon: Icons.money, title: "Expense Details");
-
   static const incomeDetails = DrawerItem(icon: Icons.monetization_on, title: "Income Details");
-
+  static const settings = DrawerItem(icon: Icons.settings, title: "Settings");
   static final List<DrawerItem> all = [
     home,
     addTx,

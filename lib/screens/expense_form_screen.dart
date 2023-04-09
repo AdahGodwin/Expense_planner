@@ -1,5 +1,7 @@
+import 'package:expense_planner/blocs/theme.dart';
 import 'package:expense_planner/widgets/forms/expense_form.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class ExpenseFormScreen extends StatelessWidget {
   const ExpenseFormScreen(this.isDrawerOpen, {super.key});
@@ -21,7 +23,6 @@ class ExpenseFormScreen extends StatelessWidget {
                 child: Text(
                   "New Expense",
                   style: TextStyle(
-                    color: Colors.white,
                     fontSize: 28,
                     fontWeight: FontWeight.bold,
                   ),
@@ -29,9 +30,10 @@ class ExpenseFormScreen extends StatelessWidget {
               ),
             ),
             Container(
-              decoration: const BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.only(
+              
+              decoration:  BoxDecoration(
+                color: Theme.of(context).scaffoldBackgroundColor,
+                borderRadius: const BorderRadius.only(
                   topLeft: Radius.circular(25),
                   topRight: Radius.circular(25),
                 ),
