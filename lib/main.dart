@@ -1,4 +1,5 @@
-import 'package:expense_planner/blocs/theme.dart';
+import 'package:expense_planner/providers/auth_provider.dart';
+import 'package:expense_planner/providers/theme.dart';
 import 'package:expense_planner/providers/expense_provider.dart';
 import 'package:expense_planner/providers/income_provider.dart';
 import 'package:expense_planner/screens/drawer_screen.dart';
@@ -22,17 +23,20 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider<ThemeChanger>(
           create: (context) => ThemeChanger(
-            ThemeData(
+            {"Teal": ThemeData(
         primarySwatch: Colors.teal,
         accentColor: Colors.tealAccent,
 
         errorColor: Colors.red,
         fontFamily: 'Quicksand',
-      ),
+      ), }
           ),
         ),
         ChangeNotifierProvider(
           create: (context) => Expenses(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => Auth(),
         ),
         ChangeNotifierProvider(
           create: (context) => Income(),
@@ -55,10 +59,11 @@ class MaterialAppWithTheme extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Personal Expenses',
-      theme: theme.getTheme(),
+      theme: theme.getTheme().values.first,
       home: const DrawerScreen(),
       routes: {
         SignUpScreen.routeName: (context) => const SignUpScreen(),
+        WelcomeScreen.routeName:(context) => const WelcomeScreen(),
       },
     );
   }

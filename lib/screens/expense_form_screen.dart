@@ -1,4 +1,4 @@
-import 'package:expense_planner/blocs/theme.dart';
+import 'package:expense_planner/providers/theme.dart';
 import 'package:expense_planner/widgets/forms/expense_form.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

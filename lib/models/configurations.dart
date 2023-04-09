@@ -17,6 +17,7 @@ class DrawerItems {
   static const expenseDetails = DrawerItem(icon: Icons.money, title: "Expense Details");
   static const incomeDetails = DrawerItem(icon: Icons.monetization_on, title: "Income Details");
   static const settings = DrawerItem(icon: Icons.settings, title: "Settings");
+  
   static final List<DrawerItem> all = [
     home,
     addTx,

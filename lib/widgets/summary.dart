@@ -21,6 +21,7 @@ class Summary extends StatefulWidget {
 
 class _SummaryState extends State<Summary> {
   
+  
   @override
   Widget build(BuildContext context) {
     String formattedSpending =

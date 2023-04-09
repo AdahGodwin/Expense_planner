@@ -3,7 +3,8 @@ import "package:expense_planner/screens/charts_screen.dart";
 import "package:expense_planner/screens/home_screen.dart";
 import "package:expense_planner/screens/income_details_screen.dart";
 import "package:expense_planner/screens/new_transaction_screen.dart";
-import "package:expense_planner/screens/settings_screen.dart";
+import 'package:expense_planner/screens/settings_screen/settings_screen.dart';
+import "package:expense_planner/screens/welcome_screen.dart";
 import "package:flutter/material.dart";
 
 import "expense_details_screen.dart";
@@ -120,7 +121,7 @@ class _DrawerScreenState extends State<DrawerScreen> {
                 ),
                 Row(
                   children: <Widget>[
-                   const Icon(
+                    const Icon(
                       Icons.settings,
                       color: Colors.white,
                     ),
@@ -148,12 +149,17 @@ class _DrawerScreenState extends State<DrawerScreen> {
                     const SizedBox(
                       width: 8,
                     ),
-                    const Text(
-                      "Logout",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18,
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).pushReplacementNamed(WelcomeScreen.routeName);
+                      },
+                      child: const Text(
+                        "Logout",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18,
+                        ),
                       ),
                     ),
                   ],

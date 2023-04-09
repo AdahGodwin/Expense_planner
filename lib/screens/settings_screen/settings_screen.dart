@@ -1,8 +1,11 @@
 import 'package:currency_text_input_formatter/currency_text_input_formatter.dart';
-import 'package:expense_planner/blocs/theme.dart';
+import 'package:expense_planner/providers/theme.dart';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+
+import '../../providers/auth_provider.dart';
 
 class SettingsScreen extends StatefulWidget {
   final VoidCallback? openDrawer;
@@ -15,29 +18,42 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
+  late Map<String, ThemeData> _currentTheme;
+  bool _isInit = true;
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (_isInit == true) {
+      _currentTheme = Provider.of<ThemeChanger>(context).getTheme();
+    }
+    _isInit = false;
+  }
+  void setTheme(Map<String, ThemeData> theme) {
+    _currentTheme = theme;
+  }
   final _formKey = GlobalKey<FormState>();
   Map<String, dynamic> authDetails = {
     "firstname": "",
     "lastname": "",
     "email": "",
     "password": "",
+    "balance": 0.0,
   };
-
-  TextEditingController dateCtrl = TextEditingController();
 
   void _submit(BuildContext context) {
     if (!_formKey.currentState!.validate()) {
       return;
     }
     _formKey.currentState?.save();
-    // Provider.of<Auth>(context, listen: false).addUserDetails(
-    //   authDetails["firstname"],
-    //   authDetails["lastname"],
-    //   authDetails["email"],
-    //   authDetails["password"],
-    // );
+    Provider.of<Auth>(context, listen: false).addUserDetails(
+      authDetails["firstname"],
+      authDetails["lastname"],
+      authDetails["email"],
+      authDetails["password"],
+      double.parse(authDetails["balance"].toString().replaceAll(",", "")),
+    );
+    Provider.of<ThemeChanger>(context, listen: false).setTheme(_currentTheme);
     _formKey.currentState?.reset();
-    dateCtrl.clear();
     ScaffoldMessenger.of(context).clearSnackBars();
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
@@ -51,6 +67,30 @@ class _SettingsScreenState extends State<SettingsScreen> {
       ),
     );
   }
+
+  final Map<String, ThemeData> _colors = {
+    "Dark": ThemeData.dark(),
+    "blue": ThemeData(
+      primarySwatch: Colors.blue,
+      fontFamily: 'Quicksand',
+    ),
+    "green": ThemeData(
+      primarySwatch: Colors.green,
+      fontFamily: 'Quicksand',
+    ),
+    "Teal": ThemeData(
+      primarySwatch: Colors.teal,
+      fontFamily: 'Quicksand',
+    ),
+    "Red": ThemeData(
+      primarySwatch: Colors.red,
+      fontFamily: 'Quicksand',
+    ),
+    "Orange": ThemeData(
+      primarySwatch: Colors.orange,
+      fontFamily: 'Quicksand',
+    ),
+  };
 
   @override
   Widget build(BuildContext context) {
@@ -69,14 +109,16 @@ class _SettingsScreenState extends State<SettingsScreen> {
         ),
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              _submit(context);
+            },
             icon: const Icon(
               Icons.save,
               size: 30,
             ),
           ),
         ],
-        title: const Text("Settings"),
+        title: const Text("Profile"),
       ),
       body: SingleChildScrollView(
         child: SizedBox(
@@ -95,13 +137,20 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     SizedBox(
-                      height: constraints.maxHeight * 0.2,
-                      child: CircleAvatar(
-                        radius: 65,
+                      height: constraints.maxHeight * 0.25,
+                      child: Column(
+                        children: [
+                          CircleAvatar(
+                            radius: 65,
+                          ),
+                          TextButton(
+                              onPressed: () {},
+                              child: const Text("Update Picture"))
+                        ],
                       ),
                     ),
                     SizedBox(
-                      height: constraints.maxHeight * 0.8,
+                      height: constraints.maxHeight * 0.75,
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: <Widget>[
@@ -115,7 +164,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                 ),
                                 labelText: "First Name",
                                 labelStyle: const TextStyle(
-                                    fontSize: 20, color: Colors.black),
+                                  fontSize: 20,
+                                ),
                               ),
                               validator: (value) {
                                 if (value!.isEmpty) {
@@ -139,7 +189,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                 labelText: "Last Name",
                                 labelStyle: const TextStyle(
                                   fontSize: 20,
-                                  color: Colors.black,
                                 ),
                               ),
                               validator: (value) {
@@ -163,7 +212,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                 ),
                                 labelText: "Email",
                                 labelStyle: const TextStyle(
-                                    fontSize: 20, color: Colors.black),
+                                  fontSize: 20,
+                                ),
                               ),
                               validator: (value) {
                                 if (value!.isEmpty) {
@@ -186,7 +236,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                 ),
                                 labelText: "Password",
                                 labelStyle: const TextStyle(
-                                    fontSize: 20, color: Colors.black),
+                                  fontSize: 20,
+                                ),
                               ),
                               validator: (value) {
                                 if (value!.isEmpty) {
@@ -216,7 +267,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                 labelText: "Current Balance",
                                 labelStyle: const TextStyle(
                                   fontSize: 20,
-                                  color: Colors.black,
                                 ),
                               ),
                               validator: (value) {
@@ -226,13 +276,45 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                 return null;
                               },
                               onSaved: (newValue) {
-                                //  expense["amount"] = newValue;
+                                 authDetails["balance"] = newValue;
                               },
                             ),
                           ),
-                          TextButton(onPressed: () {
-                            Provider.of<ThemeChanger>(context, listen: false).setTheme(ThemeData.dark());
-                          }, child: Text("Dark"),),
+                          Row(
+                            children: [
+                              TextButton(
+                                onPressed: () {
+                                  showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      return SimpleDialog(
+                                        children: _colors.keys.map((key) {
+                                          return ListTile(
+                                            leading: CircleAvatar(
+                                              radius: 10,
+                                              backgroundColor:
+                                                  _colors[key]?.primaryColor,
+                                            ),
+                                            onTap: () {
+                                              setTheme({
+                                                key: _colors[key]!
+                                              });
+                                              Navigator.of(context).pop();
+                                            },
+                                            title: Text("$key Theme"),
+                                          );
+                                        }).toList(),
+                                      );
+                                    },
+                                  );
+                                },
+                                child: const Text(
+                                  "Change Theme",
+                                  style: TextStyle(fontSize: 18),
+                                ),
+                              ),
+                            ],
+                          ),
                         ],
                       ),
                     ),

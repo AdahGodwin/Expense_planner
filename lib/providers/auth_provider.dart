@@ -6,6 +6,7 @@ class AuthDetails {
   final String lastname;
   final String email;
   final String password;
+  final double? balance;
 
   AuthDetails({
     required this.id,
@@ -13,6 +14,7 @@ class AuthDetails {
     required this.lastname,
     required this.email,
     required this.password,
+    this.balance,
   });
 }
 
@@ -28,6 +30,7 @@ class Auth with ChangeNotifier {
     String lastname,
     String email,
     String password,
+    [double? balance]
   ) {
     _user = AuthDetails(
       id: DateTime.now().millisecondsSinceEpoch.toString(),
@@ -35,8 +38,9 @@ class Auth with ChangeNotifier {
       lastname: lastname,
       email: email,
       password: password,
+      balance: balance,
     );
-
+    print("${_user?.firstname} ${_user?.lastname} ${_user?.balance}");
     notifyListeners();
   }
 }
