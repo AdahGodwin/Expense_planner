@@ -1,5 +1,7 @@
+import "package:expense_planner/providers/auth_provider.dart";
 import "package:flutter/material.dart";
 import "package:intl/intl.dart";
+import "package:provider/provider.dart";
 
 class Expense {
   final String id;
@@ -62,6 +64,7 @@ class Expenses with ChangeNotifier {
         .format(todaysTotalSpending);
   }
   void addExpense(
+    BuildContext context,
     String title,
     double amount,
     DateTime date,
@@ -78,6 +81,7 @@ class Expenses with ChangeNotifier {
     );
 
     _expenses.add(newExpense);
+    Provider.of<Auth>(context, listen: false).updateBalance(true, amount);
     notifyListeners();
   }
 

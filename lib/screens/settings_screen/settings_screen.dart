@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:currency_text_input_formatter/currency_text_input_formatter.dart';
 import 'package:expense_planner/providers/theme.dart';
 
@@ -6,6 +8,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import '../../providers/auth_provider.dart';
+import 'user_image_picker.dart';
 
 class SettingsScreen extends StatefulWidget {
   final VoidCallback? openDrawer;
@@ -18,19 +21,21 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
+  File? _userImageFile;
+
   late Map<String, ThemeData> _currentTheme;
+  AuthDetails? _user;
   bool _isInit = true;
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     if (_isInit == true) {
       _currentTheme = Provider.of<ThemeChanger>(context).getTheme();
+      _user = Provider.of<Auth>(context).getUser;
     }
     _isInit = false;
   }
-  void setTheme(Map<String, ThemeData> theme) {
-    _currentTheme = theme;
-  }
+
   final _formKey = GlobalKey<FormState>();
   Map<String, dynamic> authDetails = {
     "firstname": "",
@@ -50,10 +55,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
       authDetails["lastname"],
       authDetails["email"],
       authDetails["password"],
+      _userImageFile,
       double.parse(authDetails["balance"].toString().replaceAll(",", "")),
-    );
-    Provider.of<ThemeChanger>(context, listen: false).setTheme(_currentTheme);
-    _formKey.currentState?.reset();
+      );
     ScaffoldMessenger.of(context).clearSnackBars();
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
@@ -67,7 +71,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
       ),
     );
   }
+  void _pickImage(File image) {
+    _userImageFile = image;
+  }
 
+  bool edited = true;
   final Map<String, ThemeData> _colors = {
     "Dark": ThemeData.dark(),
     "blue": ThemeData(
@@ -140,13 +148,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       height: constraints.maxHeight * 0.25,
                       child: Column(
                         children: [
-                          CircleAvatar(
-                            radius: 65,
-                          ),
-                          TextButton(
-                              onPressed: () {},
-                              child: const Text("Update Picture"))
-                        ],
+                          UserImagePicker(_pickImage, _user?.imageFile),
+                          ],
                       ),
                     ),
                     SizedBox(
@@ -157,6 +160,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           SizedBox(
                             height: 50,
                             child: TextFormField(
+                              initialValue: _user?.firstname,
                               textInputAction: TextInputAction.next,
                               decoration: InputDecoration(
                                 border: OutlineInputBorder(
@@ -181,6 +185,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           SizedBox(
                             height: 50,
                             child: TextFormField(
+                              initialValue: _user?.lastname,
                               textInputAction: TextInputAction.next,
                               decoration: InputDecoration(
                                 border: OutlineInputBorder(
@@ -205,6 +210,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           SizedBox(
                             height: 50,
                             child: TextFormField(
+                              initialValue: _user?.email,
                               textInputAction: TextInputAction.next,
                               decoration: InputDecoration(
                                 border: OutlineInputBorder(
@@ -229,6 +235,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           SizedBox(
                             height: 50,
                             child: TextFormField(
+                              initialValue: _user?.password,
                               textInputAction: TextInputAction.next,
                               decoration: InputDecoration(
                                 border: OutlineInputBorder(
@@ -253,6 +260,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           SizedBox(
                             height: 50,
                             child: TextFormField(
+                              initialValue: _user?.balance.toString(),
                               keyboardType: TextInputType.number,
                               inputFormatters: [
                                 CurrencyTextInputFormatter(
@@ -276,7 +284,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                 return null;
                               },
                               onSaved: (newValue) {
-                                 authDetails["balance"] = newValue;
+                                authDetails["balance"] = newValue;
                               },
                             ),
                           ),
@@ -296,9 +304,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                                   _colors[key]?.primaryColor,
                                             ),
                                             onTap: () {
-                                              setTheme({
-                                                key: _colors[key]!
-                                              });
+                                              Provider.of<ThemeChanger>(
+                                                context,
+                                                listen: false,
+                                              ).setTheme({key: _colors[key]!});
+
                                               Navigator.of(context).pop();
                                             },
                                             title: Text("$key Theme"),

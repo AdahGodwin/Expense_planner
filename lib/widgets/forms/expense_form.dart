@@ -32,6 +32,7 @@ class _ExpenseFormState extends State<ExpenseForm> with AutomaticKeepAliveClient
     }
     _formKey.currentState?.save();
     Provider.of<Expenses>(context, listen: false).addExpense(
+      context,
       expense["title"],
       double.parse(expense["amount"].toString().replaceAll(",", "")),
       expense["date"],

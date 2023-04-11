@@ -1,3 +1,4 @@
+import 'package:expense_planner/providers/auth_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -33,6 +34,7 @@ class _SummaryState extends State<Summary> {
 
     String monthlySpendings =
         Provider.of<Expenses>(context).totalMonthlySpending;
+    String balance = Provider.of<Auth>(context).balance;
 
     return Container(
       padding: const EdgeInsets.only(left: 20, top: 15, right: 30),
@@ -163,11 +165,11 @@ class _SummaryState extends State<Summary> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          formattedIncome,
-                          style: const TextStyle(
+                          balance,
+                          style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 25,
-                            color: Colors.white,
+                            color: balance.contains("-") ? const Color.fromARGB(255, 255, 1, 1): Colors.white,
                           ),
                         ),
                         const Text(

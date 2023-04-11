@@ -32,6 +32,7 @@ class _IncomeFormState extends State<IncomeForm> with AutomaticKeepAliveClientMi
     }
     _formKey.currentState?.save();
     Provider.of<Income>(context, listen: false).addIncome(
+      context,
       income["title"],
       double.parse(income["amount"].toString().replaceAll(",", "")),
       income["date"],

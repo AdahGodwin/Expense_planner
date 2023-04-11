@@ -1,5 +1,8 @@
 import "package:flutter/material.dart";
 import "package:intl/intl.dart";
+import "package:provider/provider.dart";
+
+import "auth_provider.dart";
 
 class IncomeItem {
   final String id;
@@ -61,6 +64,7 @@ class Income with ChangeNotifier {
   }
 
   void addIncome(
+    BuildContext context,
     String title,
     double amount,
     DateTime date,
@@ -74,6 +78,7 @@ class Income with ChangeNotifier {
       key: key,
     );
     income.add(newIncome);
+    Provider.of<Auth>(context, listen: false).updateBalance(false, amount);
     notifyListeners();
   }
 

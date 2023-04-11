@@ -6,7 +6,9 @@ import "package:expense_planner/screens/new_transaction_screen.dart";
 import 'package:expense_planner/screens/settings_screen/settings_screen.dart';
 import "package:expense_planner/screens/welcome_screen.dart";
 import "package:flutter/material.dart";
+import "package:provider/provider.dart";
 
+import "../providers/auth_provider.dart";
 import "expense_details_screen.dart";
 
 class DrawerScreen extends StatefulWidget {
@@ -17,6 +19,7 @@ class DrawerScreen extends StatefulWidget {
 }
 
 class _DrawerScreenState extends State<DrawerScreen> {
+  
   double xOffset = 0;
   double yOffset = 0;
   double scaleFactor = 1;
@@ -66,9 +69,9 @@ class _DrawerScreenState extends State<DrawerScreen> {
     });
   }
 
-  Color primaryGreen = const Color(0xff416d6d);
   @override
   Widget build(BuildContext context) {
+    AuthDetails? user = Provider.of<Auth>(context).getUser;
     return Scaffold(
       backgroundColor: Theme.of(context).primaryColor,
       body: Stack(children: [
@@ -79,15 +82,17 @@ class _DrawerScreenState extends State<DrawerScreen> {
               children: <Widget>[
                 Row(
                   children: <Widget>[
-                    CircleAvatar(),
+                    CircleAvatar(
+                      backgroundImage: user?.imageFile != null ? FileImage(user!.imageFile!) : null,
+                    ),
                     const SizedBox(
                       width: 10,
                     ),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: const <Widget>[
-                        Text("Godwin Adah"),
-                        Text("adahgodwin224@gmail.com")
+                      children:<Widget>[
+                        Text(user?.firstname ?? ""),
+                        Text(user?.email ?? ""),
                       ],
                     ),
                   ],

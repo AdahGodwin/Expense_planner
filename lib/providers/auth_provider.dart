@@ -1,4 +1,7 @@
+import "dart:io";
+
 import "package:flutter/material.dart";
+import "package:intl/intl.dart";
 
 class AuthDetails {
   final String id;
@@ -6,7 +9,8 @@ class AuthDetails {
   final String lastname;
   final String email;
   final String password;
-  final double? balance;
+  File? imageFile;
+  double? balance;
 
   AuthDetails({
     required this.id,
@@ -14,6 +18,7 @@ class AuthDetails {
     required this.lastname,
     required this.email,
     required this.password,
+    this.imageFile,
     this.balance,
   });
 }
@@ -25,13 +30,27 @@ class Auth with ChangeNotifier {
     return _user;
   }
 
+  String get balance {
+    return NumberFormat.compactSimpleCurrency(name: "NGN")
+        .format(_user?.balance ?? 0);
+  }
+
+  void updateBalance(bool isExpense, double amount) {
+    if (isExpense) {
+      _user?.balance = _user!.balance! - amount;
+    } else {
+      _user?.balance = _user!.balance! + amount;
+    }
+  }
+
   void addUserDetails(
     String firstname,
     String lastname,
     String email,
-    String password,
-    [double? balance]
-  ) {
+    String password, [
+    File? imageFile,
+    double? balance,
+  ]) {
     _user = AuthDetails(
       id: DateTime.now().millisecondsSinceEpoch.toString(),
       firstname: firstname,
@@ -39,8 +58,8 @@ class Auth with ChangeNotifier {
       email: email,
       password: password,
       balance: balance,
+      imageFile: imageFile,
     );
-    print("${_user?.firstname} ${_user?.lastname} ${_user?.balance}");
     notifyListeners();
   }
 }
