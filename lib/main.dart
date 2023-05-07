@@ -3,7 +3,6 @@ import 'package:expense_planner/providers/theme.dart';
 import 'package:expense_planner/providers/expense_provider.dart';
 import 'package:expense_planner/providers/income_provider.dart';
 import 'package:expense_planner/screens/drawer_screen.dart';
-import 'package:expense_planner/screens/home_screen.dart';
 import 'package:expense_planner/screens/signup_screen.dart';
 import 'package:expense_planner/screens/welcome_screen.dart';
 import 'package:flutter/material.dart';

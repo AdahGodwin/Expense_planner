@@ -24,6 +24,13 @@ class DBHelper {
       data,
       conflictAlgorithm: sql.ConflictAlgorithm.replace,
     );
+    
+  }
+
+  static Future<void> update(String table, Map<String, Object> data) async {
+    final db = await DBHelper.database();
+
+    db.update(table, data);
   }
 
   static Future<List<Map<String, dynamic>>> getData(String table) async {

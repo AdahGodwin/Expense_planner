@@ -35,21 +35,25 @@ class Auth with ChangeNotifier {
         .format(_user?.balance ?? 0);
   }
 
-  void updateBalance(bool isExpense, double amount) {
-    if (isExpense) {
-      _user?.balance = _user!.balance - amount;
-    } else {
-      _user?.balance = _user!.balance + amount;
-    }
+  Future<void> updateBalance(bool isExpense, double amount) async {
+   await DBHelper.update("user", {
+      "id": _user!.id,
+      "firstname": _user!.firstname,
+      "lastname": _user!.lastname,
+      "email": _user!.email,
+      "image": _user!.imageFile == null ? "" : _user!.imageFile!.path,
+      "balance": isExpense ? _user!.balance - amount : _user!.balance + amount,
+    });
+    notifyListeners();
   }
 
-  void addUserDetails(
+  Future<void> addUserDetails(
     String firstname,
     String lastname,
     String email, [
     File? imageFile,
     double balance = 0.0,
-  ]) {
+  ]) async {
     final user = AuthDetails(
       id: DateTime.now().millisecondsSinceEpoch.toString(),
       firstname: firstname,
@@ -58,8 +62,7 @@ class Auth with ChangeNotifier {
       balance: balance,
       imageFile: imageFile,
     );
-    notifyListeners();
-    DBHelper.insert("user", {
+    await DBHelper.insert("user", {
       "id": user.id,
       "firstname": user.firstname,
       "lastname": user.lastname,
@@ -67,7 +70,7 @@ class Auth with ChangeNotifier {
       "image": user.imageFile == null ? "" : user.imageFile!.path,
       "balance": user.balance,
     });
-    
+    notifyListeners();
   }
 
   Future<void> getUserDetails() async {
@@ -85,7 +88,7 @@ class Auth with ChangeNotifier {
   }
 
   void deleteTable(table) {
-   DBHelper.deleteData(table);
-   notifyListeners();
+    DBHelper.deleteData(table);
+    notifyListeners();
   }
 }

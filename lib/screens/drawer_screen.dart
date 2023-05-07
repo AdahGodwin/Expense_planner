@@ -19,11 +19,6 @@ class DrawerScreen extends StatefulWidget {
 }
 
 class _DrawerScreenState extends State<DrawerScreen> {
-  @override
-  void initState() {
-    super.initState();
-    Provider.of<Auth>(context, listen: false).getUserDetails();
-  }
 
   double xOffset = 0;
   double yOffset = 0;

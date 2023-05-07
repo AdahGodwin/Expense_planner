@@ -17,10 +17,7 @@ class HomeScreen extends StatefulWidget {
   final bool? isDrawerOpen;
   final void Function(DrawerItem item)? onSelectedItem;
   const HomeScreen(
-      {this.openDrawer,
-      this.isDrawerOpen,
-      this.onSelectedItem,
-      super.key});
+      {this.openDrawer, this.isDrawerOpen, this.onSelectedItem, super.key});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -37,7 +34,7 @@ class _HomeScreenState extends State<HomeScreen> {
     Provider.of<Income>(context, listen: false)
         .fetchAndSetIncome()
         .then((value) => isInit = true);
-            
+    Provider.of<Auth>(context, listen: false).getUserDetails();
   }
 
   String? dropdownValue = list.first;
@@ -66,7 +63,9 @@ class _HomeScreenState extends State<HomeScreen> {
               height: (mediaQuery.size.height - mediaQuery.padding.top) * 0.3,
               child: isInit == false
                   ? const Center(
-                      child: CircularProgressIndicator(color: Colors.white,),
+                      child: CircularProgressIndicator(
+                        color: Colors.white,
+                      ),
                     )
                   : Summary(
                       openDrawer: widget.openDrawer,
