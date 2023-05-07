@@ -2,6 +2,7 @@ import 'package:expense_planner/widgets/summary.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../models/configurations.dart';
+import '../providers/auth_provider.dart';
 import '../providers/expense_provider.dart';
 import '../providers/income_provider.dart';
 import '../widgets/transaction_list.dart';
@@ -14,11 +15,11 @@ const List<String> list = <String>[
 class HomeScreen extends StatefulWidget {
   final VoidCallback? openDrawer;
   final bool? isDrawerOpen;
-  final void Function(DrawerItem item) onSelectedItem;
+  final void Function(DrawerItem item)? onSelectedItem;
   const HomeScreen(
       {this.openDrawer,
       this.isDrawerOpen,
-      required this.onSelectedItem,
+      this.onSelectedItem,
       super.key});
 
   @override
@@ -26,6 +27,19 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  bool isInit = false;
+  @override
+  void initState() {
+    super.initState();
+    Provider.of<Expenses>(context, listen: false)
+        .fetchAndSetExpenses()
+        .then((value) => isInit = true);
+    Provider.of<Income>(context, listen: false)
+        .fetchAndSetIncome()
+        .then((value) => isInit = true);
+            
+  }
+
   String? dropdownValue = list.first;
 
   void changeValue(String? value) {
@@ -50,13 +64,17 @@ class _HomeScreenState extends State<HomeScreen> {
           children: <Widget>[
             SizedBox(
               height: (mediaQuery.size.height - mediaQuery.padding.top) * 0.3,
-              child: Summary(
-                openDrawer: widget.openDrawer,
-                isDrawerOpen: widget.isDrawerOpen,
-                list: list,
-                dropdownValue: dropdownValue,
-                changeValue: changeValue,
-              ),
+              child: isInit == false
+                  ? const Center(
+                      child: CircularProgressIndicator(color: Colors.white,),
+                    )
+                  : Summary(
+                      openDrawer: widget.openDrawer,
+                      isDrawerOpen: widget.isDrawerOpen,
+                      list: list,
+                      dropdownValue: dropdownValue,
+                      changeValue: changeValue,
+                    ),
             ),
             SizedBox(
               height: (mediaQuery.size.height - mediaQuery.padding.top) * 0.7,
@@ -67,13 +85,17 @@ class _HomeScreenState extends State<HomeScreen> {
                       topRight: Radius.circular(25)),
                   color: Colors.white,
                 ),
-                child: TransactionList(dropdownValue == list.first ? expenses : income),
+                child: isInit == false
+                    ? const Center(
+                        child: CircularProgressIndicator(),
+                      )
+                    : TransactionList(
+                        dropdownValue == list.first ? expenses : income),
               ),
             ),
           ],
         ),
       ),
-
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.white70,
@@ -85,14 +107,14 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ),
         onPressed: () {
-          widget.onSelectedItem(DrawerItems.addTx);
+          widget.onSelectedItem!(DrawerItems.addTx);
         },
       ),
       bottomNavigationBar: BottomAppBar(
         height: 50.0,
         color: widget.isDrawerOpen!
-          ? Theme.of(context).primaryColorDark
-          : Theme.of(context).primaryColor,
+            ? Theme.of(context).primaryColorDark
+            : Theme.of(context).primaryColor,
       ),
     );
   }

@@ -2,6 +2,7 @@ import "package:flutter/material.dart";
 import "package:intl/intl.dart";
 import "package:provider/provider.dart";
 
+import '../db_helpers/db_helper.dart';
 import "auth_provider.dart";
 
 class IncomeItem {
@@ -77,11 +78,27 @@ class Income with ChangeNotifier {
       date: date,
       key: key,
     );
-    income.add(newIncome);
+    DBHelper.insert("income", {
+      "id": newIncome.id,
+      "title": newIncome.title,
+      "amount": newIncome.amount,
+      "date": newIncome.date.millisecondsSinceEpoch,
+      "key": newIncome.key,
+    });
     Provider.of<Auth>(context, listen: false).updateBalance(false, amount);
     notifyListeners();
   }
-
+Future<void> fetchAndSetIncome() async {
+   final dataList = await DBHelper.getData('income');
+   income = dataList.map((income) => IncomeItem(
+      id: income['id'],
+      title: income['title'],
+      amount: double.parse(income['amount'].toString()),
+      date: DateTime.fromMillisecondsSinceEpoch(income['date']),
+      key: income['key'],
+    )).toList();
+    notifyListeners();
+  }
   void deleteTransaction(String id) {
     income.removeWhere((tx) => tx.id == id);
   }

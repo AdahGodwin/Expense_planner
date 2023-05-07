@@ -54,7 +54,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
       authDetails["firstname"],
       authDetails["lastname"],
       authDetails["email"],
-      authDetails["password"],
       _userImageFile,
       double.parse(authDetails["balance"].toString().replaceAll(",", "")),
       );
@@ -232,31 +231,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                               },
                             ),
                           ),
-                          SizedBox(
-                            height: 50,
-                            child: TextFormField(
-                              initialValue: _user?.password,
-                              textInputAction: TextInputAction.next,
-                              decoration: InputDecoration(
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(15),
-                                ),
-                                labelText: "Password",
-                                labelStyle: const TextStyle(
-                                  fontSize: 20,
-                                ),
-                              ),
-                              validator: (value) {
-                                if (value!.isEmpty) {
-                                  return 'Field is required';
-                                }
-                                return null;
-                              },
-                              onSaved: (newValue) {
-                                authDetails["password"] = newValue;
-                              },
-                            ),
-                          ),
+                          
                           SizedBox(
                             height: 50,
                             child: TextFormField(
@@ -323,7 +298,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                   style: TextStyle(fontSize: 18),
                                 ),
                               ),
-                            ],
+                              TextButton(onPressed: () {
+                                Provider.of<Auth>(
+                                                context,
+                                                listen: false,
+                                              ).deleteTable("user");
+                              }, child: Text("Delete"))
+                              ],
                           ),
                         ],
                       ),

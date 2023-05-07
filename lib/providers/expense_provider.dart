@@ -2,6 +2,7 @@ import "package:expense_planner/providers/auth_provider.dart";
 import "package:flutter/material.dart";
 import "package:intl/intl.dart";
 import "package:provider/provider.dart";
+import '../db_helpers/db_helper.dart';
 
 class Expense {
   final String id;
@@ -71,6 +72,7 @@ class Expenses with ChangeNotifier {
     String paymentMethod,
     String key,
   ) {
+
     final newExpense = Expense(
       id: DateTime.now().toString(),
       title: title,
@@ -80,13 +82,34 @@ class Expenses with ChangeNotifier {
       key: key,
     );
 
-    _expenses.add(newExpense);
     Provider.of<Auth>(context, listen: false).updateBalance(true, amount);
+    DBHelper.insert("expenses", {
+      "id": newExpense.id,
+      "title": newExpense.title,
+      "amount": newExpense.amount,
+      "date": newExpense.date.millisecondsSinceEpoch,
+      "paymentMethod": newExpense.paymentMethod,
+      "key": newExpense.key,
+    });
     notifyListeners();
+    
   }
 
   void deleteTransaction(String id) {
     _expenses.removeWhere((tx) => tx.id == id);
   notifyListeners();
+  }
+
+  Future<void> fetchAndSetExpenses() async {
+   final dataList = await DBHelper.getData('expenses');
+   _expenses = dataList.map((expenses) => Expense(
+      id: expenses['id'],
+      title: expenses['title'],
+      amount: double.parse(expenses['amount'].toString()),
+      date: DateTime.fromMillisecondsSinceEpoch(expenses['date']),
+      paymentMethod: expenses['paymentMethod'],
+      key: expenses['key'],
+    )).toList();
+    notifyListeners();
   }
 }

@@ -3,23 +3,23 @@ import "dart:io";
 import "package:flutter/material.dart";
 import "package:intl/intl.dart";
 
+import '../db_helpers/db_helper.dart';
+
 class AuthDetails {
   final String id;
   final String firstname;
   final String lastname;
   final String email;
-  final String password;
   File? imageFile;
-  double? balance;
+  double balance = 0.0;
 
   AuthDetails({
     required this.id,
     required this.firstname,
     required this.lastname,
     required this.email,
-    required this.password,
     this.imageFile,
-    this.balance,
+    required this.balance,
   });
 }
 
@@ -37,29 +37,55 @@ class Auth with ChangeNotifier {
 
   void updateBalance(bool isExpense, double amount) {
     if (isExpense) {
-      _user?.balance = _user!.balance! - amount;
+      _user?.balance = _user!.balance - amount;
     } else {
-      _user?.balance = _user!.balance! + amount;
+      _user?.balance = _user!.balance + amount;
     }
   }
 
   void addUserDetails(
     String firstname,
     String lastname,
-    String email,
-    String password, [
+    String email, [
     File? imageFile,
-    double? balance,
+    double balance = 0.0,
   ]) {
-    _user = AuthDetails(
+    final user = AuthDetails(
       id: DateTime.now().millisecondsSinceEpoch.toString(),
       firstname: firstname,
       lastname: lastname,
       email: email,
-      password: password,
       balance: balance,
       imageFile: imageFile,
     );
     notifyListeners();
+    DBHelper.insert("user", {
+      "id": user.id,
+      "firstname": user.firstname,
+      "lastname": user.lastname,
+      "email": user.email,
+      "image": user.imageFile == null ? "" : user.imageFile!.path,
+      "balance": user.balance,
+    });
+    
+  }
+
+  Future<void> getUserDetails() async {
+    final userDetails = await DBHelper.getData('user');
+    _user = AuthDetails(
+      id: userDetails[0]["id"],
+      firstname: userDetails[0]["firstname"],
+      lastname: userDetails[0]["lastname"],
+      email: userDetails[0]["email"],
+      imageFile:
+          userDetails[0]["image"] == "" ? null : File(userDetails[0]["image"]),
+      balance: double.parse(userDetails[0]["balance"].toString()),
+    );
+    notifyListeners();
+  }
+
+  void deleteTable(table) {
+   DBHelper.deleteData(table);
+   notifyListeners();
   }
 }

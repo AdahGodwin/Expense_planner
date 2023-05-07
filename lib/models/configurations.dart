@@ -24,6 +24,7 @@ class DrawerItems {
     charts,
     expenseDetails,
     incomeDetails,
+    settings,
   ];
 }
 

@@ -16,10 +16,8 @@ class _SignUpFormState extends State<SignUpForm> {
     "firstname": "",
     "lastname": "",
     "email": "",
-    "password": "",
   };
 
-  
   void _submit(BuildContext context) {
     if (!_formKey.currentState!.validate()) {
       return;
@@ -29,21 +27,8 @@ class _SignUpFormState extends State<SignUpForm> {
       authDetails["firstname"],
       authDetails["lastname"],
       authDetails["email"],
-      authDetails["password"],
     );
-    _formKey.currentState?.reset();
-    ScaffoldMessenger.of(context).clearSnackBars();
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text(
-          "Succesful!",
-        ),
-        duration: Duration(
-          milliseconds: 300,
-        ),
-        behavior: SnackBarBehavior.floating,
-      ),
-    );
+    Navigator.of(context).pushReplacementNamed("/home");
   }
 
   @override
@@ -139,29 +124,6 @@ class _SignUpFormState extends State<SignUpForm> {
                           },
                           onSaved: (newValue) {
                             authDetails["email"] = newValue;
-                          },
-                        ),
-                      ),
-                      SizedBox(
-                        height: 50,
-                        child: TextFormField(
-                          textInputAction: TextInputAction.next,
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(15),
-                            ),
-                            labelText: "Password",
-                            labelStyle: const TextStyle(
-                                fontSize: 20, color: Colors.black),
-                          ),
-                          validator: (value) {
-                            if (value!.isEmpty) {
-                              return 'Field is required';
-                            }
-                            return null;
-                          },
-                          onSaved: (newValue) {
-                            authDetails["password"] = newValue;
                           },
                         ),
                       ),

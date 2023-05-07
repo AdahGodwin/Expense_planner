@@ -19,7 +19,12 @@ class DrawerScreen extends StatefulWidget {
 }
 
 class _DrawerScreenState extends State<DrawerScreen> {
-  
+  @override
+  void initState() {
+    super.initState();
+    Provider.of<Auth>(context, listen: false).getUserDetails();
+  }
+
   double xOffset = 0;
   double yOffset = 0;
   double scaleFactor = 1;
@@ -83,15 +88,22 @@ class _DrawerScreenState extends State<DrawerScreen> {
                 Row(
                   children: <Widget>[
                     CircleAvatar(
-                      backgroundImage: user?.imageFile != null ? FileImage(user!.imageFile!) : null,
+                      backgroundImage: user?.imageFile != null
+                          ? FileImage(user!.imageFile!)
+                          : null,
                     ),
                     const SizedBox(
                       width: 10,
                     ),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children:<Widget>[
-                        Text(user?.firstname ?? ""),
+                      children: <Widget>[
+                        Row(
+                          children: [
+                            Text(user?.firstname ?? ""),
+                            Text(" ${user?.lastname}")
+                          ],
+                        ),
                         Text(user?.email ?? ""),
                       ],
                     ),
@@ -122,52 +134,7 @@ class _DrawerScreenState extends State<DrawerScreen> {
                       .toList(),
                 ),
                 SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.15,
-                ),
-                Row(
-                  children: <Widget>[
-                    const Icon(
-                      Icons.settings,
-                      color: Colors.white,
-                    ),
-                    const SizedBox(
-                      width: 10,
-                    ),
-                    GestureDetector(
-                      onTap: () => onSelectedItem(DrawerItems.settings),
-                      child: const Text(
-                        "Settings",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(
-                      width: 15,
-                    ),
-                    const Icon(
-                      Icons.logout,
-                      color: Colors.white,
-                    ),
-                    const SizedBox(
-                      width: 8,
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.of(context).pushReplacementNamed(WelcomeScreen.routeName);
-                      },
-                      child: const Text(
-                        "Logout",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18,
-                        ),
-                      ),
-                    ),
-                  ],
+                  height: MediaQuery.of(context).size.height * 0.1,
                 ),
               ],
             ),
