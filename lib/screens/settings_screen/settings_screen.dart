@@ -23,7 +23,7 @@ class SettingsScreen extends StatefulWidget {
 class _SettingsScreenState extends State<SettingsScreen> {
   File? _userImageFile;
 
-  late Map<String, ThemeData> _currentTheme;
+  late ThemeData? _currentTheme;
   AuthDetails? _user;
   bool _isInit = true;
   @override
@@ -50,13 +50,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
       return;
     }
     _formKey.currentState?.save();
-    Provider.of<Auth>(context, listen: false).addUserDetails(
+    Provider.of<Auth>(context, listen: false).updateUserDetails(
       authDetails["firstname"],
       authDetails["lastname"],
       authDetails["email"],
       _userImageFile,
       double.parse(authDetails["balance"].toString().replaceAll(",", "")),
-      );
+    );
     ScaffoldMessenger.of(context).clearSnackBars();
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
@@ -70,6 +70,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
       ),
     );
   }
+
   void _pickImage(File image) {
     _userImageFile = image;
   }
@@ -148,7 +149,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       child: Column(
                         children: [
                           UserImagePicker(_pickImage, _user?.imageFile),
-                          ],
+                        ],
                       ),
                     ),
                     SizedBox(
@@ -231,7 +232,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
                               },
                             ),
                           ),
-                          
                           SizedBox(
                             height: 50,
                             child: TextFormField(
@@ -282,7 +282,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                               Provider.of<ThemeChanger>(
                                                 context,
                                                 listen: false,
-                                              ).setTheme({key: _colors[key]!});
+                                              ).setTheme(key);
 
                                               Navigator.of(context).pop();
                                             },
@@ -298,13 +298,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                   style: TextStyle(fontSize: 18),
                                 ),
                               ),
-                              TextButton(onPressed: () {
-                                Provider.of<Auth>(
-                                                context,
-                                                listen: false,
-                                              ).deleteTable("user");
-                              }, child: Text("Delete"))
-                              ],
+                            ],
                           ),
                         ],
                       ),

@@ -5,6 +5,7 @@ import '../models/configurations.dart';
 import '../providers/auth_provider.dart';
 import '../providers/expense_provider.dart';
 import '../providers/income_provider.dart';
+import '../providers/theme.dart';
 import '../widgets/transaction_list.dart';
 
 const List<String> list = <String>[
@@ -35,6 +36,7 @@ class _HomeScreenState extends State<HomeScreen> {
         .fetchAndSetIncome()
         .then((value) => isInit = true);
     Provider.of<Auth>(context, listen: false).getUserDetails();
+   
   }
 
   String? dropdownValue = list.first;

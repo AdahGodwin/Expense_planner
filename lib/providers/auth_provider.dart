@@ -36,7 +36,7 @@ class Auth with ChangeNotifier {
   }
 
   Future<void> updateBalance(bool isExpense, double amount) async {
-   await DBHelper.update("user", {
+    await DBHelper.update("user", {
       "id": _user!.id,
       "firstname": _user!.firstname,
       "lastname": _user!.lastname,
@@ -72,10 +72,37 @@ class Auth with ChangeNotifier {
     });
     notifyListeners();
   }
-
-  Future<void> getUserDetails() async {
-    final userDetails = await DBHelper.getData('user');
-    _user = AuthDetails(
+Future<void> updateUserDetails(
+    String firstname,
+    String lastname,
+    String email, [
+    File? imageFile,
+    double balance = 0.0,
+  ]) async {
+    final user = AuthDetails(
+      id: _user!.id,
+      firstname: firstname,
+      lastname: lastname,
+      email: email,
+      balance: balance,
+      imageFile: imageFile,
+    );
+    await DBHelper.update("user", {
+      "id": user.id,
+      "firstname": user.firstname,
+      "lastname": user.lastname,
+      "email": user.email,
+      "image": user.imageFile == null ? "" : user.imageFile!.path,
+      "balance": user.balance,
+    });
+    notifyListeners();
+  }
+  Future<bool> getUserDetails() async {
+    var userDetails = await DBHelper.getData('user');
+    if (userDetails.isEmpty) {
+      return false;
+    }
+   _user = AuthDetails(
       id: userDetails[0]["id"],
       firstname: userDetails[0]["firstname"],
       lastname: userDetails[0]["lastname"],
@@ -84,11 +111,6 @@ class Auth with ChangeNotifier {
           userDetails[0]["image"] == "" ? null : File(userDetails[0]["image"]),
       balance: double.parse(userDetails[0]["balance"].toString()),
     );
-    notifyListeners();
-  }
-
-  void deleteTable(table) {
-    DBHelper.deleteData(table);
-    notifyListeners();
-  }
+    return true;
+   }  
 }

@@ -22,14 +22,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider<ThemeChanger>(
-          create: (context) => ThemeChanger({
-            "Teal": ThemeData(
-              primarySwatch: Colors.teal,
-              accentColor: Colors.tealAccent,
-              errorColor: Colors.red,
-              fontFamily: 'Quicksand',
-            ),
-          }),
+          create: (context) => ThemeChanger(),
         ),
         ChangeNotifierProvider(
           create: (context) => Expenses(),
@@ -53,37 +46,49 @@ class MaterialAppWithTheme extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Provider.of<ThemeChanger>(context);
-
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Personal Expenses',
-      theme: theme.getTheme().values.first,
-      home: FutureBuilder(
-          future: Provider.of<Auth>(context, listen: false).getUserDetails(),
+    return Consumer2<ThemeChanger, Auth>(
+        builder: (context, theme, user, child) {
+      return FutureBuilder(
+          future:
+              Provider.of<ThemeChanger>(context, listen: false).getThemeData(),
           builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Scaffold(
-                body: Center(
-                  child: CircularProgressIndicator(),
-                ),
-              );
-            }
-            return Consumer<Auth>(
-              builder: (context, user, child) {
-                if (user.getUser != null) {
-                  return const DrawerScreen();
-                }
-                return const WelcomeScreen();
+            return !snapshot.hasData ? const MaterialApp(
+              debugShowCheckedModeBanner: false,
+              title: 'Personal Expenses',
+              home: Scaffold(
+                        body: Center(child: CircularProgressIndicator()),
+                      ),
+              
+            ) :MaterialApp(
+              debugShowCheckedModeBanner: false,
+              title: 'Personal Expenses',
+              theme: theme.getTheme() ??
+                  ThemeData(
+                    primarySwatch: Colors.teal,
+                    fontFamily: 'Quicksand',
+                  ),
+              home: FutureBuilder(
+                  future: Provider.of<Auth>(context).getUserDetails(),
+                  builder: (context, snapshot) {
+                    if(!snapshot.hasData) {
+                      return const Scaffold(
+                        body: Center(child: CircularProgressIndicator()),
+                      );
+                    }
+                    if (user.getUser != null) {
+                      return const DrawerScreen();
+                    }
+                    return const WelcomeScreen();
+                    
+                  }),
+              routes: {
+                "/home": (context) => const DrawerScreen(),
+                SignUpScreen.routeName: (context) => const SignUpScreen(),
+                WelcomeScreen.routeName: (context) => const WelcomeScreen(),
               },
             );
-          }),
-      routes: {
-        "/home":(context) => const DrawerScreen(),
-        SignUpScreen.routeName: (context) => const SignUpScreen(),
-        WelcomeScreen.routeName: (context) => const WelcomeScreen(),
-      },
-    );
+          });
+    });
   }
 }
 
