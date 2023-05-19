@@ -48,6 +48,9 @@ final Map<String, ThemeData> colors = {
   
   Future<bool> getThemeData() async {
     final theme = await DBHelper.getData('theme');
+     if (theme.isEmpty) {
+      return false;
+     } 
      themeData = colors[theme[0]["themeData"]];
      notifyListeners();
     return true;
