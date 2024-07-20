@@ -1,4 +1,5 @@
 // import 'package:expense_manager/providers/expense_provider.dart';
+import 'package:expense_manager/widgets/transaction_details/transaction_details_list.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 // import 'package:provider/provider.dart';
@@ -148,12 +149,12 @@ class _TransactionDetailsScreenState extends State<TransactionDetailsScreen> {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20),
                 ),
-                child: const Column(
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.all(16.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                child: const Padding(
+                  padding: EdgeInsets.all(16.0),
+                  child: Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
                           Text(
                             "Day",
@@ -187,18 +188,11 @@ class _TransactionDetailsScreenState extends State<TransactionDetailsScreen> {
                               color: Colors.grey,
                             ),
                           ),
-                          Text(
-                            "Period",
-                            style: TextStyle(
-                              fontSize: 15,
-                              fontWeight: FontWeight.w500,
-                              color: Colors.grey,
-                            ),
-                          ),
                         ],
                       ),
-                    ),
-                  ],
+                      TransactionDetailsList(),
+                    ],
+                  ),
                 ),
               ),
             ),
