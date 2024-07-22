@@ -38,10 +38,10 @@ class DrawerItems {
     addTx,
     myTx,
     charts,
-    regularPayments,
     accounts,
-    reminders,
     categories,
+    reminders,
+    regularPayments,
     settings,
   ];
 }

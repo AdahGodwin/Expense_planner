@@ -52,10 +52,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
     var mediaQuery = MediaQuery.of(context);
     return Scaffold(
-      backgroundColor: Colors.white,
       body: SingleChildScrollView(
         child: Stack(
-          // crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             SizedBox(
               height: (mediaQuery.size.height - mediaQuery.padding.top) * 0.25,

@@ -1,5 +1,6 @@
 import "package:expense_manager/models/configurations.dart";
 import "package:expense_manager/screens/charts_screen.dart";
+import "package:expense_manager/screens/create_reminder_screen.dart";
 import "package:expense_manager/screens/transaction_details_screen.dart";
 import "package:expense_manager/screens/home_screen.dart";
 import "package:expense_manager/screens/new_transaction_screen.dart";
@@ -70,73 +71,50 @@ class _DrawerScreenState extends State<DrawerScreen> {
   @override
   Widget build(BuildContext context) {
     AuthDetails? user = Provider.of<Auth>(context).getUser;
+    ThemeData theme = Theme.of(context);
     return Scaffold(
       body: Container(
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           gradient: LinearGradient(
             colors: [
-              Color.fromRGBO(8, 195, 111, 1),
-              Color.fromRGBO(5, 180, 128, 1),
+              theme.colorScheme.primary,
+              theme.colorScheme.secondary,
             ],
-            begin: Alignment(-1, -1),
-            end: Alignment(1, 1),
+            begin: const Alignment(-1, -1),
+            end: const Alignment(1, 1),
           ),
-          color: Color.fromRGBO(99, 159, 132, 1),
         ),
         child: Stack(children: [
-          Padding(
-            padding: const EdgeInsets.only(top: 20, left: 20),
-            child: SingleChildScrollView(
+          SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.only(top: 30, left: 20),
               child: Column(
                 children: <Widget>[
-                  Row(
-                    children: <Widget>[
-                      CircleAvatar(
-                        radius: 25,
-                        backgroundImage: user?.imageFile != null
-                            ? FileImage(user!.imageFile!)
-                            : null,
+                  ListTile(
+                    contentPadding: const EdgeInsets.symmetric(
+                      vertical: 5,
+                    ),
+                    leading: CircleAvatar(
+                      radius: 20,
+                      backgroundImage: user?.imageFile != null
+                          ? FileImage(user!.imageFile!)
+                          : null,
+                    ),
+                    title: Text(
+                      "${user?.firstname ?? "John"} ${user?.lastname ?? "Doe"}",
+                      style: theme.textTheme.displayMedium!.copyWith(
+                        color: theme.colorScheme.onPrimary,
                       ),
-                      const SizedBox(
-                        width: 10,
+                    ),
+                    subtitle: Text(
+                      user?.email ?? " johndoe@gmail.com",
+                      style: theme.textTheme.displaySmall!.copyWith(
+                        color: theme.colorScheme.onPrimary,
                       ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Row(
-                            children: [
-                              Text(
-                                user?.firstname ?? "John",
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                              Text(
-                                user?.lastname ?? " Doe",
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              )
-                            ],
-                          ),
-                          Text(
-                            user?.email ?? "johndoe@gmail.com",
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
+                    ),
                   ),
                   SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.03,
+                    height: MediaQuery.of(context).size.height * 0.02,
                   ),
                   Column(
                     children: DrawerItems.all
@@ -147,13 +125,12 @@ class _DrawerScreenState extends State<DrawerScreen> {
                               onTap: () => onSelectedItem(item),
                               leading: FaIcon(
                                 item.icon,
-                                color: Colors.white,
+                                color: theme.colorScheme.onPrimary,
                               ),
                               title: Text(
                                 item.title,
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 18,
+                                style: theme.textTheme.displayMedium!.copyWith(
+                                  color: theme.colorScheme.onPrimary,
                                 ),
                               ),
                             ))
@@ -185,14 +162,14 @@ class _DrawerScreenState extends State<DrawerScreen> {
                   borderRadius: BorderRadius.circular(isDrawerOpen ? 25 : 0),
                   boxShadow: [
                     BoxShadow(
-                      color: Theme.of(context).primaryColor,
+                      color: theme.colorScheme.primary,
                       blurRadius: 3,
                       offset: const Offset(-15, 15),
                     ),
                     BoxShadow(
-                      color: Theme.of(context).primaryColor,
+                      color: theme.colorScheme.primary,
                       blurRadius: 2,
-                      offset: const Offset(0, 0),
+                      offset: const Offset(0, -2),
                     ),
                   ],
                 ),
@@ -232,6 +209,11 @@ class _DrawerScreenState extends State<DrawerScreen> {
         );
       case DrawerItems.myTx:
         return TransactionDetailsScreen(
+          openDrawer: openDrawer,
+          isDrawerOpen: isDrawerOpen,
+        );
+      case DrawerItems.reminders:
+        return CreateReminderScreen(
           openDrawer: openDrawer,
           isDrawerOpen: isDrawerOpen,
         );

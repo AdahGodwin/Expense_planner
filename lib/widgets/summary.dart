@@ -28,6 +28,7 @@ class Summary extends StatefulWidget {
 class _SummaryState extends State<Summary> {
   @override
   Widget build(BuildContext context) {
+    ThemeData theme = Theme.of(context);
     // String formattedSpending =
     //     Provider.of<Expenses>(context).todaysTotalSpending;
 
@@ -40,16 +41,16 @@ class _SummaryState extends State<Summary> {
     // String balance = Provider.of<Auth>(context).balance;
 
     return Container(
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
           gradient: LinearGradient(
             colors: [
-              Color.fromRGBO(8, 195, 111, 1),
-              Color.fromRGBO(5, 180, 128, 1),
+              theme.colorScheme.primary,
+              theme.colorScheme.secondary,
             ],
-            begin: Alignment(-1, -1),
-            end: Alignment(1, 1),
+            begin: const Alignment(-1, -1),
+            end: const Alignment(1, 1),
           ),
-          borderRadius: BorderRadius.only(
+          borderRadius: const BorderRadius.only(
             bottomLeft: Radius.circular(35),
             bottomRight: Radius.circular(35),
           )),
@@ -58,7 +59,7 @@ class _SummaryState extends State<Summary> {
         children: [
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               IconButton(
                 icon: const FaIcon(
@@ -66,49 +67,47 @@ class _SummaryState extends State<Summary> {
                   size: 25,
                 ),
                 onPressed: widget.openDrawer,
-                color: Colors.white,
+                color: theme.colorScheme.onPrimary,
               ),
-              const Column(
+              Column(
                 children: [
                   Row(
                     children: [
                       FaIcon(
                         FontAwesomeIcons.wallet,
-                        color: Colors.white,
+                        color: theme.colorScheme.onPrimary,
                         size: 20,
                       ),
-                      SizedBox(
+                      const SizedBox(
                         width: 6,
                       ),
                       Text(
                         "Total ",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 16,
+                        style: theme.textTheme.displaySmall!.copyWith(
+                          color: theme.colorScheme.onPrimary,
                         ),
                       ),
                       FaIcon(
                         FontAwesomeIcons.caretDown,
-                        color: Colors.white,
+                        color: theme.colorScheme.onPrimary,
                       ),
                     ],
                   ),
                   Text(
                     "4000 \$",
-                    style: TextStyle(
-                      color: Colors.white,
+                    style: theme.textTheme.displayMedium!.copyWith(
+                      color: theme.colorScheme.onPrimary,
                       fontSize: 20,
                     ),
                   )
                 ],
               ),
-              const IconButton(
+              IconButton(
                 icon: Icon(
                   Icons.receipt_long,
-                  color: Colors.white,
+                  color: theme.colorScheme.onPrimary,
                 ),
                 onPressed: null,
-                color: Colors.white,
               ),
             ],
           ),

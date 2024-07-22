@@ -4,21 +4,20 @@ import "package:flutter/material.dart";
 class WelcomeScreen extends StatelessWidget {
   static const routeName = "/welcome";
   const WelcomeScreen({super.key});
-
   @override
   Widget build(BuildContext context) {
+    ThemeData theme = Theme.of(context);
+
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(32),
         child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text(
+              Text(
                 "EPx",
-                style: TextStyle(
-                  fontSize: 40,
-                  color: Color.fromRGBO(99, 159, 132, 1),
-                  fontWeight: FontWeight.bold,
+                style: theme.textTheme.displayLarge!.copyWith(
+                  color: theme.colorScheme.primary,
                 ),
               ),
               Image.asset("assets/images/money.png"),
@@ -48,9 +47,10 @@ class WelcomeScreen extends StatelessWidget {
                 height: 50,
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                      shape: const StadiumBorder(),
-                      foregroundColor: Colors.white,
-                      backgroundColor: const Color.fromRGBO(99, 159, 132, 1)),
+                    shape: const StadiumBorder(),
+                    foregroundColor: Colors.white,
+                    backgroundColor: theme.colorScheme.primary,
+                  ),
                   onPressed: () {
                     Navigator.of(context)
                         .pushReplacementNamed(SignUpScreen.routeName);

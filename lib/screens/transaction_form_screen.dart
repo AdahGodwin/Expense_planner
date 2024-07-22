@@ -4,24 +4,10 @@ import 'package:intl/intl.dart';
 
 class TransactionFormScreen extends StatelessWidget {
   const TransactionFormScreen({super.key});
-  Widget _textFieldWidget(String label) {
-    return TextFormField(
-      textInputAction: TextInputAction.next,
-      decoration: InputDecoration(
-        labelText: label,
-        labelStyle: const TextStyle(fontSize: 18, color: Colors.grey),
-      ),
-      validator: (value) {
-        if (value!.isEmpty) {
-          return 'Field is required';
-        }
-        return null;
-      },
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
+    ThemeData theme = Theme.of(context);
     var mediaQuery = MediaQuery.of(context);
     const dateStrings = ["Today", "Yesterday", "2 days ago"];
     return SizedBox(
@@ -33,10 +19,10 @@ class TransactionFormScreen extends StatelessWidget {
           const SizedBox(
             height: 20,
           ),
-          const Column(
+          Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
+              const Text(
                 "Account",
                 style: TextStyle(
                   color: Colors.grey,
@@ -45,7 +31,7 @@ class TransactionFormScreen extends StatelessWidget {
               Text(
                 "Main",
                 style: TextStyle(
-                  color: Color.fromRGBO(5, 180, 128, 1),
+                  color: theme.colorScheme.primary,
                 ),
               ),
             ],
@@ -70,7 +56,7 @@ class TransactionFormScreen extends StatelessWidget {
                 return const Column(
                   children: [
                     CircleAvatar(
-                      backgroundColor: Colors.green,
+                      backgroundColor: Colors.teal,
                       radius: 30,
                       child: FaIcon(
                         FontAwesomeIcons.cartShopping,
@@ -127,9 +113,9 @@ class TransactionFormScreen extends StatelessWidget {
                   ),
                 );
               }),
-              const FaIcon(
+              FaIcon(
                 FontAwesomeIcons.calendarDays,
-                color: Color.fromRGBO(5, 180, 128, 1),
+                color: theme.colorScheme.primary,
               )
             ],
           ),
@@ -145,15 +131,14 @@ class TransactionFormScreen extends StatelessWidget {
             height: 50,
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
-                backgroundColor: const Color.fromRGBO(8, 195, 111, 1),
+                backgroundColor: theme.colorScheme.primary,
                 shape: const StadiumBorder(),
               ),
               onPressed: () {},
-              child: const Text(
+              child: Text(
                 "Add Expense",
-                style: TextStyle(
-                  fontSize: 20,
-                  color: Colors.white,
+                style: theme.textTheme.titleMedium!.copyWith(
+                  color: theme.colorScheme.onPrimary,
                 ),
               ),
             ),
@@ -162,4 +147,20 @@ class TransactionFormScreen extends StatelessWidget {
       ),
     );
   }
+}
+
+Widget _textFieldWidget(String label) {
+  return TextFormField(
+    textInputAction: TextInputAction.next,
+    decoration: InputDecoration(
+      labelText: label,
+      labelStyle: const TextStyle(fontSize: 18, color: Colors.grey),
+    ),
+    validator: (value) {
+      if (value!.isEmpty) {
+        return 'Field is required';
+      }
+      return null;
+    },
+  );
 }

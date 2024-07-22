@@ -7,8 +7,8 @@ class SignUpScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var mediaQuery = MediaQuery.of(context);
+    ThemeData theme = Theme.of(context);
     return Scaffold(
-      backgroundColor: Colors.white,
       body: SizedBox(
         child: SingleChildScrollView(
           child: Column(
@@ -16,15 +16,22 @@ class SignUpScreen extends StatelessWidget {
               Container(
                 height: (mediaQuery.size.height) * 0.2,
                 width: double.infinity,
-                decoration: const BoxDecoration(
-                  color: Color.fromRGBO(99, 159, 132, 1),
-                  borderRadius: BorderRadius.only(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [
+                      theme.colorScheme.primary,
+                      theme.colorScheme.secondary,
+                    ],
+                    begin: const Alignment(-1, -1),
+                    end: const Alignment(1, 1),
+                  ),
+                  borderRadius: const BorderRadius.only(
                     bottomLeft: Radius.circular(55),
                     bottomRight: Radius.circular(55),
                   ),
                 ),
-                child: const Padding(
-                  padding: EdgeInsets.all(32.0),
+                child: Padding(
+                  padding: const EdgeInsets.all(32.0),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -33,14 +40,14 @@ class SignUpScreen extends StatelessWidget {
                         "Welcome to EPx",
                         style: TextStyle(
                           fontSize: 35,
-                          color: Colors.white,
+                          color: theme.colorScheme.onPrimary,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 20,
                       ),
-                      Text(
+                      const Text(
                         "Fill in the form and login your account",
                         style: TextStyle(
                           fontSize: 14,

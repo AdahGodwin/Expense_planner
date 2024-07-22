@@ -7,26 +7,25 @@ class TransactionList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    ThemeData theme = Theme.of(context);
     return SizedBox(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: Column(
           children: [
-            const Row(
+            Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 Text(
                   "EXPENSES",
-                  style: TextStyle(
-                    fontSize: 20,
-                    color: Colors.white,
+                  style: theme.textTheme.titleMedium!.copyWith(
+                    color: theme.colorScheme.onPrimary,
                   ),
                 ),
                 Text(
                   "INCOME",
-                  style: TextStyle(
-                    fontSize: 20,
-                    color: Colors.white,
+                  style: theme.textTheme.titleMedium!.copyWith(
+                    color: theme.colorScheme.onPrimary,
                   ),
                 ),
               ],
@@ -34,8 +33,8 @@ class TransactionList extends StatelessWidget {
             const SizedBox(
               height: 400,
               child: Card(
+                elevation: 3,
                 margin: EdgeInsets.only(top: 10, bottom: 10),
-                color: Colors.white,
                 child: Column(
                   children: [
                     Padding(
@@ -103,50 +102,50 @@ class TransactionList extends StatelessWidget {
             Expanded(
               child: ListView.builder(
                 itemBuilder: (ctx, index) {
-                  return const Card(
-                      color: Colors.white,
+                  return Card(
                       elevation: 1,
-                      margin: EdgeInsets.symmetric(
+                      margin: const EdgeInsets.symmetric(
                         vertical: 8,
                         horizontal: 1,
                       ),
                       child: Padding(
-                        padding: EdgeInsets.all(8.0),
+                        padding: const EdgeInsets.all(8.0),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Row(
                               children: [
-                                CircleAvatar(
+                                const CircleAvatar(
                                   backgroundColor: Colors.green,
                                   child: Icon(
                                     Icons.shopping_cart,
                                     color: Colors.white,
                                   ),
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   width: 10,
                                 ),
                                 Text(
                                   "Shopping",
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w500,
-                                  ),
+                                  style: theme.textTheme.displaySmall,
                                 ),
                               ],
                             ),
                             Row(
                               children: [
-                                Text(
+                                const Text(
                                   "50%",
                                   style: TextStyle(
                                     color: Colors.grey,
                                   ),
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   width: 40,
                                 ),
-                                Text("30000 \$"),
+                                Text(
+                                  "30000 \$",
+                                  style: theme.textTheme.displaySmall,
+                                ),
                               ],
                             )
                           ],

@@ -19,10 +19,10 @@ class TransactionDetailsScreen extends StatefulWidget {
 class _TransactionDetailsScreenState extends State<TransactionDetailsScreen> {
   bool income = false;
   Widget divider() {
-    return const SizedBox(
+    return SizedBox(
       width: 100,
       child: Divider(
-        color: Colors.white,
+        color: Theme.of(context).colorScheme.onPrimary,
         height: 2,
         thickness: 3,
       ),
@@ -32,22 +32,23 @@ class _TransactionDetailsScreenState extends State<TransactionDetailsScreen> {
   @override
   Widget build(BuildContext context) {
     var mediaQuery = MediaQuery.of(context);
+    ThemeData theme = Theme.of(context);
     // List<Expense> expenses = Provider.of<Expenses>(context).allExpenses;
     return Scaffold(
       body: Stack(
         children: [
           Container(
             height: (mediaQuery.size.height - mediaQuery.padding.top) * 0.27,
-            decoration: const BoxDecoration(
+            decoration: BoxDecoration(
                 gradient: LinearGradient(
                   colors: [
-                    Color.fromRGBO(8, 195, 111, 1),
-                    Color.fromRGBO(5, 180, 128, 1),
+                    theme.colorScheme.primary,
+                    theme.colorScheme.secondary,
                   ],
-                  begin: Alignment(-1, -1),
-                  end: Alignment(1, 1),
+                  begin: const Alignment(-1, -1),
+                  end: const Alignment(1, 1),
                 ),
-                borderRadius: BorderRadius.only(
+                borderRadius: const BorderRadius.only(
                   bottomLeft: Radius.circular(45),
                   bottomRight: Radius.circular(45),
                 )),
@@ -62,28 +63,27 @@ class _TransactionDetailsScreenState extends State<TransactionDetailsScreen> {
                         FontAwesomeIcons.arrowLeft,
                       ),
                       onPressed: widget.openDrawer,
-                      color: Colors.white,
+                      color: theme.colorScheme.onPrimary,
                     ),
-                    const Text(
+                    Text(
                       "Transactions",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 20,
+                      style: theme.textTheme.titleMedium!.copyWith(
+                        color: theme.colorScheme.onPrimary,
                       ),
                     ),
-                    const Row(
+                    Row(
                       children: [
                         FaIcon(
                           FontAwesomeIcons.magnifyingGlass,
-                          color: Colors.white,
+                          color: theme.colorScheme.onPrimary,
                           size: 20,
                         ),
-                        SizedBox(
+                        const SizedBox(
                           width: 10,
                         ),
                         FaIcon(
                           FontAwesomeIcons.download,
-                          color: Colors.white,
+                          color: theme.colorScheme.onPrimary,
                           size: 20,
                         )
                       ],
@@ -102,11 +102,10 @@ class _TransactionDetailsScreenState extends State<TransactionDetailsScreen> {
                           onTap: () => setState(() {
                             income = false;
                           }),
-                          child: const Text(
+                          child: Text(
                             "EXPENSES",
-                            style: TextStyle(
-                              fontSize: 20,
-                              color: Colors.white,
+                            style: theme.textTheme.titleMedium!.copyWith(
+                              color: theme.colorScheme.onPrimary,
                             ),
                           ),
                         ),
@@ -119,11 +118,10 @@ class _TransactionDetailsScreenState extends State<TransactionDetailsScreen> {
                           onTap: () => setState(() {
                             income = true;
                           }),
-                          child: const Text(
+                          child: Text(
                             "INCOME",
-                            style: TextStyle(
-                              fontSize: 20,
-                              color: Colors.white,
+                            style: theme.textTheme.titleMedium!.copyWith(
+                              color: theme.colorScheme.onPrimary,
                             ),
                           ),
                         ),
@@ -142,10 +140,9 @@ class _TransactionDetailsScreenState extends State<TransactionDetailsScreen> {
               right: 16,
             ),
             child: SizedBox(
-              height: (mediaQuery.size.height - mediaQuery.padding.top) * 0.75,
+              height: (mediaQuery.size.height - mediaQuery.padding.top) * 0.77,
               child: Card(
                 elevation: 7,
-                color: Colors.white,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20),
                 ),

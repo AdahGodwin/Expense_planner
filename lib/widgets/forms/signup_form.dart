@@ -35,7 +35,6 @@ class _SignUpFormState extends State<SignUpForm> {
             suffixIcon: icon,
             labelStyle: const TextStyle(
               fontSize: 17,
-              color: Colors.black,
             ),
             hintText: hintText),
         validator: (value) {
@@ -66,6 +65,7 @@ class _SignUpFormState extends State<SignUpForm> {
 
   @override
   Widget build(BuildContext context) {
+    ThemeData theme = Theme.of(context);
     return Padding(
       padding: const EdgeInsets.only(left: 24, right: 24, bottom: 32),
       child: Form(
@@ -102,7 +102,7 @@ class _SignUpFormState extends State<SignUpForm> {
                 height: 55,
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color.fromRGBO(99, 159, 132, 1),
+                    backgroundColor: theme.colorScheme.primary,
                     foregroundColor: Colors.white,
                     shape: const StadiumBorder(),
                   ),

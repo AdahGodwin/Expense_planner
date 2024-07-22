@@ -29,7 +29,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     if (_isInit == true) {
-      _currentTheme = Provider.of<ThemeChanger>(context).getTheme();
       _user = Provider.of<Auth>(context).getUser;
     }
     _isInit = false;
@@ -262,31 +261,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             children: [
                               TextButton(
                                 onPressed: () {
-                                  showDialog(
-                                    context: context,
-                                    builder: (context) {
-                                      return SimpleDialog(
-                                        children: _colors.keys.map((key) {
-                                          return ListTile(
-                                            leading: CircleAvatar(
-                                              radius: 10,
-                                              backgroundColor:
-                                                  _colors[key]?.primaryColor,
-                                            ),
-                                            onTap: () {
-                                              Provider.of<ThemeChanger>(
-                                                context,
-                                                listen: false,
-                                              ).setTheme(key);
-
-                                              Navigator.of(context).pop();
-                                            },
-                                            title: Text("$key Theme"),
-                                          );
-                                        }).toList(),
-                                      );
-                                    },
-                                  );
+                                  Provider.of<ThemeChanger>(
+                                    context,
+                                    listen: false,
+                                  ).toggleTheme();
                                 },
                                 child: const Text(
                                   "Change Theme",

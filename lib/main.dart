@@ -49,51 +49,93 @@ class MaterialAppWithTheme extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer2<ThemeChanger, Auth>(
         builder: (context, theme, user, child) {
-      return FutureBuilder(
-          future:
-              Provider.of<ThemeChanger>(context, listen: false).getThemeData(),
-          builder: (context, snapshot) {
-            return !snapshot.hasData
-                ? const MaterialApp(
-                    debugShowCheckedModeBanner: false,
-                    title: 'Personal Expenses',
-                    home: Scaffold(
-                      body: Center(child: CircularProgressIndicator()),
-                    ),
-                  )
-                : MaterialApp(
-                    debugShowCheckedModeBanner: false,
-                    title: 'Personal Expenses',
-                    theme: theme.getTheme() ??
-                        ThemeData(
-                          colorScheme: ColorScheme.fromSeed(
-                            seedColor: const Color.fromRGBO(99, 159, 132, 1),
-                          ),
-                          useMaterial3: true,
-                          fontFamily: "Poppins",
-                        ),
-                    home: const DrawerScreen(),
-                    // home: FutureBuilder(
-                    //     future: Provider.of<Auth>(context).getUserDetails(),
-                    //     builder: (context, snapshot) {
-                    //       if (!snapshot.hasData) {
-                    //         return const Scaffold(
-                    //           body: Center(child: CircularProgressIndicator()),
-                    //         );
-                    //       }
-                    //       if (user.getUser != null) {
-                    //         return const DrawerScreen();
-                    //       }
-                    //       return const WelcomeScreen();
-                    //     }),
-                    routes: {
-                      "/home": (context) => const DrawerScreen(),
-                      SignUpScreen.routeName: (context) => const SignUpScreen(),
-                      WelcomeScreen.routeName: (context) =>
-                          const WelcomeScreen(),
-                    },
-                  );
-          });
+      return MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'Personal Expenses',
+        themeMode: theme.getThemeMode(),
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(
+            seedColor: const Color.fromRGBO(8, 131, 149, 1),
+          ).copyWith(
+            secondary: const Color.fromRGBO(55, 183, 195, 1),
+            onPrimary: Colors.white,
+          ),
+          useMaterial3: true,
+          fontFamily: "Poppins",
+          textTheme: const TextTheme(
+            displayLarge: TextStyle(
+              fontSize: 50,
+              fontWeight: FontWeight.bold,
+            ),
+            displaySmall: TextStyle(
+              fontSize: 15,
+              fontWeight: FontWeight.w500,
+            ),
+            displayMedium: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.w500,
+            ),
+            titleMedium: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+          iconTheme: const IconThemeData(
+            size: 22,
+          ),
+        ),
+        darkTheme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(
+            seedColor: const Color.fromRGBO(0, 55, 71, 1),
+            primary: const Color.fromRGBO(8, 131, 149, 1),
+            brightness: Brightness.dark,
+          ).copyWith(
+            secondary: const Color.fromRGBO(55, 183, 195, 1),
+          ),
+          useMaterial3: true,
+          fontFamily: "Poppins",
+          textTheme: const TextTheme(
+            displayLarge: TextStyle(
+              fontSize: 40,
+              fontWeight: FontWeight.bold,
+            ),
+            displaySmall: TextStyle(
+              fontSize: 15,
+              fontWeight: FontWeight.w500,
+            ),
+            displayMedium: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.w500,
+            ),
+            titleMedium: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+          iconTheme: const IconThemeData(
+            size: 22,
+          ),
+        ),
+        home: const DrawerScreen(),
+        // home: FutureBuilder(
+        //     future: Provider.of<Auth>(context).getUserDetails(),
+        //     builder: (context, snapshot) {
+        //       if (!snapshot.hasData) {
+        //         return const Scaffold(
+        //           body: Center(child: CircularProgressIndicator()),
+        //         );
+        //       }
+        //       if (user.getUser != null) {
+        //         return const DrawerScreen();
+        //       }
+        //       return const WelcomeScreen();
+        //     }),
+        routes: {
+          "/home": (context) => const DrawerScreen(),
+          SignUpScreen.routeName: (context) => const SignUpScreen(),
+          WelcomeScreen.routeName: (context) => const WelcomeScreen(),
+        },
+      );
     });
   }
 }

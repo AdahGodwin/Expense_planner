@@ -1,23 +1,17 @@
-import 'package:expense_manager/screens/transaction_form_screen.dart';
+import 'package:expense_manager/widgets/reminder_form.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-class NewTransactionScreen extends StatefulWidget {
+class CreateReminderScreen extends StatefulWidget {
+  const CreateReminderScreen({super.key, this.openDrawer, this.isDrawerOpen});
   final VoidCallback? openDrawer;
   final bool? isDrawerOpen;
-  const NewTransactionScreen({super.key, this.isDrawerOpen, this.openDrawer});
 
   @override
-  State<NewTransactionScreen> createState() => _NewTransactionScreenState();
+  State<CreateReminderScreen> createState() => _CreateReminderScreenState();
 }
 
-class _NewTransactionScreenState extends State<NewTransactionScreen> {
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  bool income = false;
+class _CreateReminderScreenState extends State<CreateReminderScreen> {
   Widget divider() {
     return SizedBox(
       width: 100,
@@ -33,22 +27,24 @@ class _NewTransactionScreenState extends State<NewTransactionScreen> {
   Widget build(BuildContext context) {
     MediaQueryData mediaQuery = MediaQuery.of(context);
     ThemeData theme = Theme.of(context);
+    bool income = false;
+
     return Scaffold(
       body: Stack(
         children: [
           SingleChildScrollView(
             child: Padding(
               padding: EdgeInsets.only(
-                top: (mediaQuery.size.height - mediaQuery.padding.top) * 0.22,
+                top: (mediaQuery.size.height - mediaQuery.padding.top) * 0.17,
                 left: 20,
                 right: 20,
-                bottom: 10,
+                bottom: 20,
               ),
-              child: const TransactionFormScreen(),
+              child: const ReminderForm(),
             ),
           ),
           Container(
-            height: (mediaQuery.size.height - mediaQuery.padding.top) * 0.2,
+            height: (mediaQuery.size.height - mediaQuery.padding.top) * 0.15,
             decoration: BoxDecoration(
                 gradient: LinearGradient(
                   colors: [
@@ -62,7 +58,7 @@ class _NewTransactionScreenState extends State<NewTransactionScreen> {
                   bottomLeft: Radius.circular(45),
                   bottomRight: Radius.circular(45),
                 )),
-            padding: const EdgeInsets.only(left: 15, top: 35, right: 15),
+            padding: const EdgeInsets.only(left: 15, top: 15, right: 15),
             child: Column(
               children: [
                 Row(
@@ -76,7 +72,7 @@ class _NewTransactionScreenState extends State<NewTransactionScreen> {
                       color: theme.colorScheme.onPrimary,
                     ),
                     Text(
-                      "Add Transactions",
+                      "Create Reminder",
                       style: theme.textTheme.displayMedium!.copyWith(
                         color: theme.colorScheme.onPrimary,
                       ),
@@ -87,7 +83,7 @@ class _NewTransactionScreenState extends State<NewTransactionScreen> {
                   ],
                 ),
                 const SizedBox(
-                  height: 20,
+                  height: 10,
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
