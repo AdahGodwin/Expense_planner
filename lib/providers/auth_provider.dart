@@ -1,6 +1,6 @@
 import "dart:io";
 
-import "package:flutter/material.dart";
+import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:intl/intl.dart";
 
 import '../db_helpers/db_helper.dart';
@@ -23,28 +23,27 @@ class AuthDetails {
   });
 }
 
-class Auth with ChangeNotifier {
-  AuthDetails? _user;
-
-  AuthDetails? get getUser {
-    return _user;
-  }
+class AuthNotifier extends StateNotifier<AuthDetails> {
+  AuthNotifier()
+      : super(
+          AuthDetails(
+              id: "", firstname: "", lastname: "", email: "", balance: 0),
+        );
 
   String get balance {
     return NumberFormat.compactSimpleCurrency(name: "NGN")
-        .format(_user?.balance ?? 0);
+        .format(state.balance);
   }
 
   Future<void> updateBalance(bool isExpense, double amount) async {
     await DBHelper.update("user", {
-      "id": _user!.id,
-      "firstname": _user!.firstname,
-      "lastname": _user!.lastname,
-      "email": _user!.email,
-      "image": _user!.imageFile == null ? "" : _user!.imageFile!.path,
-      "balance": isExpense ? _user!.balance - amount : _user!.balance + amount,
+      "id": state.id,
+      "firstname": state.firstname,
+      "lastname": state.lastname,
+      "email": state.email,
+      "image": state.imageFile == null ? "" : state.imageFile!.path,
+      "balance": isExpense ? state.balance - amount : state.balance + amount,
     });
-    notifyListeners();
   }
 
   Future<void> addUserDetails(
@@ -70,9 +69,9 @@ class Auth with ChangeNotifier {
       "image": user.imageFile == null ? "" : user.imageFile!.path,
       "balance": user.balance,
     });
-    notifyListeners();
   }
-Future<void> updateUserDetails(
+
+  Future<void> updateUserDetails(
     String firstname,
     String lastname,
     String email, [
@@ -80,7 +79,7 @@ Future<void> updateUserDetails(
     double balance = 0.0,
   ]) async {
     final user = AuthDetails(
-      id: _user!.id,
+      id: state.id,
       firstname: firstname,
       lastname: lastname,
       email: email,
@@ -95,14 +94,14 @@ Future<void> updateUserDetails(
       "image": user.imageFile == null ? "" : user.imageFile!.path,
       "balance": user.balance,
     });
-    notifyListeners();
   }
+
   Future<bool> getUserDetails() async {
     var userDetails = await DBHelper.getData('user');
     if (userDetails.isEmpty) {
       return false;
     }
-   _user = AuthDetails(
+    state = AuthDetails(
       id: userDetails[0]["id"],
       firstname: userDetails[0]["firstname"],
       lastname: userDetails[0]["lastname"],
@@ -112,5 +111,8 @@ Future<void> updateUserDetails(
       balance: double.parse(userDetails[0]["balance"].toString()),
     );
     return true;
-   }  
+  }
 }
+
+final authProvider =
+    StateNotifierProvider<AuthNotifier, AuthDetails>((ref) => AuthNotifier());

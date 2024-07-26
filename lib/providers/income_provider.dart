@@ -1,18 +1,17 @@
 import "package:flutter/material.dart";
+import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:intl/intl.dart";
-import "package:provider/provider.dart";
 
 import '../db_helpers/db_helper.dart';
-import "auth_provider.dart";
 
-class IncomeItem {
+class Income {
   final String id;
   final String title;
   final double amount;
   final DateTime date;
   String key;
 
-  IncomeItem({
+  Income({
     required this.id,
     required this.title,
     required this.amount,
@@ -21,15 +20,15 @@ class IncomeItem {
   });
 }
 
-class Income with ChangeNotifier {
-  List<IncomeItem> income = [];
+class IncomeNotifier extends StateNotifier<List<Income>> {
+  IncomeNotifier() : super([]);
 
-  List<IncomeItem> get allIncome {
-    return [...income];
-  }
+  // List<Income> get allIncome {
+  //   return [...income];
+  // }
 
-  List<IncomeItem> get recentTransactions {
-    return income.where((tx) {
+  List<Income> get recentTransactions {
+    return state.where((tx) {
       return tx.date.isAfter(
         DateTime.now().subtract(
           const Duration(days: 7),
@@ -38,30 +37,31 @@ class Income with ChangeNotifier {
     }).toList();
   }
 
-  List<IncomeItem> get todaysIncome {
+  List<Income> get todaysIncome {
     String key = DateFormat("E dd/MM/yy").format(DateTime.now());
-    return income.where((income) {
+    return state.where((income) {
       return income.key.contains(key);
     }).toList();
   }
+
   String get totalMonthlyIncome {
     String key = DateFormat("MM/yy").format(DateTime.now());
-    List<IncomeItem> monthlyEarnings = income.where((income) {
+    List<Income> monthlyEarnings = state.where((income) {
       return income.key.contains(key);
     }).toList();
-     
-     double monthlyIncome = monthlyEarnings.fold(0.0, (sum, item) {
+
+    double monthlyIncome = monthlyEarnings.fold(0.0, (sum, item) {
       return sum + item.amount;
     });
     return NumberFormat.compactSimpleCurrency(name: "NGN")
         .format(monthlyIncome);
   }
+
   String get todaysTotalIncome {
     double todaysTotal = todaysIncome.fold(0.0, (sum, item) {
       return sum + item.amount;
     });
-    return NumberFormat.compactSimpleCurrency(name: "NGN")
-        .format(todaysTotal);
+    return NumberFormat.compactSimpleCurrency(name: "NGN").format(todaysTotal);
   }
 
   void addIncome(
@@ -71,7 +71,7 @@ class Income with ChangeNotifier {
     DateTime date,
     String key,
   ) {
-    final newIncome = IncomeItem(
+    final newIncome = Income(
       id: DateTime.now().toString(),
       title: title,
       amount: amount,
@@ -85,21 +85,28 @@ class Income with ChangeNotifier {
       "date": newIncome.date.millisecondsSinceEpoch,
       "key": newIncome.key,
     });
-    Provider.of<Auth>(context, listen: false).updateBalance(false, amount);
-    notifyListeners();
+    // Provider.of<Auth>(context, listen: false).updateBalance(false, amount);
   }
-Future<void> fetchAndSetIncome() async {
-   final dataList = await DBHelper.getData('income');
-   income = dataList.map((income) => IncomeItem(
-      id: income['id'],
-      title: income['title'],
-      amount: double.parse(income['amount'].toString()),
-      date: DateTime.fromMillisecondsSinceEpoch(income['date']),
-      key: income['key'],
-    )).toList();
-    notifyListeners();
+
+  Future<void> fetchAndSetIncome() async {
+    final dataList = await DBHelper.getData('income');
+    state = dataList
+        .map((income) => Income(
+              id: income['id'],
+              title: income['title'],
+              amount: double.parse(income['amount'].toString()),
+              date: DateTime.fromMillisecondsSinceEpoch(income['date']),
+              key: income['key'],
+            ))
+        .toList();
   }
+
   void deleteTransaction(String id) {
-    income.removeWhere((tx) => tx.id == id);
+    // income.removeWhere((tx) => tx.id == id);
   }
 }
+
+final incomeProvider =
+    StateNotifierProvider<IncomeNotifier, List<Income>>((ref) {
+  return IncomeNotifier();
+});

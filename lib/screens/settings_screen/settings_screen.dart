@@ -1,35 +1,34 @@
 import 'dart:io';
 
-import 'package:expense_manager/providers/theme.dart';
+// import 'package:expense_manager/providers/theme.dart';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
-import 'package:provider/provider.dart';
-
 import '../../providers/auth_provider.dart';
 import 'user_image_picker.dart';
 
-class SettingsScreen extends StatefulWidget {
+class SettingsScreen extends ConsumerStatefulWidget {
   final VoidCallback? openDrawer;
   final bool? isDrawerOpen;
 
   const SettingsScreen({this.openDrawer, this.isDrawerOpen, super.key});
 
   @override
-  State<SettingsScreen> createState() => _SettingsScreenState();
+  ConsumerState<SettingsScreen> createState() => _SettingsScreenState();
 }
 
-class _SettingsScreenState extends State<SettingsScreen> {
+class _SettingsScreenState extends ConsumerState<SettingsScreen> {
   File? _userImageFile;
 
   late ThemeData? _currentTheme;
   AuthDetails? _user;
   bool _isInit = true;
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
+  void initState() {
+    super.initState();
     if (_isInit == true) {
-      _user = Provider.of<Auth>(context).getUser;
+      _user = ref.read(authProvider);
     }
     _isInit = false;
   }
@@ -48,13 +47,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
       return;
     }
     _formKey.currentState?.save();
-    Provider.of<Auth>(context, listen: false).updateUserDetails(
-      authDetails["firstname"],
-      authDetails["lastname"],
-      authDetails["email"],
-      _userImageFile,
-      double.parse(authDetails["balance"].toString().replaceAll(",", "")),
-    );
+    ref.read(authProvider.notifier).updateUserDetails(
+          authDetails["firstname"],
+          authDetails["lastname"],
+          authDetails["email"],
+          _userImageFile,
+          double.parse(authDetails["balance"].toString().replaceAll(",", "")),
+        );
     ScaffoldMessenger.of(context).clearSnackBars();
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
@@ -260,12 +259,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           Row(
                             children: [
                               TextButton(
-                                onPressed: () {
-                                  Provider.of<ThemeChanger>(
-                                    context,
-                                    listen: false,
-                                  ).toggleTheme();
-                                },
+                                onPressed: () {},
                                 child: const Text(
                                   "Change Theme",
                                   style: TextStyle(fontSize: 18),

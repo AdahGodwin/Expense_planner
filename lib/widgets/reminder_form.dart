@@ -17,9 +17,18 @@ class _ReminderFormState extends State<ReminderForm> {
       children: [
         _textFieldWidget("Reminder name"),
         _inputSelectorWidget("Reminder frequency", "Daily", context),
-        const Row(
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text("Add Automatically"),
+            const Text("Add Automatically"),
+            Switch(
+              activeTrackColor: theme.colorScheme.inversePrimary,
+              inactiveTrackColor: Colors.grey,
+              activeColor: theme.colorScheme.primary,
+              inactiveThumbColor: Colors.white,
+              value: true,
+              onChanged: (value) {},
+            ),
           ],
         ),
         const SizedBox(

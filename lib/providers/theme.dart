@@ -1,20 +1,12 @@
 import 'package:flutter/material.dart';
-import '../db_helpers/db_helper.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+// import '../db_helpers/db_helper.dart';
 
-class ThemeChanger with ChangeNotifier {
-  ThemeMode _themeMode = ThemeMode.light;
-
-  ThemeChanger();
-
-  // ThemeData? getTheme() => themeData;
-  ThemeMode getThemeMode() {
-    return _themeMode;
-  }
+class ThemeChangerNotifier extends StateNotifier<bool> {
+  ThemeChangerNotifier() : super(true);
 
   void toggleTheme() {
-    _themeMode =
-        _themeMode == ThemeMode.light ? ThemeMode.dark : ThemeMode.light;
-    notifyListeners();
+    state = !state;
   }
 
   // Future<void> setTheme(String theme) async {
@@ -41,3 +33,7 @@ class ThemeChanger with ChangeNotifier {
   //   return true;
   // }
 }
+
+final themeProvider = StateNotifierProvider<ThemeChangerNotifier, bool>((ref) {
+  return ThemeChangerNotifier();
+});

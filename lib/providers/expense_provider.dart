@@ -1,7 +1,6 @@
-import "package:expense_manager/providers/auth_provider.dart";
 import "package:flutter/material.dart";
+import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:intl/intl.dart";
-import "package:provider/provider.dart";
 import '../db_helpers/db_helper.dart';
 
 class Expense {
@@ -22,15 +21,11 @@ class Expense {
   });
 }
 
-class Expenses with ChangeNotifier {
-  List<Expense> _expenses = [];
-
-  List<Expense> get allExpenses {
-    return [..._expenses];
-  }
+class ExpenseNotifier extends StateNotifier<List<Expense>> {
+  ExpenseNotifier() : super([]);
 
   List<Expense> get recentTransactions {
-    return _expenses.where((tx) {
+    return state.where((tx) {
       return tx.date.isAfter(
         DateTime.now().subtract(
           const Duration(days: 7),
@@ -41,14 +36,14 @@ class Expenses with ChangeNotifier {
 
   List<Expense> get todaysExpenses {
     String key = DateFormat("E dd/MM/yy").format(DateTime.now());
-    return _expenses.where((expense) {
+    return state.where((expense) {
       return expense.key.contains(key);
     }).toList();
   }
 
   String get totalMonthlySpending {
     String key = DateFormat("MM/yy").format(DateTime.now());
-    List<Expense> monthlyExpenses = _expenses.where((expense) {
+    List<Expense> monthlyExpenses = state.where((expense) {
       return expense.key.contains(key);
     }).toList();
     double monthlySpendings = monthlyExpenses.fold(0.0, (sum, item) {
@@ -83,7 +78,7 @@ class Expenses with ChangeNotifier {
       key: key,
     );
 
-    Provider.of<Auth>(context, listen: false).updateBalance(true, amount);
+    // Provider.of<Auth>(context, listen: false).updateBalance(true, amount);
     DBHelper.insert("expenses", {
       "id": newExpense.id,
       "title": newExpense.title,
@@ -92,17 +87,16 @@ class Expenses with ChangeNotifier {
       "paymentMethod": newExpense.paymentMethod,
       "key": newExpense.key,
     });
-    notifyListeners();
   }
 
-  void deleteTransaction(String id) {
-    _expenses.removeWhere((tx) => tx.id == id);
-    notifyListeners();
-  }
+  // void deleteTransaction(String id) {
+  //   state.removeWhere((tx) => tx.id == id);
+
+  // }
 
   Future<void> fetchAndSetExpenses() async {
     final dataList = await DBHelper.getData('expenses');
-    _expenses = dataList
+    state = dataList
         .map((expenses) => Expense(
               id: expenses['id'],
               title: expenses['title'],
@@ -112,6 +106,10 @@ class Expenses with ChangeNotifier {
               key: expenses['key'],
             ))
         .toList();
-    notifyListeners();
   }
 }
+
+final expenseProvider =
+    StateNotifierProvider<ExpenseNotifier, List<Expense>>((ref) {
+  return ExpenseNotifier();
+});

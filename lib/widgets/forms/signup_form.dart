@@ -1,15 +1,15 @@
 import 'package:expense_manager/providers/auth_provider.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class SignUpForm extends StatefulWidget {
+class SignUpForm extends ConsumerStatefulWidget {
   const SignUpForm({super.key});
 
   @override
-  State<SignUpForm> createState() => _SignUpFormState();
+  ConsumerState<SignUpForm> createState() => _SignUpFormState();
 }
 
-class _SignUpFormState extends State<SignUpForm> {
+class _SignUpFormState extends ConsumerState<SignUpForm> {
   final _formKey = GlobalKey<FormState>();
 
   Map<String, dynamic> authDetails = {
@@ -55,11 +55,11 @@ class _SignUpFormState extends State<SignUpForm> {
       return;
     }
     _formKey.currentState?.save();
-    Provider.of<Auth>(context, listen: false).addUserDetails(
-      authDetails["firstname"],
-      authDetails["lastname"],
-      authDetails["email"],
-    );
+    ref.read(authProvider.notifier).addUserDetails(
+          authDetails["firstname"],
+          authDetails["lastname"],
+          authDetails["email"],
+        );
     Navigator.of(context).pushReplacementNamed("/home");
   }
 

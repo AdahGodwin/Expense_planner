@@ -1,24 +1,24 @@
 import "package:expense_manager/models/configurations.dart";
-import "package:expense_manager/screens/charts_screen.dart";
+import "package:expense_manager/providers/theme.dart";
 import "package:expense_manager/screens/create_reminder_screen.dart";
 import "package:expense_manager/screens/transaction_details_screen.dart";
 import "package:expense_manager/screens/home_screen.dart";
 import "package:expense_manager/screens/new_transaction_screen.dart";
 import 'package:expense_manager/screens/settings_screen/settings_screen.dart';
 import "package:flutter/material.dart";
+import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:font_awesome_flutter/font_awesome_flutter.dart";
-import "package:provider/provider.dart";
 
 import "../providers/auth_provider.dart";
 
-class DrawerScreen extends StatefulWidget {
+class DrawerScreen extends ConsumerStatefulWidget {
   const DrawerScreen({super.key});
 
   @override
-  State<DrawerScreen> createState() => _DrawerScreenState();
+  ConsumerState<DrawerScreen> createState() => _DrawerScreenState();
 }
 
-class _DrawerScreenState extends State<DrawerScreen> {
+class _DrawerScreenState extends ConsumerState<DrawerScreen> {
   double xOffset = 0;
   double yOffset = 0;
   double scaleFactor = 1;
@@ -69,8 +69,11 @@ class _DrawerScreenState extends State<DrawerScreen> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    AuthDetails? user = Provider.of<Auth>(context).getUser;
+  Widget build(
+    BuildContext context,
+  ) {
+    AuthDetails user = ref.read(authProvider);
+    // ThemeChanger themeChanger = Provider.of<ThemeChanger>(context);
     ThemeData theme = Theme.of(context);
     return Scaffold(
       body: Container(
@@ -87,31 +90,53 @@ class _DrawerScreenState extends State<DrawerScreen> {
         child: Stack(children: [
           SingleChildScrollView(
             child: Padding(
-              padding: const EdgeInsets.only(top: 30, left: 20),
+              padding: const EdgeInsets.only(top: 20, left: 20),
               child: Column(
                 children: <Widget>[
-                  ListTile(
-                    contentPadding: const EdgeInsets.symmetric(
-                      vertical: 5,
-                    ),
-                    leading: CircleAvatar(
-                      radius: 20,
-                      backgroundImage: user?.imageFile != null
-                          ? FileImage(user!.imageFile!)
-                          : null,
-                    ),
-                    title: Text(
-                      "${user?.firstname ?? "John"} ${user?.lastname ?? "Doe"}",
-                      style: theme.textTheme.displayMedium!.copyWith(
-                        color: theme.colorScheme.onPrimary,
+                  Row(
+                    children: [
+                      Expanded(
+                        child: ListTile(
+                          contentPadding: const EdgeInsets.symmetric(
+                            vertical: 5,
+                          ),
+                          leading: CircleAvatar(
+                            radius: 20,
+                            backgroundImage: user.imageFile != null
+                                ? FileImage(user.imageFile!)
+                                : null,
+                          ),
+                          title: Text(
+                            "${user.firstname == "" ? "John" : user.firstname} ${user.lastname == "" ? "Doe" : user.lastname}",
+                            style: theme.textTheme.displayMedium!.copyWith(
+                              color: theme.colorScheme.onPrimary,
+                            ),
+                          ),
+                          subtitle: Text(
+                            user.email == ""
+                                ? " johndoe@gmail.com"
+                                : user.email,
+                            style: theme.textTheme.displaySmall!.copyWith(
+                              color: theme.colorScheme.onPrimary,
+                            ),
+                          ),
+                        ),
                       ),
-                    ),
-                    subtitle: Text(
-                      user?.email ?? " johndoe@gmail.com",
-                      style: theme.textTheme.displaySmall!.copyWith(
-                        color: theme.colorScheme.onPrimary,
+                      Switch(
+                        activeTrackColor: Colors.black38,
+                        inactiveTrackColor: Colors.grey,
+                        activeColor: Colors.yellow,
+                        inactiveThumbColor: Colors.white,
+                        activeThumbImage:
+                            const AssetImage('assets/images/sun.png'),
+                        inactiveThumbImage:
+                            const AssetImage('assets/images/moon2.png'),
+                        value: ref.watch(themeProvider),
+                        onChanged: (value) {
+                          ref.read(themeProvider.notifier).toggleTheme();
+                        },
                       ),
-                    ),
+                    ],
                   ),
                   SizedBox(
                     height: MediaQuery.of(context).size.height * 0.02,
@@ -193,11 +218,6 @@ class _DrawerScreenState extends State<DrawerScreen> {
     switch (item) {
       case DrawerItems.settings:
         return SettingsScreen(
-          openDrawer: openDrawer,
-          isDrawerOpen: isDrawerOpen,
-        );
-      case DrawerItems.charts:
-        return ChartScreen(
           openDrawer: openDrawer,
           isDrawerOpen: isDrawerOpen,
         );

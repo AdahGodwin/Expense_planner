@@ -1,6 +1,7 @@
 import 'package:expense_manager/widgets/summary.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import '../models/configurations.dart';
 import '../providers/auth_provider.dart';
 import '../providers/expense_provider.dart';
@@ -12,7 +13,7 @@ const List<String> list = <String>[
   'EARNED THIS MONTH',
 ];
 
-class HomeScreen extends StatefulWidget {
+class HomeScreen extends ConsumerStatefulWidget {
   final VoidCallback? openDrawer;
   final bool? isDrawerOpen;
   final void Function(DrawerItem item)? onSelectedItem;
@@ -20,21 +21,23 @@ class HomeScreen extends StatefulWidget {
       {this.openDrawer, this.isDrawerOpen, this.onSelectedItem, super.key});
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  ConsumerState<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
-  bool isInit = false;
+class _HomeScreenState extends ConsumerState<HomeScreen> {
+  bool isInit = true;
   @override
   void initState() {
     super.initState();
-    Provider.of<Expenses>(context, listen: false)
+    ref
+        .read(expenseProvider.notifier)
         .fetchAndSetExpenses()
-        .then((value) => isInit = true);
-    Provider.of<Income>(context, listen: false)
+        .then((value) => print(true));
+    ref
+        .read(incomeProvider.notifier)
         .fetchAndSetIncome()
         .then((value) => isInit = true);
-    Provider.of<Auth>(context, listen: false).getUserDetails();
+    ref.read(authProvider.notifier).getUserDetails();
   }
 
   String? dropdownValue = list.first;
@@ -47,8 +50,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    List<Expense> expenses = Provider.of<Expenses>(context).todaysExpenses;
-    List<IncomeItem> income = Provider.of<Income>(context).todaysIncome;
+    List<Expense> expenses = ref.read(expenseProvider.notifier).todaysExpenses;
+    List<Income> income = ref.read(incomeProvider.notifier).todaysIncome;
 
     var mediaQuery = MediaQuery.of(context);
     return Scaffold(
