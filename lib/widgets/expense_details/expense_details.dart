@@ -29,7 +29,9 @@ class _ExpenseDetailsState extends State<ExpenseDetails> {
   }
 
   Map<String, List<Expense>> get groupTx {
-    var newMap = groupBy(filteredTx.sorted((a, b) => a.date.compareTo(b.date)),
+    var newMap = groupBy(
+        filteredTx
+            .sorted((a, b) => a.transactionDate.compareTo(b.transactionDate)),
         (obj) => obj.key);
     return newMap;
   }

@@ -8,7 +8,7 @@ class DBHelper {
     return sql.openDatabase(path.join(dbPath, 'expenses.db'),
         onCreate: (db, version) async {
       await db.execute(
-          'CREATE TABLE expenses(id TEXT PRIMARY KEY, title TEXT, amount INTEGER, date INTEGER, paymentMethod TEXT, key TEXT)');
+          'CREATE TABLE expenses(id TEXT PRIMARY KEY, title TEXT, amount INTEGER, date INTEGER, key TEXT, category TEXT)');
       await db.execute(
           'CREATE TABLE income(id TEXT PRIMARY KEY, title TEXT, amount INTEGER, date INTEGER, key TEXT)');
       await db.execute(

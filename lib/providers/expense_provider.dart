@@ -1,32 +1,35 @@
+import "package:expense_manager/shared/dummydata.dart";
 import "package:flutter/material.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:intl/intl.dart";
 import '../db_helpers/db_helper.dart';
 
 class Expense {
-  final String id;
-  final String title;
-  final double amount;
-  final DateTime date;
-  String paymentMethod;
   String key;
+  String transactionId;
+  String? accountId;
+  double amount;
+  String category;
+  DateTime transactionDate;
+  String description;
 
   Expense({
-    required this.id,
-    required this.title,
-    required this.amount,
-    required this.date,
-    required this.paymentMethod,
     required this.key,
+    required this.transactionId,
+    this.accountId,
+    required this.amount,
+    required this.category,
+    required this.transactionDate,
+    required this.description,
   });
 }
 
 class ExpenseNotifier extends StateNotifier<List<Expense>> {
-  ExpenseNotifier() : super([]);
+  ExpenseNotifier() : super(expensesData);
 
   List<Expense> get recentTransactions {
     return state.where((tx) {
-      return tx.date.isAfter(
+      return tx.transactionDate.isAfter(
         DateTime.now().subtract(
           const Duration(days: 7),
         ),
@@ -63,29 +66,30 @@ class ExpenseNotifier extends StateNotifier<List<Expense>> {
 
   void addExpense(
     BuildContext context,
-    String title,
+    String description,
     double amount,
     DateTime date,
     String paymentMethod,
+    String category,
     String key,
   ) {
     final newExpense = Expense(
-      id: DateTime.now().toString(),
-      title: title,
+      transactionId: DateTime.now().toString(),
+      description: description,
       amount: amount,
-      date: date,
-      paymentMethod: paymentMethod,
+      transactionDate: date,
+      category: category,
       key: key,
     );
 
     // Provider.of<Auth>(context, listen: false).updateBalance(true, amount);
     DBHelper.insert("expenses", {
-      "id": newExpense.id,
-      "title": newExpense.title,
+      "id": newExpense.transactionId,
+      "title": newExpense.description,
       "amount": newExpense.amount,
-      "date": newExpense.date.millisecondsSinceEpoch,
-      "paymentMethod": newExpense.paymentMethod,
+      "date": newExpense.transactionDate.millisecondsSinceEpoch,
       "key": newExpense.key,
+      "category": newExpense.category,
     });
   }
 
@@ -98,12 +102,13 @@ class ExpenseNotifier extends StateNotifier<List<Expense>> {
     final dataList = await DBHelper.getData('expenses');
     state = dataList
         .map((expenses) => Expense(
-              id: expenses['id'],
-              title: expenses['title'],
+              transactionId: expenses['id'],
+              description: expenses['title'],
               amount: double.parse(expenses['amount'].toString()),
-              date: DateTime.fromMillisecondsSinceEpoch(expenses['date']),
-              paymentMethod: expenses['paymentMethod'],
+              transactionDate:
+                  DateTime.fromMillisecondsSinceEpoch(expenses['date']),
               key: expenses['key'],
+              category: expenses["category"],
             ))
         .toList();
   }

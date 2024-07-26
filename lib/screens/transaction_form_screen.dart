@@ -1,3 +1,4 @@
+import 'package:expense_manager/shared/categorydata.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
@@ -8,10 +9,8 @@ class TransactionFormScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
-    var mediaQuery = MediaQuery.of(context);
     const dateStrings = ["Today", "Yesterday", "2 days ago"];
     return SizedBox(
-      height: (mediaQuery.size.height - mediaQuery.padding.top) * 0.78,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -48,39 +47,46 @@ class TransactionFormScreen extends StatelessWidget {
           const SizedBox(
             height: 20,
           ),
-          Wrap(
-            spacing: 20,
-            runSpacing: 20,
-            children: [
-              ...List.generate(7, (index) {
-                return const Column(
+          Center(
+            child: Column(
+              children: [
+                Wrap(
+                  alignment: WrapAlignment.start,
+                  spacing: 10,
+                  runSpacing: 20,
                   children: [
-                    CircleAvatar(
-                      backgroundColor: Colors.teal,
-                      radius: 30,
-                      child: FaIcon(
-                        FontAwesomeIcons.cartShopping,
-                        color: Colors.white,
-                      ),
-                    ),
-                    Text("Shopping"),
+                    ...Category.categoryNames.take(7).map((String name) {
+                      return Column(
+                        children: [
+                          CircleAvatar(
+                            backgroundColor: Colors.teal,
+                            radius: 30,
+                            child: FaIcon(
+                              Category.getIconForCategory(name),
+                              color: Colors.white,
+                            ),
+                          ),
+                          Text(name),
+                        ],
+                      );
+                    }),
+                    const Column(
+                      children: [
+                        CircleAvatar(
+                          backgroundColor: Colors.grey,
+                          radius: 30,
+                          child: FaIcon(
+                            FontAwesomeIcons.plus,
+                            color: Colors.white,
+                          ),
+                        ),
+                        Text("Other"),
+                      ],
+                    )
                   ],
-                );
-              }),
-              const Column(
-                children: [
-                  CircleAvatar(
-                    backgroundColor: Colors.grey,
-                    radius: 30,
-                    child: FaIcon(
-                      FontAwesomeIcons.plus,
-                      color: Colors.white,
-                    ),
-                  ),
-                  Text("Add"),
-                ],
-              )
-            ],
+                ),
+              ],
+            ),
           ),
           const SizedBox(
             height: 30,
@@ -98,7 +104,7 @@ class TransactionFormScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               ...List.generate(3, (index) {
-                return Container(
+                return SizedBox(
                   child: Column(
                     children: [
                       Text(

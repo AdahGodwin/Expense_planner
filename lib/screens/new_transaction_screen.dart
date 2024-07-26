@@ -42,7 +42,7 @@ class _NewTransactionScreenState extends State<NewTransactionScreen> {
                 top: (mediaQuery.size.height - mediaQuery.padding.top) * 0.22,
                 left: 20,
                 right: 20,
-                bottom: 10,
+                bottom: 20,
               ),
               child: const TransactionFormScreen(),
             ),

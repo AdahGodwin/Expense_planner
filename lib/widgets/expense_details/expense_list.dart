@@ -122,10 +122,9 @@ class ExpenseList extends StatelessWidget {
                                           MainAxisAlignment.spaceAround,
                                       children: [
                                         listText(
-                                          expense.title,
+                                          expense.description,
                                           100,
                                         ),
-                                        listText(expense.paymentMethod, 120),
                                         listText(
                                           expense.amount < 100000.0
                                               ? NumberFormat.simpleCurrency(

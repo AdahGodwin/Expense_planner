@@ -26,19 +26,19 @@ class HomeScreen extends ConsumerStatefulWidget {
 
 class _HomeScreenState extends ConsumerState<HomeScreen> {
   bool isInit = true;
-  @override
-  void initState() {
-    super.initState();
-    ref
-        .read(expenseProvider.notifier)
-        .fetchAndSetExpenses()
-        .then((value) => print(true));
-    ref
-        .read(incomeProvider.notifier)
-        .fetchAndSetIncome()
-        .then((value) => isInit = true);
-    ref.read(authProvider.notifier).getUserDetails();
-  }
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   ref
+  //       .read(expenseProvider.notifier)
+  //       .fetchAndSetExpenses()
+  //       .then((value) => print(true));
+  //   ref
+  //       .read(incomeProvider.notifier)
+  //       .fetchAndSetIncome()
+  //       .then((value) => isInit = true);
+  //   ref.read(authProvider.notifier).getUserDetails();
+  // }
 
   String? dropdownValue = list.first;
 
@@ -50,8 +50,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    List<Expense> expenses = ref.read(expenseProvider.notifier).todaysExpenses;
-    List<Income> income = ref.read(incomeProvider.notifier).todaysIncome;
+    List<Expense> expenses = ref.watch(expenseProvider);
+    List<Income> income = ref.watch(incomeProvider);
 
     var mediaQuery = MediaQuery.of(context);
     return Scaffold(

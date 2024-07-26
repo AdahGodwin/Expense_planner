@@ -31,7 +31,8 @@ class _ExpenseChartState extends State<ExpenseChart> {
       return [];
     }
     var groupedExpenses = groupBy(
-        filteredTx.sorted((a, b) => a.date.compareTo(b.date)),
+        filteredTx
+            .sorted((a, b) => a.transactionDate.compareTo(b.transactionDate)),
         (obj) => obj.key);
 
     groupedExpenses.forEach((day, expenses) {

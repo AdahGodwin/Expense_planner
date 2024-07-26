@@ -1,4 +1,6 @@
+import 'package:expense_manager/shared/categorydata.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class TransactionList extends StatelessWidget {
   final List<dynamic> transactions;
@@ -115,10 +117,11 @@ class TransactionList extends StatelessWidget {
                           children: [
                             Row(
                               children: [
-                                const CircleAvatar(
+                                CircleAvatar(
                                   backgroundColor: Colors.green,
-                                  child: Icon(
-                                    Icons.shopping_cart,
+                                  child: FaIcon(
+                                    Category.getIconForCategory(
+                                        transactions[index].category),
                                     color: Colors.white,
                                   ),
                                 ),
@@ -126,7 +129,7 @@ class TransactionList extends StatelessWidget {
                                   width: 10,
                                 ),
                                 Text(
-                                  "Shopping",
+                                  transactions[index].category,
                                   style: theme.textTheme.displaySmall,
                                 ),
                               ],
@@ -152,7 +155,7 @@ class TransactionList extends StatelessWidget {
                         ),
                       ));
                 },
-                itemCount: 5,
+                itemCount: transactions.length,
               ),
             ),
           ],
