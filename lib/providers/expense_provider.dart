@@ -1,3 +1,4 @@
+import "package:collection/collection.dart";
 import "package:expense_manager/shared/dummydata.dart";
 import "package:flutter/material.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
@@ -42,6 +43,13 @@ class ExpenseNotifier extends StateNotifier<List<Expense>> {
     return state.where((expense) {
       return expense.key.contains(key);
     }).toList();
+  }
+
+  Map<String, List<Expense>> get groupTx {
+    var newMap = groupBy(
+        state.sorted((a, b) => a.transactionDate.compareTo(b.transactionDate)),
+        (obj) => obj.key);
+    return newMap;
   }
 
   String get totalMonthlySpending {

@@ -1,4 +1,5 @@
 // import 'package:expense_manager/providers/expense_provider.dart';
+import 'package:expense_manager/widgets/header_widget.dart';
 import 'package:expense_manager/widgets/transaction_details/transaction_details_list.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -33,103 +34,33 @@ class _TransactionDetailsScreenState extends State<TransactionDetailsScreen> {
   Widget build(BuildContext context) {
     var mediaQuery = MediaQuery.of(context);
     ThemeData theme = Theme.of(context);
-    // List<Expense> expenses = Provider.of<Expenses>(context).allExpenses;
     return Scaffold(
       body: Stack(
         children: [
-          Container(
-            height: (mediaQuery.size.height - mediaQuery.padding.top) * 0.27,
-            decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [
-                    theme.colorScheme.primary,
-                    theme.colorScheme.secondary,
-                  ],
-                  begin: const Alignment(-1, -1),
-                  end: const Alignment(1, 1),
-                ),
-                borderRadius: const BorderRadius.only(
-                  bottomLeft: Radius.circular(45),
-                  bottomRight: Radius.circular(45),
-                )),
-            padding: const EdgeInsets.only(left: 15, top: 35, right: 15),
-            child: Column(
+          Header(
+            navigationIcon: FontAwesomeIcons.arrowLeft,
+            titleWidget: Text(
+              "Transactions",
+              style: theme.textTheme.titleMedium!.copyWith(
+                color: theme.colorScheme.onPrimary,
+              ),
+            ),
+            height: 0.27,
+            icons: Row(
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    IconButton(
-                      icon: const FaIcon(
-                        FontAwesomeIcons.arrowLeft,
-                      ),
-                      onPressed: widget.openDrawer,
-                      color: theme.colorScheme.onPrimary,
-                    ),
-                    Text(
-                      "Transactions",
-                      style: theme.textTheme.titleMedium!.copyWith(
-                        color: theme.colorScheme.onPrimary,
-                      ),
-                    ),
-                    Row(
-                      children: [
-                        FaIcon(
-                          FontAwesomeIcons.magnifyingGlass,
-                          color: theme.colorScheme.onPrimary,
-                          size: 20,
-                        ),
-                        const SizedBox(
-                          width: 10,
-                        ),
-                        FaIcon(
-                          FontAwesomeIcons.download,
-                          color: theme.colorScheme.onPrimary,
-                          size: 20,
-                        )
-                      ],
-                    ),
-                  ],
+                FaIcon(
+                  FontAwesomeIcons.magnifyingGlass,
+                  color: theme.colorScheme.onPrimary,
+                  size: 20,
                 ),
                 const SizedBox(
-                  height: 20,
+                  width: 10,
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    Column(
-                      children: [
-                        GestureDetector(
-                          onTap: () => setState(() {
-                            income = false;
-                          }),
-                          child: Text(
-                            "EXPENSES",
-                            style: theme.textTheme.titleMedium!.copyWith(
-                              color: theme.colorScheme.onPrimary,
-                            ),
-                          ),
-                        ),
-                        if (income == false) divider()
-                      ],
-                    ),
-                    Column(
-                      children: [
-                        GestureDetector(
-                          onTap: () => setState(() {
-                            income = true;
-                          }),
-                          child: Text(
-                            "INCOME",
-                            style: theme.textTheme.titleMedium!.copyWith(
-                              color: theme.colorScheme.onPrimary,
-                            ),
-                          ),
-                        ),
-                        if (income == true) divider()
-                      ],
-                    ),
-                  ],
-                ),
+                FaIcon(
+                  FontAwesomeIcons.download,
+                  color: theme.colorScheme.onPrimary,
+                  size: 20,
+                )
               ],
             ),
           ),
@@ -187,7 +118,9 @@ class _TransactionDetailsScreenState extends State<TransactionDetailsScreen> {
                           ),
                         ],
                       ),
-                      TransactionDetailsList(),
+                      Expanded(
+                        child: TransactionDetailsList(),
+                      ),
                     ],
                   ),
                 ),

@@ -1,12 +1,14 @@
 // import 'package:expense_manager/providers/auth_provider.dart';
+import 'package:expense_manager/providers/drawer_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 // import 'package:provider/provider.dart';
 
 // import '../providers/expense_provider.dart';
 // import '../providers/income_provider.dart';
 
-class Summary extends StatefulWidget {
+class Summary extends ConsumerStatefulWidget {
   final String? dropdownValue;
   final List<String> list;
   final VoidCallback? openDrawer;
@@ -22,10 +24,10 @@ class Summary extends StatefulWidget {
       this.isDrawerOpen});
 
   @override
-  State<Summary> createState() => _SummaryState();
+  ConsumerState<Summary> createState() => _SummaryState();
 }
 
-class _SummaryState extends State<Summary> {
+class _SummaryState extends ConsumerState<Summary> {
   @override
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
@@ -66,41 +68,10 @@ class _SummaryState extends State<Summary> {
                   FontAwesomeIcons.bars,
                   size: 25,
                 ),
-                onPressed: widget.openDrawer,
+                onPressed: () {
+                  ref.read(drawerProvider.notifier).openDrawer();
+                },
                 color: theme.colorScheme.onPrimary,
-              ),
-              Column(
-                children: [
-                  Row(
-                    children: [
-                      FaIcon(
-                        FontAwesomeIcons.wallet,
-                        color: theme.colorScheme.onPrimary,
-                        size: 20,
-                      ),
-                      const SizedBox(
-                        width: 6,
-                      ),
-                      Text(
-                        "Total ",
-                        style: theme.textTheme.displaySmall!.copyWith(
-                          color: theme.colorScheme.onPrimary,
-                        ),
-                      ),
-                      FaIcon(
-                        FontAwesomeIcons.caretDown,
-                        color: theme.colorScheme.onPrimary,
-                      ),
-                    ],
-                  ),
-                  Text(
-                    "4000 \$",
-                    style: theme.textTheme.displayMedium!.copyWith(
-                      color: theme.colorScheme.onPrimary,
-                      fontSize: 20,
-                    ),
-                  )
-                ],
               ),
               IconButton(
                 icon: Icon(

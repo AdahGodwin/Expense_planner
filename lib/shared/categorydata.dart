@@ -1,31 +1,35 @@
+import 'package:expense_manager/models/category.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-class Category {
-  static IconData getIconForCategory(String categoryName) {
+class Categories {
+  static Category getIconForCategory(String categoryName) {
     switch (categoryName) {
       case 'Groceries':
-        return FontAwesomeIcons.basketShopping;
+        return Category(
+            color: Colors.green, icon: FontAwesomeIcons.basketShopping);
       case 'Transport':
-        return FontAwesomeIcons.car;
+        return Category(color: Colors.blue, icon: FontAwesomeIcons.car);
       case 'Dining':
-        return FontAwesomeIcons.utensils;
+        return Category(color: Colors.teal, icon: FontAwesomeIcons.utensils);
       case 'Entertainment':
-        return FontAwesomeIcons.film;
+        return Category(color: Colors.black12, icon: FontAwesomeIcons.film);
       case 'Utilities':
-        return FontAwesomeIcons.lightbulb;
+        return Category(color: Colors.yellow, icon: FontAwesomeIcons.lightbulb);
       case 'Rent':
-        return FontAwesomeIcons.house;
+        return Category(color: Colors.lightGreen, icon: FontAwesomeIcons.house);
       case 'Miscellaneous':
-        return FontAwesomeIcons.box;
+        return Category(color: Colors.orange, icon: FontAwesomeIcons.box);
       case 'Shopping':
-        return FontAwesomeIcons.bagShopping;
+        return Category(
+            color: Colors.purple, icon: FontAwesomeIcons.bagShopping);
       case 'Insurance':
-        return FontAwesomeIcons.fileContract;
+        return Category(
+            color: Colors.blue, icon: FontAwesomeIcons.fileContract);
       case 'Healthcare':
-        return FontAwesomeIcons.heartPulse;
+        return Category(color: Colors.red, icon: FontAwesomeIcons.heartPulse);
       default:
-        return FontAwesomeIcons.question;
+        return Category(color: Colors.black, icon: FontAwesomeIcons.question);
     }
   }
 

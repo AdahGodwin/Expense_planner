@@ -1,4 +1,5 @@
 import "package:expense_manager/models/configurations.dart";
+import "package:expense_manager/providers/drawer_provider.dart";
 import "package:expense_manager/providers/theme.dart";
 import "package:expense_manager/screens/create_reminder_screen.dart";
 import "package:expense_manager/screens/transaction_details_screen.dart";
@@ -19,10 +20,6 @@ class DrawerScreen extends ConsumerStatefulWidget {
 }
 
 class _DrawerScreenState extends ConsumerState<DrawerScreen> {
-  double xOffset = 0;
-  double yOffset = 0;
-  double scaleFactor = 1;
-  bool isDrawerOpen = false;
   DrawerItem item = DrawerItems.home;
   void onSelectedItem(item) {
     setState(() {
@@ -30,41 +27,9 @@ class _DrawerScreenState extends ConsumerState<DrawerScreen> {
       Future.delayed(
         const Duration(milliseconds: 150),
         () {
-          closeDrawer();
+          ref.read(drawerProvider.notifier).closeDrawer();
         },
       );
-    });
-  }
-
-  void openDrawer() {
-    FocusScopeNode currentFocus = FocusScope.of(context);
-
-    if (!currentFocus.hasPrimaryFocus) {
-      currentFocus.unfocus();
-      Future.delayed(const Duration(milliseconds: 180), () {
-        setState(() {
-          xOffset = 270;
-          yOffset = 90;
-          scaleFactor = 0.85;
-          isDrawerOpen = true;
-        });
-      });
-    } else {
-      setState(() {
-        xOffset = 270;
-        yOffset = 90;
-        scaleFactor = 0.85;
-        isDrawerOpen = true;
-      });
-    }
-  }
-
-  void closeDrawer() {
-    setState(() {
-      xOffset = 0;
-      yOffset = 0;
-      scaleFactor = 1;
-      isDrawerOpen = false;
     });
   }
 
@@ -72,9 +37,11 @@ class _DrawerScreenState extends ConsumerState<DrawerScreen> {
   Widget build(
     BuildContext context,
   ) {
+    DrawerSpecs drawerSpecs = ref.watch(drawerProvider);
     AuthDetails user = ref.read(authProvider);
     // ThemeChanger themeChanger = Provider.of<ThemeChanger>(context);
     ThemeData theme = Theme.of(context);
+
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
@@ -170,21 +137,25 @@ class _DrawerScreenState extends ConsumerState<DrawerScreen> {
           ),
           WillPopScope(
             onWillPop: () async {
-              if (isDrawerOpen) {
-                closeDrawer();
+              if (drawerSpecs.isDrawerOpen) {
+                ref.read(drawerProvider.notifier).closeDrawer();
                 return false;
               } else {
                 return true;
               }
             },
             child: GestureDetector(
-              onTap: closeDrawer,
+              onTap: () {
+                ref.read(drawerProvider.notifier).closeDrawer();
+              },
               child: AnimatedContainer(
-                transform: Matrix4.translationValues(xOffset, yOffset, 0)
-                  ..scale(scaleFactor),
+                transform: Matrix4.translationValues(
+                    drawerSpecs.xOffset, drawerSpecs.yOffset, 0)
+                  ..scale(drawerSpecs.scaleFactor),
                 duration: const Duration(milliseconds: 350),
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(isDrawerOpen ? 25 : 0),
+                  borderRadius:
+                      BorderRadius.circular(drawerSpecs.isDrawerOpen ? 25 : 0),
                   boxShadow: [
                     BoxShadow(
                       color: theme.colorScheme.primary,
@@ -200,9 +171,10 @@ class _DrawerScreenState extends ConsumerState<DrawerScreen> {
                 ),
                 curve: Curves.easeIn,
                 child: AbsorbPointer(
-                  absorbing: isDrawerOpen,
+                  absorbing: drawerSpecs.isDrawerOpen,
                   child: ClipRRect(
-                    borderRadius: BorderRadius.circular(isDrawerOpen ? 25 : 0),
+                    borderRadius: BorderRadius.circular(
+                        drawerSpecs.isDrawerOpen ? 25 : 0),
                     child: getDrawerPage(),
                   ),
                 ),
@@ -217,31 +189,17 @@ class _DrawerScreenState extends ConsumerState<DrawerScreen> {
   Widget getDrawerPage() {
     switch (item) {
       case DrawerItems.settings:
-        return SettingsScreen(
-          openDrawer: openDrawer,
-          isDrawerOpen: isDrawerOpen,
-        );
+        return const SettingsScreen();
 
       case DrawerItems.addTx:
-        return NewTransactionScreen(
-          openDrawer: openDrawer,
-          isDrawerOpen: isDrawerOpen,
-        );
+        return const NewTransactionScreen();
       case DrawerItems.myTx:
-        return TransactionDetailsScreen(
-          openDrawer: openDrawer,
-          isDrawerOpen: isDrawerOpen,
-        );
+        return const TransactionDetailsScreen();
       case DrawerItems.reminders:
-        return CreateReminderScreen(
-          openDrawer: openDrawer,
-          isDrawerOpen: isDrawerOpen,
-        );
+        return const CreateReminderScreen();
       case DrawerItems.home:
       default:
         return HomeScreen(
-          openDrawer: openDrawer,
-          isDrawerOpen: isDrawerOpen,
           onSelectedItem: onSelectedItem,
         );
     }

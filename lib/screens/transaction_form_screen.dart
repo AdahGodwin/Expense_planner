@@ -55,14 +55,15 @@ class TransactionFormScreen extends StatelessWidget {
                   spacing: 10,
                   runSpacing: 20,
                   children: [
-                    ...Category.categoryNames.take(7).map((String name) {
+                    ...Categories.categoryNames.take(7).map((String name) {
                       return Column(
                         children: [
                           CircleAvatar(
-                            backgroundColor: Colors.teal,
+                            backgroundColor:
+                                Categories.getIconForCategory(name).color,
                             radius: 30,
                             child: FaIcon(
-                              Category.getIconForCategory(name),
+                              Categories.getIconForCategory(name).icon,
                               color: Colors.white,
                             ),
                           ),

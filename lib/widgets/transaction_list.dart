@@ -15,23 +15,6 @@ class TransactionList extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: Column(
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Text(
-                  "EXPENSES",
-                  style: theme.textTheme.titleMedium!.copyWith(
-                    color: theme.colorScheme.onPrimary,
-                  ),
-                ),
-                Text(
-                  "INCOME",
-                  style: theme.textTheme.titleMedium!.copyWith(
-                    color: theme.colorScheme.onPrimary,
-                  ),
-                ),
-              ],
-            ),
             const SizedBox(
               height: 400,
               child: Card(
@@ -118,10 +101,14 @@ class TransactionList extends StatelessWidget {
                             Row(
                               children: [
                                 CircleAvatar(
-                                  backgroundColor: Colors.green,
+                                  backgroundColor:
+                                      Categories.getIconForCategory(
+                                              transactions[index].category)
+                                          .color,
                                   child: FaIcon(
-                                    Category.getIconForCategory(
-                                        transactions[index].category),
+                                    Categories.getIconForCategory(
+                                            transactions[index].category)
+                                        .icon,
                                     color: Colors.white,
                                   ),
                                 ),
