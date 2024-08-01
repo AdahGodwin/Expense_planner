@@ -1,18 +1,20 @@
 import 'package:expense_manager/widgets/menu_button.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class Header extends StatefulWidget {
   final Widget titleWidget;
   final double height;
   final Widget icons;
   final IconData navigationIcon;
-  const Header(
-      {required this.titleWidget,
-      required this.height,
-      required this.icons,
-      required this.navigationIcon,
-      super.key});
+  final bool showTabs;
+  const Header({
+    required this.titleWidget,
+    required this.height,
+    required this.icons,
+    required this.navigationIcon,
+    required this.showTabs,
+    super.key,
+  });
 
   @override
   State<Header> createState() => _HeaderState();
@@ -67,43 +69,44 @@ class _HeaderState extends State<Header> {
           const SizedBox(
             height: 20,
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              Column(
-                children: [
-                  GestureDetector(
-                    onTap: () => setState(() {
-                      income = false;
-                    }),
-                    child: Text(
-                      "EXPENSES",
-                      style: theme.textTheme.titleMedium!.copyWith(
-                        color: theme.colorScheme.onPrimary,
+          if (widget.showTabs)
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                Column(
+                  children: [
+                    GestureDetector(
+                      onTap: () => setState(() {
+                        income = false;
+                      }),
+                      child: Text(
+                        "EXPENSES",
+                        style: theme.textTheme.titleMedium!.copyWith(
+                          color: theme.colorScheme.onPrimary,
+                        ),
                       ),
                     ),
-                  ),
-                  if (income == false) divider()
-                ],
-              ),
-              Column(
-                children: [
-                  GestureDetector(
-                    onTap: () => setState(() {
-                      income = true;
-                    }),
-                    child: Text(
-                      "INCOME",
-                      style: theme.textTheme.titleMedium!.copyWith(
-                        color: theme.colorScheme.onPrimary,
+                    if (income == false) divider()
+                  ],
+                ),
+                Column(
+                  children: [
+                    GestureDetector(
+                      onTap: () => setState(() {
+                        income = true;
+                      }),
+                      child: Text(
+                        "INCOME",
+                        style: theme.textTheme.titleMedium!.copyWith(
+                          color: theme.colorScheme.onPrimary,
+                        ),
                       ),
                     ),
-                  ),
-                  if (income == true) divider()
-                ],
-              ),
-            ],
-          ),
+                    if (income == true) divider()
+                  ],
+                ),
+              ],
+            ),
         ],
       ),
     );

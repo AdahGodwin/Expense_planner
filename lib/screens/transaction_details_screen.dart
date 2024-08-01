@@ -63,6 +63,7 @@ class _TransactionDetailsScreenState extends State<TransactionDetailsScreen> {
                 )
               ],
             ),
+            showTabs: true,
           ),
           Padding(
             padding: EdgeInsets.only(

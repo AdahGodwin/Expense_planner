@@ -1,5 +1,6 @@
 import 'package:expense_manager/providers/auth_provider.dart';
 import 'package:expense_manager/providers/theme.dart';
+import 'package:expense_manager/screens/create_category_screen.dart';
 import 'package:expense_manager/screens/drawer_screen.dart';
 import 'package:expense_manager/screens/signup_screen.dart';
 import 'package:expense_manager/screens/welcome_screen.dart';
@@ -88,7 +89,7 @@ class MyApp extends ConsumerWidget {
           size: 22,
         ),
       ),
-      home: const DrawerScreen(),
+      home: const CreateCategoryScreen(),
       // home: FutureBuilder(
       //     future: Provider.of<Auth>(context).getUserDetails(),
       //     builder: (context, snapshot) {

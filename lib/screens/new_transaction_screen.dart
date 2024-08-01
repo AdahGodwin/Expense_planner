@@ -38,6 +38,7 @@ class NewTransactionScreen extends StatelessWidget {
             icons: const SizedBox(
               height: 20,
             ),
+            showTabs: true,
           ),
         ],
       ),

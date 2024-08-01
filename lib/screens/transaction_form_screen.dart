@@ -10,148 +10,146 @@ class TransactionFormScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
     const dateStrings = ["Today", "Yesterday", "2 days ago"];
-    return SizedBox(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _textFieldWidget("Amount"),
-          const SizedBox(
-            height: 20,
-          ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Text(
-                "Account",
-                style: TextStyle(
-                  color: Colors.grey,
-                ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _textFieldWidget("Amount"),
+        const SizedBox(
+          height: 20,
+        ),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              "Account",
+              style: TextStyle(
+                color: Colors.grey,
               ),
-              Text(
-                "Main",
-                style: TextStyle(
-                  color: theme.colorScheme.primary,
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(
-            height: 20,
-          ),
-          const Text(
-            "Categories",
-            style: TextStyle(
-              color: Colors.grey,
             ),
+            Text(
+              "Main",
+              style: TextStyle(
+                color: theme.colorScheme.primary,
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(
+          height: 20,
+        ),
+        const Text(
+          "Categories",
+          style: TextStyle(
+            color: Colors.grey,
           ),
-          const SizedBox(
-            height: 20,
-          ),
-          Center(
-            child: Column(
-              children: [
-                Wrap(
-                  alignment: WrapAlignment.start,
-                  spacing: 10,
-                  runSpacing: 20,
-                  children: [
-                    ...Categories.categoryNames.take(7).map((String name) {
-                      return Column(
-                        children: [
-                          CircleAvatar(
-                            backgroundColor:
-                                Categories.getIconForCategory(name).color,
-                            radius: 30,
-                            child: FaIcon(
-                              Categories.getIconForCategory(name).icon,
-                              color: Colors.white,
-                            ),
-                          ),
-                          Text(name),
-                        ],
-                      );
-                    }),
-                    const Column(
+        ),
+        const SizedBox(
+          height: 20,
+        ),
+        Center(
+          child: Column(
+            children: [
+              Wrap(
+                alignment: WrapAlignment.start,
+                spacing: 10,
+                runSpacing: 20,
+                children: [
+                  ...Categories.categoryNames.take(7).map((String name) {
+                    return Column(
                       children: [
                         CircleAvatar(
-                          backgroundColor: Colors.grey,
+                          backgroundColor:
+                              Categories.getIconForCategory(name).color,
                           radius: 30,
                           child: FaIcon(
-                            FontAwesomeIcons.plus,
+                            Categories.getIconForCategory(name).icon,
                             color: Colors.white,
                           ),
                         ),
-                        Text("Other"),
+                        Text(name),
                       ],
-                    )
-                  ],
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(
-            height: 30,
-          ),
-          const Text(
-            "Date",
-            style: TextStyle(
-              color: Colors.grey,
-            ),
-          ),
-          const SizedBox(
-            height: 15,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              ...List.generate(3, (index) {
-                return SizedBox(
-                  child: Column(
+                    );
+                  }),
+                  const Column(
                     children: [
-                      Text(
-                        DateFormat("dd/MM").format(
-                          DateTime.now().subtract(Duration(days: index)),
+                      CircleAvatar(
+                        backgroundColor: Colors.grey,
+                        radius: 30,
+                        child: FaIcon(
+                          FontAwesomeIcons.plus,
+                          color: Colors.white,
                         ),
                       ),
-                      Text(
-                        dateStrings[index],
-                      ),
+                      Text("Other"),
                     ],
-                  ),
-                );
-              }),
-              FaIcon(
-                FontAwesomeIcons.calendarDays,
-                color: theme.colorScheme.primary,
-              )
+                  )
+                ],
+              ),
             ],
           ),
-          const SizedBox(
-            height: 5,
+        ),
+        const SizedBox(
+          height: 30,
+        ),
+        const Text(
+          "Date",
+          style: TextStyle(
+            color: Colors.grey,
           ),
-          _textFieldWidget("Comment"),
-          const SizedBox(
-            height: 20,
-          ),
-          SizedBox(
-            width: double.infinity,
-            height: 50,
-            child: ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: theme.colorScheme.primary,
-                shape: const StadiumBorder(),
-              ),
-              onPressed: () {},
-              child: Text(
-                "Add Expense",
-                style: theme.textTheme.titleMedium!.copyWith(
-                  color: theme.colorScheme.onPrimary,
+        ),
+        const SizedBox(
+          height: 15,
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            ...List.generate(3, (index) {
+              return SizedBox(
+                child: Column(
+                  children: [
+                    Text(
+                      DateFormat("dd/MM").format(
+                        DateTime.now().subtract(Duration(days: index)),
+                      ),
+                    ),
+                    Text(
+                      dateStrings[index],
+                    ),
+                  ],
                 ),
+              );
+            }),
+            FaIcon(
+              FontAwesomeIcons.calendarDays,
+              color: theme.colorScheme.primary,
+            )
+          ],
+        ),
+        const SizedBox(
+          height: 5,
+        ),
+        _textFieldWidget("Comment"),
+        const SizedBox(
+          height: 20,
+        ),
+        SizedBox(
+          width: double.infinity,
+          height: 50,
+          child: ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: theme.colorScheme.primary,
+              shape: const StadiumBorder(),
+            ),
+            onPressed: () {},
+            child: Text(
+              "Add Expense",
+              style: theme.textTheme.titleMedium!.copyWith(
+                color: theme.colorScheme.onPrimary,
               ),
             ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

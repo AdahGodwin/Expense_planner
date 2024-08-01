@@ -101,6 +101,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 ),
                 onPressed: null,
               ),
+              showTabs: true,
             ),
             Padding(
               padding: EdgeInsets.only(

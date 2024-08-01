@@ -55,6 +55,7 @@ class _CreateReminderScreenState extends State<CreateReminderScreen> {
             icons: const SizedBox(
               width: 10,
             ),
+            showTabs: true,
           ),
         ],
       ),
