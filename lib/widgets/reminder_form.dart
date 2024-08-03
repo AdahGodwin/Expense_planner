@@ -26,7 +26,7 @@ class _ReminderFormState extends State<ReminderForm> {
               inactiveTrackColor: Colors.grey,
               activeColor: theme.colorScheme.primary,
               inactiveThumbColor: Colors.white,
-              value: true,
+              value: false,
               onChanged: (value) {},
             ),
           ],
@@ -73,7 +73,7 @@ class _ReminderFormState extends State<ReminderForm> {
             ),
             onPressed: () {},
             child: Text(
-              "Add Expense",
+              "Add Reminder",
               style: theme.textTheme.titleMedium!.copyWith(
                 color: theme.colorScheme.onPrimary,
               ),

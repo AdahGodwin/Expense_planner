@@ -1,6 +1,8 @@
+import 'package:expense_manager/screens/create_category_screen.dart';
 import 'package:expense_manager/shared/categorydata.dart';
 import 'package:expense_manager/widgets/header_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class CategoryScreen extends StatelessWidget {
@@ -44,18 +46,24 @@ class CategoryScreen extends StatelessWidget {
                         ],
                       );
                     }),
-                    const Column(
+                    Column(
                       children: [
-                        CircleAvatar(
-                          backgroundColor: Colors.orange,
-                          radius: 30,
-                          child: FaIcon(
-                            FontAwesomeIcons.plus,
-                            color: Colors.white,
-                            size: 30,
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.of(context)
+                                .pushNamed(CreateCategoryScreen.routeName);
+                          },
+                          child: const CircleAvatar(
+                            backgroundColor: Colors.orange,
+                            radius: 30,
+                            child: FaIcon(
+                              FontAwesomeIcons.plus,
+                              color: Colors.white,
+                              size: 30,
+                            ),
                           ),
                         ),
-                        Text("Create"),
+                        const Text("Create"),
                       ],
                     ),
                   ],

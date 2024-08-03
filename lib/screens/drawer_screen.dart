@@ -1,6 +1,7 @@
 import "package:expense_manager/models/configurations.dart";
 import "package:expense_manager/providers/drawer_provider.dart";
 import "package:expense_manager/providers/theme.dart";
+import "package:expense_manager/screens/accounts_screen.dart";
 import "package:expense_manager/screens/category_screen.dart";
 import "package:expense_manager/screens/create_reminder_screen.dart";
 import "package:expense_manager/screens/transaction_details_screen.dart";
@@ -200,6 +201,8 @@ class _DrawerScreenState extends ConsumerState<DrawerScreen> {
         return const CreateReminderScreen();
       case DrawerItems.categories:
         return const CategoryScreen();
+      case DrawerItems.accounts:
+        return const AccountsScreen();
 
       case DrawerItems.home:
       default:

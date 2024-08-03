@@ -1,5 +1,6 @@
 import 'package:expense_manager/widgets/menu_button.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class Header extends StatefulWidget {
   final Widget titleWidget;
@@ -7,12 +8,14 @@ class Header extends StatefulWidget {
   final Widget icons;
   final IconData navigationIcon;
   final bool showTabs;
+  final bool? popWindow;
   const Header({
     required this.titleWidget,
     required this.height,
     required this.icons,
     required this.navigationIcon,
     required this.showTabs,
+    this.popWindow,
     super.key,
   });
 
@@ -59,9 +62,19 @@ class _HeaderState extends State<Header> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              MenuButton(
-                icon: widget.navigationIcon,
-              ),
+              widget.popWindow == true
+                  ? GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).pop();
+                      },
+                      child: FaIcon(
+                        widget.navigationIcon,
+                        color: Colors.white,
+                      ),
+                    )
+                  : MenuButton(
+                      icon: widget.navigationIcon,
+                    ),
               widget.titleWidget,
               widget.icons,
             ],

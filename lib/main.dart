@@ -41,7 +41,7 @@ class MyApp extends ConsumerWidget {
             fontWeight: FontWeight.bold,
           ),
           displaySmall: TextStyle(
-            fontSize: 15,
+            fontSize: 16,
             fontWeight: FontWeight.w500,
           ),
           displayMedium: TextStyle(
@@ -51,6 +51,10 @@ class MyApp extends ConsumerWidget {
           titleMedium: TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.w500,
+          ),
+          titleLarge: TextStyle(
+            fontSize: 30,
+            fontWeight: FontWeight.w600,
           ),
         ),
         iconTheme: const IconThemeData(
@@ -84,12 +88,16 @@ class MyApp extends ConsumerWidget {
             fontSize: 20,
             fontWeight: FontWeight.w500,
           ),
+          titleLarge: TextStyle(
+            fontSize: 30,
+            fontWeight: FontWeight.w600,
+          ),
         ),
         iconTheme: const IconThemeData(
           size: 22,
         ),
       ),
-      home: const CreateCategoryScreen(),
+      home: const DrawerScreen(),
       // home: FutureBuilder(
       //     future: Provider.of<Auth>(context).getUserDetails(),
       //     builder: (context, snapshot) {
@@ -107,6 +115,8 @@ class MyApp extends ConsumerWidget {
         "/home": (context) => const DrawerScreen(),
         SignUpScreen.routeName: (context) => const SignUpScreen(),
         WelcomeScreen.routeName: (context) => const WelcomeScreen(),
+        CreateCategoryScreen.routeName: (context) =>
+            const CreateCategoryScreen(),
       },
     );
   }
