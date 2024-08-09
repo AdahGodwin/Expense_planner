@@ -1,5 +1,5 @@
 import 'package:collection/collection.dart';
-import 'package:expense_manager/providers/expense_provider.dart';
+import 'package:expense_manager/models/expense.dart';
 import 'package:expense_manager/widgets/expense_details/expense_list.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';

@@ -1,9 +1,9 @@
 import 'package:collection/collection.dart';
+import 'package:expense_manager/models/expense.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 import '../../models/bar_chart_model.dart';
-import '../../providers/expense_provider.dart';
 
 class ExpenseChart extends StatefulWidget {
   final List<Expense> expenses;

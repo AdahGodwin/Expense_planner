@@ -1,8 +1,10 @@
 import 'package:expense_manager/providers/auth_provider.dart';
 import 'package:expense_manager/providers/theme.dart';
 import 'package:expense_manager/screens/create_category_screen.dart';
+import 'package:expense_manager/screens/create_transfer_screen.dart';
 import 'package:expense_manager/screens/drawer_screen.dart';
 import 'package:expense_manager/screens/signup_screen.dart';
+import 'package:expense_manager/screens/transfer_history_screen.dart';
 import 'package:expense_manager/screens/welcome_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -77,7 +79,7 @@ class MyApp extends ConsumerWidget {
             fontWeight: FontWeight.bold,
           ),
           displaySmall: TextStyle(
-            fontSize: 15,
+            fontSize: 16,
             fontWeight: FontWeight.w500,
           ),
           displayMedium: TextStyle(
@@ -117,6 +119,8 @@ class MyApp extends ConsumerWidget {
         WelcomeScreen.routeName: (context) => const WelcomeScreen(),
         CreateCategoryScreen.routeName: (context) =>
             const CreateCategoryScreen(),
+        CreateTransfer.routeName: (context) => const CreateTransfer(),
+        TransferHistory.routeName: (context) => const TransferHistory(),
       },
     );
   }

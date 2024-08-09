@@ -1,29 +1,10 @@
 import "package:collection/collection.dart";
+import "package:expense_manager/models/expense.dart";
 import "package:expense_manager/shared/dummydata.dart";
 import "package:flutter/material.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:intl/intl.dart";
 import '../db_helpers/db_helper.dart';
-
-class Expense {
-  String key;
-  String transactionId;
-  String? accountId;
-  double amount;
-  String category;
-  DateTime transactionDate;
-  String description;
-
-  Expense({
-    required this.key,
-    required this.transactionId,
-    this.accountId,
-    required this.amount,
-    required this.category,
-    required this.transactionDate,
-    required this.description,
-  });
-}
 
 class ExpenseNotifier extends StateNotifier<List<Expense>> {
   ExpenseNotifier() : super(expensesData);
@@ -80,6 +61,8 @@ class ExpenseNotifier extends StateNotifier<List<Expense>> {
     String paymentMethod,
     String category,
     String key,
+    String budgetId,
+    String accountId,
   ) {
     final newExpense = Expense(
       transactionId: DateTime.now().toString(),
@@ -88,16 +71,20 @@ class ExpenseNotifier extends StateNotifier<List<Expense>> {
       transactionDate: date,
       category: category,
       key: key,
+      budgetId: budgetId,
+      accountId: accountId,
     );
 
     // Provider.of<Auth>(context, listen: false).updateBalance(true, amount);
     DBHelper.insert("expenses", {
       "id": newExpense.transactionId,
-      "title": newExpense.description,
+      "description": newExpense.description,
       "amount": newExpense.amount,
       "date": newExpense.transactionDate.millisecondsSinceEpoch,
       "key": newExpense.key,
       "category": newExpense.category,
+      "budgetId": newExpense.budgetId,
+      "accountId": newExpense.accountId,
     });
   }
 
@@ -111,12 +98,14 @@ class ExpenseNotifier extends StateNotifier<List<Expense>> {
     state = dataList
         .map((expenses) => Expense(
               transactionId: expenses['id'],
-              description: expenses['title'],
+              description: expenses['description'],
               amount: double.parse(expenses['amount'].toString()),
               transactionDate:
                   DateTime.fromMillisecondsSinceEpoch(expenses['date']),
               key: expenses['key'],
               category: expenses["category"],
+              budgetId: expenses["budgetId"],
+              accountId: expenses["accountId"],
             ))
         .toList();
   }

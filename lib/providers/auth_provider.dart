@@ -1,27 +1,10 @@
 import "dart:io";
 
+import "package:expense_manager/models/auth.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:intl/intl.dart";
 
 import '../db_helpers/db_helper.dart';
-
-class AuthDetails {
-  final String id;
-  final String firstname;
-  final String lastname;
-  final String email;
-  File? imageFile;
-  double balance = 0.0;
-
-  AuthDetails({
-    required this.id,
-    required this.firstname,
-    required this.lastname,
-    required this.email,
-    this.imageFile,
-    required this.balance,
-  });
-}
 
 class AuthNotifier extends StateNotifier<AuthDetails> {
   AuthNotifier()

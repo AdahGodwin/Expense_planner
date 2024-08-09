@@ -63,11 +63,11 @@ class _HeaderState extends State<Header> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               widget.popWindow == true
-                  ? GestureDetector(
-                      onTap: () {
+                  ? IconButton(
+                      onPressed: () {
                         Navigator.of(context).pop();
                       },
-                      child: FaIcon(
+                      icon: FaIcon(
                         widget.navigationIcon,
                         color: Colors.white,
                       ),

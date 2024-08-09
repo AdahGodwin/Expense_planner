@@ -1,3 +1,5 @@
+import 'package:expense_manager/screens/create_transfer_screen.dart';
+import 'package:expense_manager/screens/transfer_history_screen.dart';
 import 'package:expense_manager/widgets/header_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -36,21 +38,26 @@ class AccountsScreen extends StatelessWidget {
                     children: [
                       Column(
                         children: [
-                          Card(
-                            color: theme.colorScheme.primary,
-                            elevation: 3,
-                            margin: const EdgeInsets.only(
-                              bottom: 5,
-                              top: 30,
-                            ),
-                            shape: ContinuousRectangleBorder(
-                                borderRadius: BorderRadius.circular(35)),
-                            child: const Padding(
-                              padding: EdgeInsets.all(12.0),
-                              child: FaIcon(
-                                FontAwesomeIcons.clockRotateLeft,
-                                color: Colors.white,
-                                size: 22,
+                          GestureDetector(
+                            onTap: () => Navigator.of(context)
+                                .pushNamed(TransferHistory.routeName),
+                            child: Card(
+                              color: theme.colorScheme.primary,
+                              elevation: 3,
+                              margin: const EdgeInsets.only(
+                                bottom: 5,
+                                top: 30,
+                              ),
+                              shape: ContinuousRectangleBorder(
+                                borderRadius: BorderRadius.circular(35),
+                              ),
+                              child: const Padding(
+                                padding: EdgeInsets.all(12.0),
+                                child: FaIcon(
+                                  FontAwesomeIcons.clockRotateLeft,
+                                  color: Colors.white,
+                                  size: 22,
+                                ),
                               ),
                             ),
                           ),
@@ -59,23 +66,27 @@ class AccountsScreen extends StatelessWidget {
                       ),
                       Column(
                         children: [
-                          Card(
-                            color: theme.colorScheme.primary,
-                            elevation: 3,
-                            margin: const EdgeInsets.only(
-                              bottom: 5,
-                              top: 30,
-                            ),
-                            shape: ContinuousRectangleBorder(
-                                borderRadius: BorderRadius.circular(
-                              35,
-                            )),
-                            child: const Padding(
-                              padding: EdgeInsets.all(12.0),
-                              child: FaIcon(
-                                FontAwesomeIcons.arrowRightArrowLeft,
-                                color: Colors.white,
-                                size: 22,
+                          GestureDetector(
+                            onTap: () => Navigator.of(context)
+                                .pushNamed(CreateTransfer.routeName),
+                            child: Card(
+                              color: theme.colorScheme.primary,
+                              elevation: 3,
+                              margin: const EdgeInsets.only(
+                                bottom: 5,
+                                top: 30,
+                              ),
+                              shape: ContinuousRectangleBorder(
+                                  borderRadius: BorderRadius.circular(
+                                35,
+                              )),
+                              child: const Padding(
+                                padding: EdgeInsets.all(12.0),
+                                child: FaIcon(
+                                  FontAwesomeIcons.arrowRightArrowLeft,
+                                  color: Colors.white,
+                                  size: 22,
+                                ),
                               ),
                             ),
                           ),
@@ -138,8 +149,9 @@ class AccountsScreen extends StatelessWidget {
           Header(
             titleWidget: Text(
               "Accounts",
-              style:
-                  theme.textTheme.displayMedium!.copyWith(color: Colors.white),
+              style: theme.textTheme.displayMedium!.copyWith(
+                color: Colors.white,
+              ),
             ),
             height: .13,
             icons: const SizedBox(

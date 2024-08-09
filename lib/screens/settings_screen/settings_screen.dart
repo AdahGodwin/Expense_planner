@@ -2,6 +2,7 @@ import 'dart:io';
 
 // import 'package:expense_manager/providers/theme.dart';
 
+import 'package:expense_manager/models/auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';

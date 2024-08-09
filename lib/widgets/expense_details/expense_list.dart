@@ -1,7 +1,6 @@
+import 'package:expense_manager/models/expense.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-
-import '../../providers/expense_provider.dart';
 
 class ExpenseList extends StatelessWidget {
   final Map<String, List<Expense>> groupTx;

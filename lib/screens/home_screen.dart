@@ -1,3 +1,5 @@
+import 'package:expense_manager/models/expense.dart';
+import 'package:expense_manager/models/income.dart';
 import 'package:expense_manager/widgets/header_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

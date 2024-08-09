@@ -1,24 +1,9 @@
+import "package:expense_manager/models/income.dart";
 import "package:flutter/material.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:intl/intl.dart";
 
 import '../db_helpers/db_helper.dart';
-
-class Income {
-  final String id;
-  final String title;
-  final double amount;
-  final DateTime date;
-  String key;
-
-  Income({
-    required this.id,
-    required this.title,
-    required this.amount,
-    required this.date,
-    required this.key,
-  });
-}
 
 class IncomeNotifier extends StateNotifier<List<Income>> {
   IncomeNotifier() : super([]);
@@ -66,24 +51,30 @@ class IncomeNotifier extends StateNotifier<List<Income>> {
 
   void addIncome(
     BuildContext context,
-    String title,
+    String description,
     double amount,
     DateTime date,
     String key,
+    String accountId,
+    String category,
   ) {
     final newIncome = Income(
       id: DateTime.now().toString(),
-      title: title,
+      description: description,
       amount: amount,
       date: date,
       key: key,
+      accountId: accountId,
+      category: category,
     );
     DBHelper.insert("income", {
       "id": newIncome.id,
-      "title": newIncome.title,
+      "description": newIncome.description,
       "amount": newIncome.amount,
       "date": newIncome.date.millisecondsSinceEpoch,
       "key": newIncome.key,
+      "category": newIncome.category,
+      "accountId": newIncome.accountId,
     });
     // Provider.of<Auth>(context, listen: false).updateBalance(false, amount);
   }
@@ -93,10 +84,12 @@ class IncomeNotifier extends StateNotifier<List<Income>> {
     state = dataList
         .map((income) => Income(
               id: income['id'],
-              title: income['title'],
+              description: income['description'],
               amount: double.parse(income['amount'].toString()),
               date: DateTime.fromMillisecondsSinceEpoch(income['date']),
               key: income['key'],
+              category: income["category"],
+              accountId: income["accountId"],
             ))
         .toList();
   }

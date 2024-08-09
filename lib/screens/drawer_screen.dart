@@ -1,3 +1,4 @@
+import "package:expense_manager/models/auth.dart";
 import "package:expense_manager/models/configurations.dart";
 import "package:expense_manager/providers/drawer_provider.dart";
 import "package:expense_manager/providers/theme.dart";

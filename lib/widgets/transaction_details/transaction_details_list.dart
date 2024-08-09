@@ -1,3 +1,4 @@
+import 'package:expense_manager/models/expense.dart';
 import 'package:expense_manager/providers/expense_provider.dart';
 import 'package:expense_manager/shared/categorydata.dart';
 import 'package:flutter/material.dart';
