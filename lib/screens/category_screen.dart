@@ -1,5 +1,7 @@
 import 'package:expense_manager/models/category.dart';
 import 'package:expense_manager/providers/category_provider.dart';
+import 'package:expense_manager/providers/filter_provider.dart';
+import 'package:expense_manager/screens/create_category_screen.dart';
 import 'package:expense_manager/widgets/header_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -10,7 +12,12 @@ class CategoryScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    List<Category> categories = ref.watch(categoryProvider);
+    Transaction transactionType = ref.watch(filterProvider);
+    List<Category> categories = ref
+        .watch(categoryProvider)
+        .where((category) => category.type == transactionType)
+        .toList();
+
     ThemeData theme = Theme.of(context);
     MediaQueryData mediaQuery = MediaQuery.of(context);
     return Scaffold(
@@ -24,28 +31,51 @@ class CategoryScreen extends ConsumerWidget {
               bottom: 10,
             ),
             child: Center(
-              child: GridView.builder(
+              child: GridView(
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 4,
                   mainAxisSpacing: 15,
                 ),
-                itemBuilder: (context, index) {
-                  return Column(
+                children: [
+                  ...categories.map(
+                    (category) {
+                      return Column(
+                        children: [
+                          CircleAvatar(
+                            backgroundColor: category.color,
+                            radius: 30,
+                            child: FaIcon(
+                              category.icon,
+                              color: Colors.white,
+                              size: 30,
+                            ),
+                          ),
+                          FittedBox(child: Text(category.name)),
+                        ],
+                      );
+                    },
+                  ),
+                  Column(
                     children: [
-                      CircleAvatar(
-                        backgroundColor: categories[index].color,
-                        radius: 30,
-                        child: FaIcon(
-                          categories[index].icon,
-                          color: Colors.white,
-                          size: 30,
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.of(context)
+                              .pushNamed(CreateCategoryScreen.routeName);
+                        },
+                        child: const CircleAvatar(
+                          backgroundColor: Colors.orange,
+                          radius: 30,
+                          child: FaIcon(
+                            FontAwesomeIcons.plus,
+                            color: Colors.white,
+                            size: 30,
+                          ),
                         ),
                       ),
-                      FittedBox(child: Text(categories[index].name)),
+                      const Text("Add"),
                     ],
-                  );
-                },
-                itemCount: categories.length,
+                  ),
+                ],
               ),
             ),
           ),

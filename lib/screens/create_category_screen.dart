@@ -1,14 +1,10 @@
 import 'package:expense_manager/models/category.dart';
 import 'package:expense_manager/providers/category_provider.dart';
+import 'package:expense_manager/providers/filter_provider.dart';
 import 'package:expense_manager/widgets/header_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-
-enum Transaction {
-  income,
-  expense,
-}
 
 class CreateCategoryScreen extends ConsumerStatefulWidget {
   const CreateCategoryScreen({super.key});

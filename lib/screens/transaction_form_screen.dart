@@ -1,5 +1,6 @@
 import 'package:expense_manager/models/category.dart';
 import 'package:expense_manager/providers/category_provider.dart';
+import 'package:expense_manager/providers/filter_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -10,7 +11,12 @@ class TransactionFormScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    List<Category> categories = ref.watch(categoryProvider);
+    Transaction transactionType = ref.watch(filterProvider);
+    List<Category> categories = ref
+        .watch(categoryProvider)
+        .where((category) => category.type == transactionType)
+        .toList();
+
     ThemeData theme = Theme.of(context);
     const dateStrings = ["Today", "Yesterday", "2 days ago"];
     return Column(
@@ -57,7 +63,7 @@ class TransactionFormScreen extends ConsumerWidget {
                 spacing: 10,
                 runSpacing: 20,
                 children: [
-                  ...categories.take(7).map((Category category) {
+                  ...categories.take(6).map((Category category) {
                     return Column(
                       children: [
                         CircleAvatar(
