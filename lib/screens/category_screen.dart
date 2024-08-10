@@ -1,73 +1,51 @@
-import 'package:expense_manager/screens/create_category_screen.dart';
-import 'package:expense_manager/shared/categorydata.dart';
+import 'package:expense_manager/models/category.dart';
+import 'package:expense_manager/providers/category_provider.dart';
 import 'package:expense_manager/widgets/header_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-class CategoryScreen extends StatelessWidget {
+class CategoryScreen extends ConsumerWidget {
   const CategoryScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    List<Category> categories = ref.watch(categoryProvider);
     ThemeData theme = Theme.of(context);
     MediaQueryData mediaQuery = MediaQuery.of(context);
     return Scaffold(
       body: Stack(
         children: [
-          SingleChildScrollView(
-            child: Padding(
-              padding: EdgeInsets.only(
-                top: (mediaQuery.size.height - mediaQuery.padding.top) * 0.23,
-                left: 20,
-                right: 20,
-                bottom: 20,
-              ),
-              child: Center(
-                child: Wrap(
-                  alignment: WrapAlignment.start,
-                  spacing: 10,
-                  runSpacing: 20,
-                  children: [
-                    ...Categories.categoryNames.map((String name) {
-                      return Column(
-                        children: [
-                          CircleAvatar(
-                            backgroundColor:
-                                Categories.getIconForCategory(name).color,
-                            radius: 30,
-                            child: FaIcon(
-                              Categories.getIconForCategory(name).icon,
-                              color: Colors.white,
-                              size: 30,
-                            ),
-                          ),
-                          Text(name),
-                        ],
-                      );
-                    }),
-                    Column(
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.of(context)
-                                .pushNamed(CreateCategoryScreen.routeName);
-                          },
-                          child: const CircleAvatar(
-                            backgroundColor: Colors.orange,
-                            radius: 30,
-                            child: FaIcon(
-                              FontAwesomeIcons.plus,
-                              color: Colors.white,
-                              size: 30,
-                            ),
-                          ),
-                        ),
-                        const Text("Create"),
-                      ],
-                    ),
-                  ],
+          Padding(
+            padding: EdgeInsets.only(
+              top: (mediaQuery.size.height - mediaQuery.padding.top) * 0.22,
+              left: 5,
+              right: 5,
+              bottom: 10,
+            ),
+            child: Center(
+              child: GridView.builder(
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 4,
+                  mainAxisSpacing: 15,
                 ),
+                itemBuilder: (context, index) {
+                  return Column(
+                    children: [
+                      CircleAvatar(
+                        backgroundColor: categories[index].color,
+                        radius: 30,
+                        child: FaIcon(
+                          categories[index].icon,
+                          color: Colors.white,
+                          size: 30,
+                        ),
+                      ),
+                      FittedBox(child: Text(categories[index].name)),
+                    ],
+                  );
+                },
+                itemCount: categories.length,
               ),
             ),
           ),

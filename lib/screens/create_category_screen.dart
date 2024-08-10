@@ -1,6 +1,8 @@
-import 'package:expense_manager/shared/categorydata.dart';
+import 'package:expense_manager/models/category.dart';
+import 'package:expense_manager/providers/category_provider.dart';
 import 'package:expense_manager/widgets/header_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 enum Transaction {
@@ -8,18 +10,22 @@ enum Transaction {
   expense,
 }
 
-class CreateCategoryScreen extends StatefulWidget {
+class CreateCategoryScreen extends ConsumerStatefulWidget {
   const CreateCategoryScreen({super.key});
 
   static const routeName = "/create-category";
   @override
-  State<CreateCategoryScreen> createState() => _CreateCategoryScreenState();
+  ConsumerState<CreateCategoryScreen> createState() =>
+      _CreateCategoryScreenState();
 }
 
-class _CreateCategoryScreenState extends State<CreateCategoryScreen> {
+class _CreateCategoryScreenState extends ConsumerState<CreateCategoryScreen> {
   Transaction transactionValue = Transaction.expense;
+
   @override
   Widget build(BuildContext context) {
+    List<Category> categories = ref.watch(categoryProvider);
+
     ThemeData theme = Theme.of(context);
     MediaQueryData mediaQuery = MediaQuery.of(context);
     return Scaffold(
@@ -122,13 +128,12 @@ class _CreateCategoryScreenState extends State<CreateCategoryScreen> {
                       spacing: 10,
                       runSpacing: 20,
                       children: [
-                        ...Categories.categoryNames.map((String name) {
+                        ...categories.map((Category category) {
                           return CircleAvatar(
-                            backgroundColor:
-                                Categories.getIconForCategory(name).color,
+                            backgroundColor: category.color,
                             radius: 30,
                             child: FaIcon(
-                              Categories.getIconForCategory(name).icon,
+                              category.icon,
                               color: Colors.white,
                               size: 30,
                             ),

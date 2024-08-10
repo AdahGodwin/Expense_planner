@@ -1,6 +1,5 @@
 import 'package:expense_manager/models/expense.dart';
 import 'package:expense_manager/providers/expense_provider.dart';
-import 'package:expense_manager/shared/categorydata.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -71,17 +70,15 @@ class TransactionDetailsList extends ConsumerWidget {
                   ...groupedExpenses.values.toList()[index].map((expense) {
                     return ListTile(
                       leading: CircleAvatar(
-                        backgroundColor:
-                            Categories.getIconForCategory(expense.category)
-                                .color,
+                        backgroundColor: expense.category.color,
                         radius: 20,
                         child: FaIcon(
-                          Categories.getIconForCategory(expense.category).icon,
+                          expense.category.icon,
                           color: Colors.white,
                           size: 20,
                         ),
                       ),
-                      title: Text(expense.category),
+                      title: Text(expense.category.name),
                       subtitle: Text(
                         expense.description,
                         style: const TextStyle(color: Colors.grey),

@@ -5,30 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 // import 'package:provider/provider.dart';
 
-class TransactionDetailsScreen extends StatefulWidget {
+class TransactionDetailsScreen extends StatelessWidget {
   const TransactionDetailsScreen(
       {super.key, this.openDrawer, this.isDrawerOpen});
   final VoidCallback? openDrawer;
 
   final bool? isDrawerOpen;
-
-  @override
-  State<TransactionDetailsScreen> createState() =>
-      _TransactionDetailsScreenState();
-}
-
-class _TransactionDetailsScreenState extends State<TransactionDetailsScreen> {
-  bool income = false;
-  Widget divider() {
-    return SizedBox(
-      width: 100,
-      child: Divider(
-        color: Theme.of(context).colorScheme.onPrimary,
-        height: 2,
-        thickness: 3,
-      ),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {

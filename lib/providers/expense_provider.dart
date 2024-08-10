@@ -1,5 +1,6 @@
 import "package:collection/collection.dart";
 import "package:expense_manager/models/expense.dart";
+import "package:expense_manager/shared/categorydata.dart";
 import "package:expense_manager/shared/dummydata.dart";
 import "package:flutter/material.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
@@ -59,7 +60,7 @@ class ExpenseNotifier extends StateNotifier<List<Expense>> {
     double amount,
     DateTime date,
     String paymentMethod,
-    String category,
+    String categoryName,
     String key,
     String budgetId,
     String accountId,
@@ -69,7 +70,7 @@ class ExpenseNotifier extends StateNotifier<List<Expense>> {
       description: description,
       amount: amount,
       transactionDate: date,
-      category: category,
+      category: Categories.getCategory(categoryName),
       key: key,
       budgetId: budgetId,
       accountId: accountId,
@@ -103,7 +104,7 @@ class ExpenseNotifier extends StateNotifier<List<Expense>> {
               transactionDate:
                   DateTime.fromMillisecondsSinceEpoch(expenses['date']),
               key: expenses['key'],
-              category: expenses["category"],
+              category: Categories.getCategory(expenses["category"]),
               budgetId: expenses["budgetId"],
               accountId: expenses["accountId"],
             ))

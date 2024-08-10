@@ -1,13 +1,16 @@
-import 'package:expense_manager/shared/categorydata.dart';
+import 'package:expense_manager/models/category.dart';
+import 'package:expense_manager/providers/category_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 
-class TransactionFormScreen extends StatelessWidget {
+class TransactionFormScreen extends ConsumerWidget {
   const TransactionFormScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    List<Category> categories = ref.watch(categoryProvider);
     ThemeData theme = Theme.of(context);
     const dateStrings = ["Today", "Yesterday", "2 days ago"];
     return Column(
@@ -54,19 +57,18 @@ class TransactionFormScreen extends StatelessWidget {
                 spacing: 10,
                 runSpacing: 20,
                 children: [
-                  ...Categories.categoryNames.take(7).map((String name) {
+                  ...categories.take(7).map((Category category) {
                     return Column(
                       children: [
                         CircleAvatar(
-                          backgroundColor:
-                              Categories.getIconForCategory(name).color,
+                          backgroundColor: category.color,
                           radius: 30,
                           child: FaIcon(
-                            Categories.getIconForCategory(name).icon,
+                            category.icon,
                             color: Colors.white,
                           ),
                         ),
-                        Text(name),
+                        Text(category.name),
                       ],
                     );
                   }),

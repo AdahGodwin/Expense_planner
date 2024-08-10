@@ -1,8 +1,10 @@
+import 'package:expense_manager/providers/filter_provider.dart';
 import 'package:expense_manager/widgets/menu_button.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-class Header extends StatefulWidget {
+class Header extends ConsumerWidget {
   final Widget titleWidget;
   final double height;
   final Widget icons;
@@ -20,29 +22,23 @@ class Header extends StatefulWidget {
   });
 
   @override
-  State<Header> createState() => _HeaderState();
-}
+  Widget build(BuildContext context, WidgetRef ref) {
+    Widget divider() {
+      return SizedBox(
+        width: 100,
+        child: Divider(
+          color: Theme.of(context).colorScheme.onPrimary,
+          height: 2,
+          thickness: 3,
+        ),
+      );
+    }
 
-class _HeaderState extends State<Header> {
-  bool income = false;
-  Widget divider() {
-    return SizedBox(
-      width: 100,
-      child: Divider(
-        color: Theme.of(context).colorScheme.onPrimary,
-        height: 2,
-        thickness: 3,
-      ),
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
     MediaQueryData mediaQuery = MediaQuery.of(context);
     ThemeData theme = Theme.of(context);
-
+    Transaction transactionType = ref.watch(filterProvider);
     return Container(
-      height: (mediaQuery.size.height - mediaQuery.padding.top) * widget.height,
+      height: (mediaQuery.size.height - mediaQuery.padding.top) * height,
       decoration: BoxDecoration(
           gradient: LinearGradient(
             colors: [
@@ -62,36 +58,36 @@ class _HeaderState extends State<Header> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              widget.popWindow == true
+              popWindow == true
                   ? IconButton(
                       onPressed: () {
                         Navigator.of(context).pop();
                       },
                       icon: FaIcon(
-                        widget.navigationIcon,
+                        navigationIcon,
                         color: Colors.white,
                       ),
                     )
                   : MenuButton(
-                      icon: widget.navigationIcon,
+                      icon: navigationIcon,
                     ),
-              widget.titleWidget,
-              widget.icons,
+              titleWidget,
+              icons,
             ],
           ),
           const SizedBox(
             height: 20,
           ),
-          if (widget.showTabs)
+          if (showTabs)
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 Column(
                   children: [
                     GestureDetector(
-                      onTap: () => setState(() {
-                        income = false;
-                      }),
+                      onTap: () => ref
+                          .read(filterProvider.notifier)
+                          .toggleTransaction(Transaction.expense),
                       child: Text(
                         "EXPENSES",
                         style: theme.textTheme.titleMedium!.copyWith(
@@ -99,15 +95,15 @@ class _HeaderState extends State<Header> {
                         ),
                       ),
                     ),
-                    if (income == false) divider()
+                    if (transactionType == Transaction.expense) divider()
                   ],
                 ),
                 Column(
                   children: [
                     GestureDetector(
-                      onTap: () => setState(() {
-                        income = true;
-                      }),
+                      onTap: () => ref
+                          .read(filterProvider.notifier)
+                          .toggleTransaction(Transaction.income),
                       child: Text(
                         "INCOME",
                         style: theme.textTheme.titleMedium!.copyWith(
@@ -115,7 +111,7 @@ class _HeaderState extends State<Header> {
                         ),
                       ),
                     ),
-                    if (income == true) divider()
+                    if (transactionType == Transaction.income) divider()
                   ],
                 ),
               ],

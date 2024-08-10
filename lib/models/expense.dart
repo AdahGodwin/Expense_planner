@@ -1,10 +1,12 @@
+import 'package:expense_manager/models/category.dart';
+
 class Expense {
   String key;
   String transactionId;
   String budgetId;
   String accountId;
   double amount;
-  String category;
+  Category category;
   DateTime transactionDate;
   String description;
 
