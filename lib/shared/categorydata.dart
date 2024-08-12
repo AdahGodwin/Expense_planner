@@ -41,7 +41,7 @@ final List<Category> categories = [
   ),
   Category(
     name: 'Entertainment',
-    color: Colors.black12,
+    color: Colors.redAccent,
     icon: FontAwesomeIcons.film,
     type: Transaction.expense,
   ),
@@ -205,6 +205,48 @@ final List<Category> categories = [
     name: 'Sale of Assets',
     color: Colors.brown,
     icon: FontAwesomeIcons.solidGem,
+    type: Transaction.income,
+  ),
+  Category(
+    name: 'Emergency',
+    color: Colors.orange,
+    icon: FontAwesomeIcons.triangleExclamation,
+    type: Transaction.accounts,
+  ),
+  Category(
+    name: 'Banking',
+    color: Colors.blue,
+    icon: FontAwesomeIcons.buildingColumns,
+    type: Transaction.accounts,
+  ),
+  Category(
+    name: 'Savings Account',
+    color: Colors.green,
+    icon: FontAwesomeIcons.piggyBank,
+    type: Transaction.accounts,
+  ),
+  Category(
+    name: 'Debt',
+    color: Colors.red,
+    icon: FontAwesomeIcons.creditCard,
+    type: Transaction.accounts,
+  ),
+  Category(
+    name: 'Investment',
+    color: Colors.purple,
+    icon: FontAwesomeIcons.chartLine,
+    type: Transaction.accounts,
+  ),
+  Category(
+    name: 'Other',
+    color: Colors.black,
+    icon: FontAwesomeIcons.question,
+    type: Transaction.expense,
+  ),
+  Category(
+    name: 'Other Income',
+    color: Colors.black,
+    icon: FontAwesomeIcons.question,
     type: Transaction.income,
   ),
 ];

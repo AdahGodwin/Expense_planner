@@ -128,7 +128,7 @@ class TransactionList extends StatelessWidget {
                                   width: 40,
                                 ),
                                 Text(
-                                  "30000 \$",
+                                  "${transactions[index].amount} \$",
                                   style: theme.textTheme.displaySmall,
                                 ),
                               ],

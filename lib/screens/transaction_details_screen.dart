@@ -1,11 +1,17 @@
 // import 'package:expense_manager/providers/expense_provider.dart';
+import 'package:expense_manager/models/expense.dart';
+import 'package:expense_manager/models/income.dart';
+import 'package:expense_manager/providers/expense_provider.dart';
+import 'package:expense_manager/providers/filter_provider.dart';
+import 'package:expense_manager/providers/income_provider.dart';
 import 'package:expense_manager/widgets/header_widget.dart';
 import 'package:expense_manager/widgets/transaction_details/transaction_details_list.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 // import 'package:provider/provider.dart';
 
-class TransactionDetailsScreen extends StatelessWidget {
+class TransactionDetailsScreen extends ConsumerWidget {
   const TransactionDetailsScreen(
       {super.key, this.openDrawer, this.isDrawerOpen});
   final VoidCallback? openDrawer;
@@ -13,7 +19,14 @@ class TransactionDetailsScreen extends StatelessWidget {
   final bool? isDrawerOpen;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    Transaction transactionType = ref.watch(filterProvider);
+
+    Map<String, List<Expense>> groupedExpenses = ref.watch(groupedTxProvider);
+
+    Map<String, List<Income>> groupedIncome =
+        ref.watch(incomeProvider.notifier).groupTx;
+
     var mediaQuery = MediaQuery.of(context);
     ThemeData theme = Theme.of(context);
     return Scaffold(
@@ -60,11 +73,11 @@ class TransactionDetailsScreen extends StatelessWidget {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20),
                 ),
-                child: const Padding(
-                  padding: EdgeInsets.all(16.0),
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
                   child: Column(
                     children: [
-                      Row(
+                      const Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
                           Text(
@@ -102,7 +115,10 @@ class TransactionDetailsScreen extends StatelessWidget {
                         ],
                       ),
                       Expanded(
-                        child: TransactionDetailsList(),
+                        child: TransactionDetailsList(
+                            groupedTx: transactionType == Transaction.expense
+                                ? groupedExpenses
+                                : groupedIncome),
                       ),
                     ],
                   ),

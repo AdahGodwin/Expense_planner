@@ -1,5 +1,6 @@
+import "package:collection/collection.dart";
 import "package:expense_manager/models/income.dart";
-import "package:flutter/material.dart";
+import "package:expense_manager/shared/categorydata.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:intl/intl.dart";
 
@@ -7,10 +8,6 @@ import '../db_helpers/db_helper.dart';
 
 class IncomeNotifier extends StateNotifier<List<Income>> {
   IncomeNotifier() : super([]);
-
-  // List<Income> get allIncome {
-  //   return [...income];
-  // }
 
   List<Income> get recentTransactions {
     return state.where((tx) {
@@ -49,15 +46,21 @@ class IncomeNotifier extends StateNotifier<List<Income>> {
     return NumberFormat.compactSimpleCurrency(name: "NGN").format(todaysTotal);
   }
 
-  void addIncome(
-    BuildContext context,
-    String description,
-    double amount,
-    DateTime date,
-    String key,
-    String accountId,
-    String category,
-  ) {
+  Map<String, List<Income>> get groupTx {
+    var newMap = groupBy(
+        state.sorted((a, b) => a.date.compareTo(b.date)), (obj) => obj.key);
+    return newMap;
+  }
+
+  void addIncome({
+    required String description,
+    required double amount,
+    required DateTime date,
+    required String key,
+    required String accountId,
+    required String categoryName,
+    required String budgetId,
+  }) {
     final newIncome = Income(
       id: DateTime.now().toString(),
       description: description,
@@ -65,7 +68,8 @@ class IncomeNotifier extends StateNotifier<List<Income>> {
       date: date,
       key: key,
       accountId: accountId,
-      category: category,
+      budgetId: budgetId,
+      category: Categories.getCategory(categoryName),
     );
     DBHelper.insert("income", {
       "id": newIncome.id,
@@ -73,8 +77,9 @@ class IncomeNotifier extends StateNotifier<List<Income>> {
       "amount": newIncome.amount,
       "date": newIncome.date.millisecondsSinceEpoch,
       "key": newIncome.key,
-      "category": newIncome.category,
+      "category": newIncome.category.name,
       "accountId": newIncome.accountId,
+      "budgetId": newIncome.budgetId,
     });
     // Provider.of<Auth>(context, listen: false).updateBalance(false, amount);
   }
@@ -88,8 +93,9 @@ class IncomeNotifier extends StateNotifier<List<Income>> {
               amount: double.parse(income['amount'].toString()),
               date: DateTime.fromMillisecondsSinceEpoch(income['date']),
               key: income['key'],
-              category: income["category"],
+              category: Categories.getCategory(income["category"]),
               accountId: income["accountId"],
+              budgetId: income["budgetId"],
             ))
         .toList();
   }

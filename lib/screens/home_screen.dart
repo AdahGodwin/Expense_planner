@@ -1,5 +1,6 @@
 import 'package:expense_manager/models/expense.dart';
 import 'package:expense_manager/models/income.dart';
+import 'package:expense_manager/providers/filter_provider.dart';
 import 'package:expense_manager/widgets/header_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -28,19 +29,16 @@ class HomeScreen extends ConsumerStatefulWidget {
 
 class _HomeScreenState extends ConsumerState<HomeScreen> {
   bool isInit = true;
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   ref
-  //       .read(expenseProvider.notifier)
-  //       .fetchAndSetExpenses()
-  //       .then((value) => print(true));
-  //   ref
-  //       .read(incomeProvider.notifier)
-  //       .fetchAndSetIncome()
-  //       .then((value) => isInit = true);
-  //   ref.read(authProvider.notifier).getUserDetails();
-  // }
+  @override
+  void initState() {
+    super.initState();
+    ref.read(expenseProvider.notifier).fetchAndSetExpenses();
+    ref
+        .read(incomeProvider.notifier)
+        .fetchAndSetIncome()
+        .then((value) => isInit = true);
+    // ref.read(authProvider.notifier).getUserDetails();
+  }
 
   String? dropdownValue = list.first;
 
@@ -52,6 +50,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    Transaction transactionType = ref.watch(filterProvider);
+
     List<Expense> expenses = ref.watch(expenseProvider);
     List<Income> income = ref.watch(incomeProvider);
     ThemeData theme = Theme.of(context);
@@ -117,8 +117,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       ? const Center(
                           child: CircularProgressIndicator(),
                         )
-                      : TransactionList(
-                          dropdownValue == list.first ? expenses : income),
+                      : TransactionList(transactionType == Transaction.expense
+                          ? expenses
+                          : income),
                 ),
               ),
             ),

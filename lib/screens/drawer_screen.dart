@@ -42,7 +42,6 @@ class _DrawerScreenState extends ConsumerState<DrawerScreen> {
   ) {
     DrawerSpecs drawerSpecs = ref.watch(drawerProvider);
     AuthDetails user = ref.read(authProvider);
-    // ThemeChanger themeChanger = Provider.of<ThemeChanger>(context);
     ThemeData theme = Theme.of(context);
 
     return Scaffold(

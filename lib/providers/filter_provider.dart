@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 enum Transaction {
   income,
   expense,
+  accounts,
 }
 
 class FilterNotifier extends StateNotifier<Transaction> {

@@ -105,9 +105,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
-        backgroundColor: widget.isDrawerOpen!
-            ? Theme.of(context).primaryColorDark
-            : Theme.of(context).primaryColor,
+        backgroundColor: Theme.of(context).colorScheme.primary,
         leading: IconButton(
           icon: const Icon(Icons.menu),
           onPressed: widget.openDrawer,

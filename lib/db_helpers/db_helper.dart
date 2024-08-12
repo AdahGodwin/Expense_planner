@@ -40,4 +40,9 @@ class DBHelper {
     final db = await DBHelper.database();
     return db.query(table);
   }
+
+  static clearData(String table) async {
+    final db = await DBHelper.database();
+    return db.delete(table);
+  }
 }
