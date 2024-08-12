@@ -26,6 +26,13 @@ class ExpenseNotifier extends StateNotifier<List<Expense>> {
     }).toList();
   }
 
+  Map<String, List<Expense>> get groupTx {
+    var newMap = groupBy(
+        state.sorted((a, b) => a.transactionDate.compareTo(b.transactionDate)),
+        (obj) => obj.key);
+    return newMap;
+  }
+
   String get totalMonthlySpending {
     String key = DateFormat("MM/yy").format(DateTime.now());
     List<Expense> monthlyExpenses = state.where((expense) {
@@ -54,7 +61,7 @@ class ExpenseNotifier extends StateNotifier<List<Expense>> {
     required String key,
     required String budgetId,
     required String accountId,
-  }) {
+  }) async {
     final newExpense = Expense(
       transactionId: DateTime.now().toString(),
       description: description,
@@ -67,7 +74,7 @@ class ExpenseNotifier extends StateNotifier<List<Expense>> {
     );
 
     // Provider.of<Auth>(context, listen: false).updateBalance(true, amount);
-    DBHelper.insert("expenses", {
+    await DBHelper.insert("expenses", {
       "id": newExpense.transactionId,
       "description": newExpense.description,
       "amount": newExpense.amount,
@@ -77,6 +84,7 @@ class ExpenseNotifier extends StateNotifier<List<Expense>> {
       "budgetId": newExpense.budgetId,
       "accountId": newExpense.accountId,
     });
+    await fetchAndSetExpenses();
   }
 
   // void deleteTransaction(String id) {
@@ -105,12 +113,4 @@ class ExpenseNotifier extends StateNotifier<List<Expense>> {
 final expenseProvider =
     StateNotifierProvider<ExpenseNotifier, List<Expense>>((ref) {
   return ExpenseNotifier();
-});
-final groupedTxProvider = Provider<Map<String, List<Expense>>>((ref) {
-  List<Expense> expenses = ref.watch(expenseProvider);
-
-  var newMap = groupBy(
-      expenses.sorted((a, b) => a.transactionDate.compareTo(b.transactionDate)),
-      (obj) => obj.key);
-  return newMap;
 });

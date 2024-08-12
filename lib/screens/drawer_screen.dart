@@ -1,6 +1,8 @@
 import "package:expense_manager/models/auth.dart";
 import "package:expense_manager/models/configurations.dart";
 import "package:expense_manager/providers/drawer_provider.dart";
+import "package:expense_manager/providers/expense_provider.dart";
+import "package:expense_manager/providers/income_provider.dart";
 import "package:expense_manager/providers/theme.dart";
 import "package:expense_manager/screens/accounts_screen.dart";
 import "package:expense_manager/screens/category_screen.dart";
@@ -23,6 +25,15 @@ class DrawerScreen extends ConsumerStatefulWidget {
 }
 
 class _DrawerScreenState extends ConsumerState<DrawerScreen> {
+  @override
+  void initState() {
+    super.initState();
+    ref.read(expenseProvider.notifier).fetchAndSetExpenses();
+    ref.read(incomeProvider.notifier).fetchAndSetIncome();
+
+    // ref.read(authProvider.notifier).getUserDetails();
+  }
+
   DrawerItem item = DrawerItems.home;
   void onSelectedItem(item) {
     setState(() {

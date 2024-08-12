@@ -60,7 +60,7 @@ class IncomeNotifier extends StateNotifier<List<Income>> {
     required String accountId,
     required String categoryName,
     required String budgetId,
-  }) {
+  }) async {
     final newIncome = Income(
       id: DateTime.now().toString(),
       description: description,
@@ -71,7 +71,7 @@ class IncomeNotifier extends StateNotifier<List<Income>> {
       budgetId: budgetId,
       category: Categories.getCategory(categoryName),
     );
-    DBHelper.insert("income", {
+    await DBHelper.insert("income", {
       "id": newIncome.id,
       "description": newIncome.description,
       "amount": newIncome.amount,
@@ -81,7 +81,8 @@ class IncomeNotifier extends StateNotifier<List<Income>> {
       "accountId": newIncome.accountId,
       "budgetId": newIncome.budgetId,
     });
-    // Provider.of<Auth>(context, listen: false).updateBalance(false, amount);
+
+    await fetchAndSetIncome();
   }
 
   Future<void> fetchAndSetIncome() async {

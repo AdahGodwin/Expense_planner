@@ -83,6 +83,27 @@ class _TransactionFormScreenState extends ConsumerState<TransactionFormScreen> {
       transactionDetails["category"] = "";
       accountName = "none";
     });
+    ScaffoldMessenger.of(context).clearSnackBars();
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        elevation: 5,
+        shape:
+            ContinuousRectangleBorder(borderRadius: BorderRadius.circular(25)),
+        content: Text(
+          "Added Succesfully!",
+          style: Theme.of(context)
+              .textTheme
+              .displaySmall!
+              .copyWith(color: Colors.white),
+        ),
+        duration: const Duration(
+          milliseconds: 500,
+        ),
+        behavior: SnackBarBehavior.floating,
+        backgroundColor: Theme.of(context).colorScheme.secondary,
+        showCloseIcon: true,
+      ),
+    );
   }
 
   @override

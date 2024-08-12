@@ -28,18 +28,6 @@ class HomeScreen extends ConsumerStatefulWidget {
 }
 
 class _HomeScreenState extends ConsumerState<HomeScreen> {
-  bool isInit = true;
-  @override
-  void initState() {
-    super.initState();
-    ref.read(expenseProvider.notifier).fetchAndSetExpenses();
-    ref
-        .read(incomeProvider.notifier)
-        .fetchAndSetIncome()
-        .then((value) => isInit = true);
-    // ref.read(authProvider.notifier).getUserDetails();
-  }
-
   String? dropdownValue = list.first;
 
   void changeValue(String? value) {
@@ -112,15 +100,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               child: SizedBox(
                 height:
                     (mediaQuery.size.height - mediaQuery.padding.top) * 0.84,
-                child: Container(
-                  child: isInit == false
-                      ? const Center(
-                          child: CircularProgressIndicator(),
-                        )
-                      : TransactionList(transactionType == Transaction.expense
-                          ? expenses
-                          : income),
-                ),
+                child: TransactionList(
+                    transactionType == Transaction.expense ? expenses : income),
               ),
             ),
           ],

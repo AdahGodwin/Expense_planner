@@ -22,7 +22,8 @@ class TransactionDetailsScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     Transaction transactionType = ref.watch(filterProvider);
 
-    Map<String, List<Expense>> groupedExpenses = ref.watch(groupedTxProvider);
+    Map<String, List<Expense>> groupedExpenses =
+        ref.watch(expenseProvider.notifier).groupTx;
 
     Map<String, List<Income>> groupedIncome =
         ref.watch(incomeProvider.notifier).groupTx;
