@@ -5,7 +5,9 @@ import 'package:expense_manager/providers/category_provider.dart';
 import 'package:expense_manager/providers/expense_provider.dart';
 import 'package:expense_manager/providers/filter_provider.dart';
 import 'package:expense_manager/providers/income_provider.dart';
+import 'package:expense_manager/shared/categorydata.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
@@ -22,7 +24,7 @@ class _TransactionFormScreenState extends ConsumerState<TransactionFormScreen> {
   final _formKey = GlobalKey<FormState>();
 
   final ScrollController _scrollController = ScrollController();
-  TextEditingController dateCtrl = TextEditingController(text: "Select date");
+  TextEditingController dateCtrl = TextEditingController();
 
   String accountName = "none";
 
@@ -53,6 +55,32 @@ class _TransactionFormScreenState extends ConsumerState<TransactionFormScreen> {
 
   submitForm(Transaction transactionType) {
     if (!_formKey.currentState!.validate()) {
+      return;
+    }
+    if (transactionDetails["category"] == "" ||
+        Categories.getCategory(transactionDetails["category"]).type !=
+            transactionType) {
+      ScaffoldMessenger.of(context).clearSnackBars();
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          elevation: 5,
+          shape: ContinuousRectangleBorder(
+              borderRadius: BorderRadius.circular(25)),
+          content: Text(
+            "Please Select a category",
+            style: Theme.of(context)
+                .textTheme
+                .displaySmall!
+                .copyWith(color: Colors.white),
+          ),
+          duration: const Duration(
+            milliseconds: 300,
+          ),
+          behavior: SnackBarBehavior.floating,
+          backgroundColor: Theme.of(context).colorScheme.error,
+          showCloseIcon: true,
+        ),
+      );
       return;
     }
     _formKey.currentState?.save();
@@ -323,9 +351,12 @@ class _TransactionFormScreenState extends ConsumerState<TransactionFormScreen> {
       ),
       keyboardType:
           label == "Amount" ? TextInputType.number : TextInputType.text,
+      inputFormatters: label == "Amount"
+          ? <TextInputFormatter>[FilteringTextInputFormatter.digitsOnly]
+          : [],
       validator: (value) {
         if (value!.isEmpty) {
-          return 'Field is required';
+          return '$label is required';
         }
         return null;
       },

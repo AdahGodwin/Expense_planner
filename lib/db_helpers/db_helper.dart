@@ -13,11 +13,11 @@ class DBHelper {
           'CREATE TABLE income(id TEXT PRIMARY KEY, description TEXT, amount INTEGER, date INTEGER, key TEXT, accountId TEXT, budgetId TEXT, category TEXT)');
       await db.execute(
           'CREATE TABLE user(id TEXT PRIMARY KEY, firstname TEXT, lastname TEXT, email TEXT, image TEXT, balance INTEGER)');
-      await db.execute('''
-      CREATE TABLE theme(
-        themeData TEXT
-      )
-    ''');
+      await db.execute('CREATE TABLE theme(themeData TEXT)');
+      await db.execute(
+          'CREATE TABLE accounts(id TEXT PRIMARY KEY, name TEXT, balance INTEGER, type TEXT, category TEXT,)');
+      await db.execute(
+          'CREATE TABLE transfers(id TEXT PRIMARY KEY, fromAccountId TEXT, toAccountId TEXT, amount INTEGER, date INTEGER, description TEXT, key TEXT,)');
     }, version: 1);
   }
 

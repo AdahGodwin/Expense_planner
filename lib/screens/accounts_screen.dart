@@ -1,15 +1,19 @@
+import 'package:expense_manager/models/account.dart';
+import 'package:expense_manager/providers/account_provider.dart';
 import 'package:expense_manager/screens/create_transfer_screen.dart';
 import 'package:expense_manager/screens/transfer_history_screen.dart';
 import 'package:expense_manager/widgets/header_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-class AccountsScreen extends StatelessWidget {
+class AccountsScreen extends ConsumerWidget {
   const AccountsScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     ThemeData theme = Theme.of(context);
+    List<Account> accounts = ref.watch(accountProvider);
     MediaQueryData mediaQuery = MediaQuery.of(context);
     return Scaffold(
       body: Stack(
@@ -115,10 +119,10 @@ class AccountsScreen extends StatelessWidget {
                                 children: [
                                   Row(
                                     children: [
-                                      const CircleAvatar(
+                                      CircleAvatar(
                                         backgroundColor: Colors.teal,
                                         child: FaIcon(
-                                          FontAwesomeIcons.paypal,
+                                          accounts[index].category.icon,
                                           color: Colors.white,
                                         ),
                                       ),
@@ -126,20 +130,24 @@ class AccountsScreen extends StatelessWidget {
                                         width: 10,
                                       ),
                                       Text(
-                                        "Paypal",
+                                        accounts[index].name,
                                         style: theme.textTheme.displaySmall,
                                       ),
                                     ],
                                   ),
                                   Text(
-                                    "300 \$",
-                                    style: theme.textTheme.displaySmall,
+                                    accounts[index].balance.toString(),
+                                    style: theme.textTheme.displaySmall!
+                                        .copyWith(
+                                            color: accounts[index].balance < 0
+                                                ? Colors.red
+                                                : null),
                                   )
                                 ],
                               ),
                             ));
                       },
-                      itemCount: 4,
+                      itemCount: accounts.length,
                     ),
                   ),
                 ],
