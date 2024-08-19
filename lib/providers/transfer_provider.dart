@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:expense_manager/db_helper.dart';
 
 import 'package:expense_manager/models/transfer.dart';
@@ -49,6 +50,13 @@ class TransferNotifier extends StateNotifier<List<Transfer>> {
               key: transfer["key"],
             ))
         .toList();
+    print(dataList);
+  }
+
+  Map<String, List<Transfer>> get groupTx {
+    var newMap = groupBy(
+        state.sorted((a, b) => a.date.compareTo(b.date)), (obj) => obj.key);
+    return newMap;
   }
 }
 

@@ -31,6 +31,14 @@ class AccountNotifier extends StateNotifier<List<Account>> {
     await fetchAndSetAccounts();
   }
 
+  List<Account> accountById(String accountId) {
+    var account = state.where((account) => account.id == accountId).toList();
+    if (account.isNotEmpty) {
+      return account;
+    }
+    return [];
+  }
+
   Future<void> fetchAndSetAccounts() async {
     final dataList = await DBHelper.getData('accounts');
     state = dataList

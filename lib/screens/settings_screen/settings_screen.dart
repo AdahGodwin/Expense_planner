@@ -22,7 +22,6 @@ class SettingsScreen extends ConsumerStatefulWidget {
 class _SettingsScreenState extends ConsumerState<SettingsScreen> {
   File? _userImageFile;
 
-  late ThemeData? _currentTheme;
   AuthDetails? _user;
   bool _isInit = true;
   @override
@@ -74,29 +73,6 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
   }
 
   bool edited = true;
-  final Map<String, ThemeData> _colors = {
-    "Dark": ThemeData.dark(),
-    "blue": ThemeData(
-      primarySwatch: Colors.blue,
-      fontFamily: 'Quicksand',
-    ),
-    "green": ThemeData(
-      primarySwatch: Colors.green,
-      fontFamily: 'Quicksand',
-    ),
-    "Teal": ThemeData(
-      primarySwatch: Colors.teal,
-      fontFamily: 'Quicksand',
-    ),
-    "Red": ThemeData(
-      primarySwatch: Colors.red,
-      fontFamily: 'Quicksand',
-    ),
-    "Orange": ThemeData(
-      primarySwatch: Colors.orange,
-      fontFamily: 'Quicksand',
-    ),
-  };
 
   @override
   Widget build(BuildContext context) {

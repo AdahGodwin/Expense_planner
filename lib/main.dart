@@ -1,5 +1,6 @@
 import 'package:expense_manager/providers/auth_provider.dart';
 import 'package:expense_manager/providers/theme.dart';
+import 'package:expense_manager/screens/create_account_screen.dart';
 import 'package:expense_manager/screens/create_category_screen.dart';
 import 'package:expense_manager/screens/create_transfer_screen.dart';
 import 'package:expense_manager/screens/drawer_screen.dart';
@@ -120,6 +121,7 @@ class MyApp extends ConsumerWidget {
             const CreateCategoryScreen(),
         CreateTransfer.routeName: (context) => const CreateTransfer(),
         TransferHistory.routeName: (context) => const TransferHistory(),
+        CreateAccount.routeName: (context) => const CreateAccount(),
       },
     );
   }

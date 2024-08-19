@@ -1,5 +1,6 @@
 import 'package:expense_manager/models/account.dart';
 import 'package:expense_manager/providers/account_provider.dart';
+import 'package:expense_manager/screens/create_account_screen.dart';
 import 'package:expense_manager/screens/create_transfer_screen.dart';
 import 'package:expense_manager/screens/transfer_history_screen.dart';
 import 'package:expense_manager/widgets/header_widget.dart';
@@ -172,7 +173,9 @@ class AccountsScreen extends ConsumerWidget {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          Navigator.of(context).pushNamed(CreateAccount.routeName);
+        },
         child: const FaIcon(
           FontAwesomeIcons.plus,
         ),

@@ -15,9 +15,9 @@ class DBHelper {
           'CREATE TABLE user(id TEXT PRIMARY KEY, firstname TEXT, lastname TEXT, email TEXT, image TEXT, balance INTEGER)');
       await db.execute('CREATE TABLE theme(themeData TEXT)');
       await db.execute(
-          'CREATE TABLE accounts(id TEXT PRIMARY KEY, name TEXT, balance INTEGER, type TEXT, category TEXT,)');
+          'CREATE TABLE accounts(id TEXT PRIMARY KEY, name TEXT, balance INTEGER, type TEXT, category TEXT)');
       await db.execute(
-          'CREATE TABLE transfers(id TEXT PRIMARY KEY, fromAccountId TEXT, toAccountId TEXT, amount INTEGER, date INTEGER, description TEXT, key TEXT,)');
+          'CREATE TABLE transfers(id TEXT PRIMARY KEY, fromAccountId TEXT, toAccountId TEXT, amount INTEGER, date INTEGER, description TEXT, key TEXT)');
     }, version: 1);
   }
 
@@ -38,11 +38,7 @@ class DBHelper {
 
   static Future<List<Map<String, dynamic>>> getData(String table) async {
     final db = await DBHelper.database();
-    return db.query(table);
-  }
 
-  static clearData(String table) async {
-    final db = await DBHelper.database();
-    return db.delete(table);
+    return db.query(table);
   }
 }

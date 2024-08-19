@@ -4,6 +4,7 @@ import "package:expense_manager/providers/drawer_provider.dart";
 import "package:expense_manager/providers/expense_provider.dart";
 import "package:expense_manager/providers/income_provider.dart";
 import "package:expense_manager/providers/theme.dart";
+import "package:expense_manager/providers/transfer_provider.dart";
 import "package:expense_manager/screens/accounts_screen.dart";
 import "package:expense_manager/screens/category_screen.dart";
 import "package:expense_manager/screens/create_reminder_screen.dart";
@@ -31,7 +32,7 @@ class _DrawerScreenState extends ConsumerState<DrawerScreen> {
     ref.read(expenseProvider.notifier).fetchAndSetExpenses();
     ref.read(incomeProvider.notifier).fetchAndSetIncome();
 
-    // ref.read(authProvider.notifier).getUserDetails();
+    ref.read(transferProvider.notifier).fetchAndSetTransfers();
   }
 
   DrawerItem item = DrawerItems.home;

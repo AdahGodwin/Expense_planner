@@ -91,7 +91,7 @@ class _CreateTransferState extends ConsumerState<CreateTransfer> {
     ref.read(transferProvider.notifier).createTransfer(
           fromAccountId: transfer["fromAccountId"],
           toAccountId: transfer["toAccountId"],
-          amount: transfer["amount"],
+          amount: double.parse(transfer["amount"]),
           date: transfer["date"],
           description: transfer["description"],
           key: transfer["key"],
@@ -105,7 +105,7 @@ class _CreateTransferState extends ConsumerState<CreateTransfer> {
       transferToAccountName = "Select";
     });
 
-    showSnackbar("Added Successfully", Theme.of(context).colorScheme.secondary);
+    showSnackbar("Added Successfully", Theme.of(context).colorScheme.primary);
   }
 
   @override
@@ -199,6 +199,9 @@ class _CreateTransferState extends ConsumerState<CreateTransfer> {
                                 }
                                 return null;
                               },
+                              onSaved: (newValue) {
+                                transfer["amount"] = newValue;
+                              },
                               decoration: InputDecoration(
                                 label: const Text(
                                   "Transfer Amount",
@@ -257,6 +260,9 @@ class _CreateTransferState extends ConsumerState<CreateTransfer> {
                             return 'Comment is required';
                           }
                           return null;
+                        },
+                        onSaved: (newValue) {
+                          transfer["description"] = newValue;
                         },
                         decoration: InputDecoration(
                           label: const Text(
@@ -343,7 +349,7 @@ class _CreateTransferState extends ConsumerState<CreateTransfer> {
                                 )
                               : (
                                   transferToAccountName = account.name,
-                                  transfer["fromAccountId"] = account.id
+                                  transfer["toAccountId"] = account.id
                                 );
                         });
                         Navigator.of(context).pop();
