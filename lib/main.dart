@@ -1,12 +1,12 @@
-import 'package:expense_manager/providers/auth_provider.dart';
-import 'package:expense_manager/providers/theme.dart';
-import 'package:expense_manager/screens/create_account_screen.dart';
-import 'package:expense_manager/screens/create_category_screen.dart';
-import 'package:expense_manager/screens/create_transfer_screen.dart';
-import 'package:expense_manager/screens/drawer_screen.dart';
-import 'package:expense_manager/screens/signup_screen.dart';
-import 'package:expense_manager/screens/transfer_history_screen.dart';
-import 'package:expense_manager/screens/welcome_screen.dart';
+// import 'package:expense_manager/providers/auth_provider.dart';
+import 'package:expense_manager/shared/providers/theme.dart';
+import 'package:expense_manager/features/account/presentation/screens/create_account_screen.dart';
+import 'package:expense_manager/features/category/presentation/screens/create_category_screen.dart';
+import 'package:expense_manager/features/account/presentation/screens/create_transfer_screen.dart';
+import 'package:expense_manager/features/drawer/presentation/screens/drawer_screen.dart';
+import 'package:expense_manager/features/auth/presentation/screens/signup_screen.dart';
+import 'package:expense_manager/features/account/presentation/screens/transfer_history_screen.dart';
+import 'package:expense_manager/features/auth/presentation/screens/welcome_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -22,7 +22,7 @@ class MyApp extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = ref.watch(themeProvider);
-    final user = ref.watch(authProvider);
+    // final user = ref.watch(authProvider);
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,

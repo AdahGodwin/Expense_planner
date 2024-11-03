@@ -18,6 +18,7 @@ class DBHelper {
           'CREATE TABLE accounts(id TEXT PRIMARY KEY, name TEXT, balance INTEGER, type TEXT, category TEXT)');
       await db.execute(
           'CREATE TABLE transfers(id TEXT PRIMARY KEY, fromAccountId TEXT, toAccountId TEXT, amount INTEGER, date INTEGER, description TEXT, key TEXT)');
+      await db.execute('CREATE TABLE theme( themeData TEXT)');
     }, version: 1);
   }
 
