@@ -1,27 +1,22 @@
-import 'package:expense_manager/features/category/data/models/category.dart';
-import 'package:expense_manager/features/category/presentation/providers/category_provider.dart';
+import 'package:expense_manager/features/category/presentation/widgets/icon_list.dart';
 import 'package:expense_manager/shared/providers/filter_provider.dart';
 import 'package:expense_manager/shared/components/header_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-class CreateCategoryScreen extends ConsumerStatefulWidget {
+class CreateCategoryScreen extends StatefulWidget {
   const CreateCategoryScreen({super.key});
 
   static const routeName = "/create-category";
   @override
-  ConsumerState<CreateCategoryScreen> createState() =>
-      _CreateCategoryScreenState();
+  State<CreateCategoryScreen> createState() => _CreateCategoryScreenState();
 }
 
-class _CreateCategoryScreenState extends ConsumerState<CreateCategoryScreen> {
+class _CreateCategoryScreenState extends State<CreateCategoryScreen> {
   Transaction transactionValue = Transaction.expense;
 
   @override
   Widget build(BuildContext context) {
-    List<Category> categories = ref.watch(categoryProvider);
-
     ThemeData theme = Theme.of(context);
     MediaQueryData mediaQuery = MediaQuery.of(context);
     return Scaffold(
@@ -67,89 +62,17 @@ class _CreateCategoryScreenState extends ConsumerState<CreateCategoryScreen> {
                   ),
                   Row(
                     children: [
-                      Flexible(
-                        child: ListTile(
-                          contentPadding: EdgeInsets.zero,
-                          horizontalTitleGap: 1,
-                          title: Text(
-                            'Expenses',
-                            style: theme.textTheme.displaySmall,
-                          ),
-                          leading: Radio<Transaction>(
-                            value: Transaction.expense,
-                            groupValue: transactionValue,
-                            onChanged: (Transaction? value) {
-                              setState(() {
-                                transactionValue = value!;
-                              });
-                            },
-                          ),
-                        ),
-                      ),
-                      Flexible(
-                        child: ListTile(
-                          horizontalTitleGap: 1,
-                          title: Text(
-                            'Income',
-                            style: theme.textTheme.displaySmall,
-                          ),
-                          leading: Radio<Transaction>(
-                            value: Transaction.income,
-                            groupValue: transactionValue,
-                            onChanged: (Transaction? value) {
-                              setState(() {
-                                transactionValue = value!;
-                              });
-                            },
-                          ),
-                        ),
-                      ),
+                      _buildRadio(Transaction.expense, "Expense"),
+                      _buildRadio(Transaction.income, "Income"),
                     ],
                   ),
                   const SizedBox(
                     height: 20,
                   ),
-                  Text(
-                    "Icons",
-                    style: theme.textTheme.displaySmall!.copyWith(
-                      color: Colors.grey,
-                    ),
+                  IconList(
+                    transactionValue: transactionValue,
                   ),
-                  const SizedBox(
-                    height: 15,
-                  ),
-                  Center(
-                    child: Wrap(
-                      alignment: WrapAlignment.start,
-                      spacing: 10,
-                      runSpacing: 20,
-                      children: [
-                        ...categories.map((Category category) {
-                          return CircleAvatar(
-                            backgroundColor: category.color,
-                            radius: 30,
-                            child: FaIcon(
-                              category.icon,
-                              color: Colors.white,
-                              size: 30,
-                            ),
-                          );
-                        }),
-                        const CircleAvatar(
-                          backgroundColor: Colors.brown,
-                          radius: 30,
-                          child: FaIcon(
-                            FontAwesomeIcons.ellipsis,
-                            color: Colors.white,
-                            size: 30,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 15,
-                  ),
+                  const SizedBox(height: 15),
                   TextButton(
                     onPressed: () {},
                     style: TextButton.styleFrom(
@@ -192,14 +115,34 @@ class _CreateCategoryScreenState extends ConsumerState<CreateCategoryScreen> {
               ),
             ),
             height: .13,
-            icons: const SizedBox(
-              width: 10,
-            ),
+            icons: const SizedBox(width: 10),
             navigationIcon: FontAwesomeIcons.arrowLeft,
             showTabs: false,
             popWindow: true,
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildRadio(Transaction transaction, String name) {
+    return Flexible(
+      child: ListTile(
+        contentPadding: EdgeInsets.zero,
+        horizontalTitleGap: 1,
+        title: Text(
+          name,
+          style: Theme.of(context).textTheme.displaySmall,
+        ),
+        leading: Radio<Transaction>(
+          value: transaction,
+          groupValue: transactionValue,
+          onChanged: (Transaction? value) {
+            setState(() {
+              transactionValue = value!;
+            });
+          },
+        ),
       ),
     );
   }

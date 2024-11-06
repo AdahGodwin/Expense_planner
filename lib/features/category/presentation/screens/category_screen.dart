@@ -1,7 +1,7 @@
 import 'package:expense_manager/features/category/data/models/category.dart';
 import 'package:expense_manager/features/category/presentation/providers/category_provider.dart';
-import 'package:expense_manager/shared/providers/filter_provider.dart';
 import 'package:expense_manager/features/category/presentation/screens/create_category_screen.dart';
+import 'package:expense_manager/shared/providers/filter_provider.dart';
 import 'package:expense_manager/shared/components/header_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -55,26 +55,6 @@ class CategoryScreen extends ConsumerWidget {
                       );
                     },
                   ),
-                  Column(
-                    children: [
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.of(context)
-                              .pushNamed(CreateCategoryScreen.routeName);
-                        },
-                        child: const CircleAvatar(
-                          backgroundColor: Colors.orange,
-                          radius: 30,
-                          child: FaIcon(
-                            FontAwesomeIcons.plus,
-                            color: Colors.white,
-                            size: 30,
-                          ),
-                        ),
-                      ),
-                      const Text("Add"),
-                    ],
-                  ),
                 ],
               ),
             ),
@@ -94,6 +74,21 @@ class CategoryScreen extends ConsumerWidget {
             showTabs: true,
           ),
         ],
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButton: IconButton(
+        onPressed: () {
+          Navigator.of(context).pushNamed(CreateCategoryScreen.routeName);
+        },
+        icon: const CircleAvatar(
+          backgroundColor: Colors.orange,
+          radius: 30,
+          child: FaIcon(
+            FontAwesomeIcons.plus,
+            color: Colors.white,
+            size: 30,
+          ),
+        ),
       ),
     );
   }
